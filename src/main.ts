@@ -7,8 +7,22 @@ import './registerServiceWorker'
 import 'ant-design-vue/dist/antd.css'
 // 引入公共样式
 import "@/assets/css/common.css"
+// 引入阿里图标
+import "@/assets/css/iconfont.css"
+// 引入nprogress
+import NProgress from "nprogress"
+import 'nprogress/nprogress.css'
 
 Vue.config.productionTip = false
+
+router.beforeEach((to, from, next) => {
+  NProgress.start();
+  next();
+})
+
+router.afterEach( route => {
+  NProgress.done();  
+})
 
 new Vue({
   router,
