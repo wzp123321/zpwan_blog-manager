@@ -1,7 +1,7 @@
 <template>
   <a-layout id="components-layout-demo-custom-trigger" style="height:100%">
     <SiderBox :collapsed="collapsed"></SiderBox>
-    <a-layout class="right-content">
+    <a-layout style="height:100%">
       <HeaderBox @change="()=> collapsed = !collapsed" userName="zpwan" style="height:64px"></HeaderBox>
       <ContentBox style="flex:1"></ContentBox>
     </a-layout>
@@ -30,12 +30,6 @@ export default class Home extends Vue {
 }
 </script>
 <style lang="less" scoped>
-.right-content{
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-}
 </style>
 <style>
 #components-layout-demo-custom-trigger .trigger {

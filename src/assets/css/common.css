@@ -2,3 +2,9 @@ body,html{
     height: 100%;
     overflow: hidden;
 }
+
+.frsp{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

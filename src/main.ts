@@ -12,6 +12,13 @@ import "@/assets/css/iconfont.css"
 // 引入nprogress
 import NProgress from "nprogress"
 import 'nprogress/nprogress.css'
+// editor
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
+// use
+Vue.use(mavonEditor)
+// 引入mock 等接口好了在卸载
+require('./mock/index')  //引入mock.js
 
 Vue.config.productionTip = false
 

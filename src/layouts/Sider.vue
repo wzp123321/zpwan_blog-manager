@@ -61,25 +61,21 @@ export default class SiderBox extends Vue {
     },
     {
       name: "字典管理",
-      icon: "icon-zidianguanli",
-      children: [
-        {
-          name: "标签管理",
-          en_name: "tags",
-          url: "/app/tags"
-        },
-        {
-          name: "目录管理",
-          en_name: "catalog",
-          url: "/app/catalog"
-        }
-      ]
+      icon: "icon-dictionary",
+      en_name: "dictionary",
+      url: "/app/dictionary"
     },
     {
       name: "文章管理",
       icon: "icon-wenzhang",
       en_name: "article",
-      url: "/app/article"
+      url: "/app/article/list"
+    },
+    {
+      name: "banner管理",
+      icon: "icon-shuffling-banner",
+      en_name: "banner",
+      url: "/app/banner"
     }
   ];
 }

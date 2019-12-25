@@ -1,20 +1,14 @@
 <template>
-  <a-layout-content
-    :style="{ margin: '24px 16px', padding: '24px', background: '#fff', minHeight: '280px' }"
-  >
+  <div style="background:#fff;padding:15px">
     <transition name="slide-left">
       <router-view></router-view>
     </transition>
-  </a-layout-content>
+  </div>
 </template>
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
-import { Layout } from "ant-design-vue";
 @Component({
-  name: "ContentBox",
-  components: {
-    "a-layout-content": Layout.Content
-  }
+  name: "ContentBox"
 })
 export default class COntentBox extends Vue {}
 </script>

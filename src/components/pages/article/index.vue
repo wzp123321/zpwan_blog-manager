@@ -1,12 +1,10 @@
 <template>
-  <h1>Article</h1>
+  <router-view></router-view>
 </template>
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import {Vue,Component} from "vue-property-decorator"
 @Component({
-  name: "ArticleModule"
+  name:"ArticleModule"
 })
-export default class ArticleModule extends Vue {}
+export default class ArticleModule extends Vue{}
 </script>
-<style lang="less" scoped>
-</style>

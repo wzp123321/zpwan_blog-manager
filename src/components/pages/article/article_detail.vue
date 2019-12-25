@@ -1,12 +1,13 @@
 <template>
-  <h1>TagModule</h1>
+  <h1>Detail</h1>
 </template>
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 @Component({
-  name: "TagModule"
+  name: "ArticleDetail",
+  components: {}
 })
-export default class TagModule extends Vue {}
+export default class ArticleDetail extends Vue {}
 </script>
 <style lang="less" scoped>
 </style>
