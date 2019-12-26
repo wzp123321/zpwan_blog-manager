@@ -60,6 +60,7 @@ export default class HeaderBox extends Vue {
       onCancel: () => {},
       onOk: () => {
         console.log("退出");
+        this.$router.push("/signin");
       }
     });
   }

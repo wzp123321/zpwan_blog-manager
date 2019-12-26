@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-// 引入模块
 const Home = () => import('@/views/Home.vue')
 const NotFound = () => import('@/components/404.vue')
-//前台管理模块
+const SigninModule = () => import("@/components/Signin.vue")
+//前台管理模块 用户信息&&banner
 const WebManagerModule = () => import("@/components/pages/web_manager/index.vue")
 const BannerModule = () => import("@/components/pages/web_manager/banners/index.vue")
 const BannerCreate = () => import("@/components/pages/web_manager/banners/banner_create.vue")
@@ -162,6 +162,10 @@ const routes = [
         component: UtilModule
       }
     ]
+  },
+  {
+    path: "/signin",
+    component: SigninModule
   },
   {
     path: "/notfound",
