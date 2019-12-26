@@ -8,7 +8,7 @@
       />
       <a-breadcrumb style="line-height: 58px;">
         <a-breadcrumb-item v-for="(routeItem,index) in routers" :key="'route_'+index">
-          <router-link :to="routeItem.path">{{routeItem.meta.name}}</router-link>
+          <router-link :to="routeItem.path">{{ routeItem.meta.name }}</router-link>
         </a-breadcrumb-item>
       </a-breadcrumb>
     </div>

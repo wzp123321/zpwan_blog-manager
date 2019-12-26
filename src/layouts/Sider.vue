@@ -1,11 +1,11 @@
 <template>
   <a-layout-sider :trigger="null" collapsible v-model="collapsed">
-    <h1 class="sider-title">博客管理后台</h1>
+    <h1 class="sider-title" v-if="!collapsed">博客管理后台</h1>
     <Menu mode="inline" theme="dark" :selectedKeys="[defaultSelectKey]">
       <template v-for="menu in menus">
         <SubMenu v-if="menu.children" :key="'menu_' + menu.name">
           <span slot="title">
-            <i :class="`iconfont ${menu.icon}`"></i>
+            <a-icon :type="menu.icon"></a-icon>
             {{menu.name}}
           </span>
           <MenuItem
@@ -20,12 +20,10 @@
           v-else
           :key="'menu_' + menu.name"
           :class="menu.url===$route.path ? 'ant-menu-item-selected': ''"
+          @click="()=>{$router.push(menu.url)}"
         >
-          <router-link :to="menu.url" v-if="menu.en_name !== 'set'">
-            <i :class="`iconfont ${menu.icon}`"></i>
-            {{ menu.name }}
-          </router-link>
-          <a :href="menu.url" v-else target="_blank">{{ menu.name }}</a>
+          <a-icon :type="menu.icon"></a-icon>
+          <span>{{ menu.name }}</span>
         </MenuItem>
       </template>
     </Menu>
@@ -54,32 +52,54 @@ export default class SiderBox extends Vue {
    */
   private menus: Array<MenuInfo> = [
     {
-      name: "个人中心",
-      en_name: "personal",
-      icon: "icon-person",
-      url: "/app/admin"
+      name: "前台管理",
+      en_name: "webManager",
+      icon: "user",
+      children: [
+        {
+          name: "用户信息管理",
+          en_name: "personal",
+          url: "/app/webmanager/admin"
+        },
+        {
+          name: "首页banner管理",
+          en_name: "banner",
+          url: "/app/webmanager/banner/list"
+        }
+      ]
+    },
+    {
+      name: "评论管理",
+      en_name: "commentManager",
+      icon: "edit",
+      children: [
+        {
+          name: "评论列表",
+          en_name: "commentlist",
+          url: "/app/comment/list"
+        },
+        {
+          name: "首页banner管理",
+          en_name: "commentwhitelist",
+          url: "/app/comment/whitelist"
+        }
+      ]
     },
     {
       name: "字典管理",
-      icon: "icon-dictionary",
+      icon: "database",
       en_name: "dictionary",
       url: "/app/dictionary"
     },
     {
       name: "文章管理",
-      icon: "icon-wenzhang",
+      icon: "file",
       en_name: "article",
       url: "/app/article/list"
     },
     {
-      name: "banner管理",
-      icon: "icon-shuffling-banner",
-      en_name: "banner",
-      url: "/app/banner/list"
-    },
-    {
       name: "Util工具",
-      icon: "icon-gongju",
+      icon: "setting",
       en_name: "util",
       url: "/app/util"
     }
@@ -97,7 +117,7 @@ export default class SiderBox extends Vue {
   bottom: 0;
 }
 
-.sider-title:hover{
+.sider-title:hover {
   cursor: pointer;
   animation: title_shake 1.5s linear infinite forwards;
 }
@@ -109,20 +129,33 @@ export default class SiderBox extends Vue {
 }
 
 @keyframes title_shake {
-  0%{
+  0% {
     bottom: 0;
   }
-   25%{
+  25% {
     bottom: 5px;
   }
-   50%{
+  50% {
     bottom: 0;
   }
-   75%{
+  75% {
     bottom: 2px;
   }
-   100%{
+  100% {
     bottom: 0;
   }
+}
+</style>
+<style>
+#components-layout-demo-custom-trigger .trigger {
+  font-size: 18px;
+  line-height: 64px;
+  padding: 0 24px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+#components-layout-demo-custom-trigger .trigger:hover {
+  color: #1890ff;
 }
 </style>

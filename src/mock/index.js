@@ -24,8 +24,24 @@ let data = {
   'modifyTime': () => Random.integer(0, 1000000000),
 }
 
+//banner
+let banner = {
+  'id': () => Random.string('lower', 20),
+  "title": () => Random.string('lower', 5, 10),
+  'imgUrl': () => Random.image(),
+  'url': Random.url('https', 'zpwan.com'),
+  'createTime': () => Random.integer(0, 1000000000),
+  'modifyTime': () => Random.integer(0, 1000000000),
+}
+
 Mock.mock('/mock/test', 'get', {
   code: 200,
   "data|20": [data],
+  message: "SUCCESS"
+});
+
+Mock.mock('/blogManage/mock/banner/list', 'get', {
+  code: 200,
+  "data|50": [banner],
   message: "SUCCESS"
 });

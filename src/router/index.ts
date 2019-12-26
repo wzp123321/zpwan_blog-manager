@@ -4,22 +4,27 @@ import VueRouter from 'vue-router'
 // 引入模块
 const Home = () => import('@/views/Home.vue')
 const NotFound = () => import('@/components/404.vue')
-// 管理员模块
-const AdminModule = () => import("@/components/pages/admin/index.vue")
+//前台管理模块
+const WebManagerModule = () => import("@/components/pages/web_manager/index.vue")
+const BannerModule = () => import("@/components/pages/web_manager/banners/index.vue")
+const BannerCreate = () => import("@/components/pages/web_manager/banners/banner_create.vue")
+const BannerList = () => import("@/components/pages/web_manager/banners/banner_list.vue")
+const AdminModule = () => import("@/components/pages/web_manager/admin/index.vue")
 // 字典模块
 const DictionaryModule = () => import("@/components/pages/dictionary/index.vue")
 //文章模块
-const ArticleModule = () => import("@/components/pages/article/index.vue")
-const ArticleList = () => import("@/components/pages/article/article_list.vue")
-const ArticleCreate = () => import("@/components/pages/article/article_add.vue")
-const ArticleDetail = () => import("@/components/pages/article/article_detail.vue")
-const ArticleEdit = () => import("@/components/pages/article/article_add.vue")
-//banner模块
-const BannerModule = () => import("@/components/pages/banners/index.vue")
-const BannerCreate = () => import("@/components/pages/banners/banner_create.vue")
-const BannerList = () => import("@/components/pages/banners/banner_list.vue")
+const ArticleModule = () => import("@/components/pages/article_manager/index.vue")
+const ArticleList = () => import("@/components/pages/article_manager/article_list.vue")
+const ArticleCreate = () => import("@/components/pages/article_manager/article_add.vue")
+const ArticleDetail = () => import("@/components/pages/article_manager/article_detail.vue")
+const ArticleEdit = () => import("@/components/pages/article_manager/article_add.vue")
+
 // 工具模块
 const UtilModule = () => import("@/components/pages/util/index.vue")
+// 评论模块
+const CommentModule = () => import("@/components/pages/comment_manager/index.vue")
+const CommentList = () => import("@/components/pages/comment_manager/comment_list/index.vue")
+const WhiteList = () => import("@/components/pages/comment_manager/whitelist_manager/index.vue")
 Vue.use(VueRouter)
 
 const routes = [
@@ -33,14 +38,55 @@ const routes = [
     meta: {
       name: "首页"
     },
-    redirect: "/app/admin",
+    redirect: "/app/webmanager",
     children: [
       {
-        path: "/app/admin",
+        path: "/app/webmanager",
         meta: {
-          name: "个人中心"
+          name: "前台管理"
         },
-        component: AdminModule,
+        redirect: "/app/webmanager/admin",
+        component: WebManagerModule,
+        children: [
+          {
+            path: "/app/webmanager/admin",
+            meta: {
+              name: "用户信息管理"
+            },
+            component: AdminModule,
+          },
+          {
+            path: "/app/webmanager/banner",
+            meta: {
+              name: "banner管理"
+            },
+            redirect: "/app/webmanager/banner/list",
+            component: BannerModule,
+            children: [
+              {
+                path: "/app/webmanager/banner/list",
+                meta: {
+                  name: "banner列表"
+                },
+                component: BannerList
+              },
+              {
+                path: "/app/webmanager/banner/add",
+                meta: {
+                  name: "banner新增"
+                },
+                component: BannerCreate
+              },
+              {
+                path: "/app/webmanager/banner/edit/:id",
+                meta: {
+                  name: "banner编辑"
+                },
+                component: BannerCreate
+              },
+            ]
+          },
+        ]
       },
       {
         path: "/app/article",
@@ -88,33 +134,26 @@ const routes = [
         component: DictionaryModule
       },
       {
-        path: "/app/banner",
+        path: "/app/comment",
         meta: {
-          name: "banner管理"
+          name: "评论管理"
         },
-        redirect: "/app/banner/list",
-        component: BannerModule,
+        redirect: "/app/comment/list",
+        component: CommentModule,
         children: [
           {
-            path: "/app/banner/list",
+            path: "/app/comment/list",
             meta: {
-              name: "banner列表"
+              name: "评论列表"
             },
-            component: BannerList
+            component: CommentList
           },
           {
-            path: "/app/banner/add",
+            path: "/app/comment/whitelist",
             meta: {
-              name: "banner新增"
+              name: "评论白名单管理"
             },
-            component: BannerCreate
-          },
-          {
-            path: "/app/banner/edit/:id",
-            meta: {
-              name: "banner编辑"
-            },
-            component: BannerCreate
+            component: WhiteList
           },
         ]
       },
@@ -135,6 +174,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
+  mode: "hash",
   routes
 })
 

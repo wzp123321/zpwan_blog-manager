@@ -10,7 +10,7 @@ import { Vue, Component } from "vue-property-decorator";
 @Component({
   name: "ContentBox"
 })
-export default class COntentBox extends Vue {}
+export default class ContentBox extends Vue {}
 </script>
 <style lang="less">
 .slide-right,
@@ -23,7 +23,7 @@ export default class COntentBox extends Vue {}
   transition: all 0.4s ease;
 }
 .slide-left-leave-active {
-  transition: all 0.2s cubic-bezier(2, 0.5, 0.8, 1);
+  transition: all 0.4s cubic-bezier(2, 0.5, 0.8, 1);
 }
 .slide-left-enter {
   left: 0;
