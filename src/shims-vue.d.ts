@@ -118,3 +118,12 @@ declare namespace ArticleModule {
     modifyTime?: number,
   }
 }
+
+/**
+ * banner模块
+ */
+declare namespace BannerModule{
+  interface BannerInfo{
+    
+  }
+}

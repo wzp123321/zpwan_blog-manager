@@ -15,6 +15,7 @@ let data = {
   'tags': () => Random.string('lower', 5, 10),
   'catalogId': () => Random.string('lower', 20),
   'catalogName': () => Random.string('lower', 20),
+  'isShelves': () => Random.integer(0, 1),
   'isRecommend': () => Random.integer(0, 1),
   'isTop': () => Random.integer(0, 1),
   'visitCount': () => Random.integer(0, 1000),

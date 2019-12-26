@@ -8,6 +8,7 @@
       :dataSource="dataSource"
       :pagination="pagination"
       :loading="loading"
+      bordered
       @change="handleTableChange"
     >
       <template slot="name" slot-scope="name">{{name.first}} {{name.last}}</template>

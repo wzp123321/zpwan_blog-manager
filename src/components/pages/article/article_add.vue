@@ -1,26 +1,49 @@
 <template>
-  <mavon-editor
-    ref="markdownEditor"
-    :toolbars="markdownOption"
-    v-model="articleInfo"
-    @save="handleEditorSave"
-    @imgAdd="imgAdd"
-    @imgDel="imgDel"
-    :ishljs="true"
-  />
+  <div class="article-add">
+    <a-form :form="form" @submit="handleSubmit">
+      <a-form-item label="标题" :label-col="{ span: 1 }" :wrapper-col="{ offset:1,span: 10 }">
+        <a-input v-decorator="['title', { rules: [{ required: true, message: '请输入文章标题!' }] }]" />
+      </a-form-item>
+      <a-form-item label="封面" :label-col="{ span: 1 }" :wrapper-col="{ offset:1,span: 10 }">
+        <UploadHandler
+          v-decorator="['imgUrl', { rules: [{ required: true, message: '请上传文章封面!' }] }]"
+          @change="handleUploadChange"
+        ></UploadHandler>
+      </a-form-item>
+      <mavon-editor
+        ref="markdownEditor"
+        :toolbars="markdownOption"
+        v-model="articleInfo"
+        @save="handleEditorSave"
+        @imgAdd="imgAdd"
+        @imgDel="imgDel"
+        :ishljs="true"
+      />
+    </a-form>
+  </div>
 </template>
 <script lang="ts">
 import axios from "axios";
 import { Vue, Component } from "vue-property-decorator";
+import { Form, Button, Input } from "ant-design-vue";
+import UploadHandler from "@/components/Uploader.vue";
 @Component({
   name: "ArticleCreate",
-  components: {}
+  components: {
+    "a-form": Form,
+    "a-form-item": Form.Item,
+    "a-input": Input,
+    "a-button": Button,
+    UploadHandler
+  }
 })
 export default class ArticleCreate extends Vue {
+  // form
+  private form: any;
   // 编辑器内容
   private articleInfo: string = "";
   // 上传图片对象
-  private img_file:any = {};
+  private img_file: any = {};
   // markdown配置
   private markdownOption: markdownOption = {
     bold: true, // 粗体
@@ -87,7 +110,26 @@ export default class ArticleCreate extends Vue {
    * 图片删除
    */
   private imgDel(pos: number) {
-     delete this.img_file[pos];
+    delete this.img_file[pos];
+  }
+  /**
+   * 上传图片回调
+   */
+  private handleUploadChange(value: string) {}
+  /**
+   * 表单提交
+   */
+  private handleSubmit(e: any) {
+    e.preventDefault();
+    this.form.veliDateFields(
+      (err: Error, values: ArticleModule.ArticleInfo) => {
+        console.log(values);
+      }
+    );
+  }
+
+  created() {
+    this.form = this.$form.createForm(this);
   }
 }
 </script>

@@ -75,7 +75,13 @@ export default class SiderBox extends Vue {
       name: "banner管理",
       icon: "icon-shuffling-banner",
       en_name: "banner",
-      url: "/app/banner"
+      url: "/app/banner/list"
+    },
+    {
+      name: "Util工具",
+      icon: "icon-gongju",
+      en_name: "util",
+      url: "/app/util"
     }
   ];
 }
@@ -87,10 +93,36 @@ export default class SiderBox extends Vue {
   font-family: cursive;
   margin: 0;
   padding: 10px 0;
+  position: relative;
+  bottom: 0;
 }
+
+.sider-title:hover{
+  cursor: pointer;
+  animation: title_shake 1.5s linear infinite forwards;
+}
+
 .ant-menu {
   font-size: 20px;
   color: #fff;
   font-weight: 400;
+}
+
+@keyframes title_shake {
+  0%{
+    bottom: 0;
+  }
+   25%{
+    bottom: 5px;
+  }
+   50%{
+    bottom: 0;
+  }
+   75%{
+    bottom: 2px;
+  }
+   100%{
+    bottom: 0;
+  }
 }
 </style>

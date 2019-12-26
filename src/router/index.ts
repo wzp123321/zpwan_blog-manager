@@ -16,6 +16,10 @@ const ArticleDetail = () => import("@/components/pages/article/article_detail.vu
 const ArticleEdit = () => import("@/components/pages/article/article_add.vue")
 //banner模块
 const BannerModule = () => import("@/components/pages/banners/index.vue")
+const BannerCreate = () => import("@/components/pages/banners/banner_create.vue")
+const BannerList = () => import("@/components/pages/banners/banner_list.vue")
+// 工具模块
+const UtilModule = () => import("@/components/pages/util/index.vue")
 Vue.use(VueRouter)
 
 const routes = [
@@ -88,7 +92,35 @@ const routes = [
         meta: {
           name: "banner管理"
         },
-        component: BannerModule
+        redirect: "/app/banner/list",
+        component: BannerModule,
+        children: [
+          {
+            path: "/app/banner/list",
+            meta: {
+              name: "banner列表"
+            },
+            component: BannerList
+          },
+          {
+            path: "/app/banner/add",
+            meta: {
+              name: "banner新增"
+            },
+            component: BannerCreate
+          },
+          {
+            path: "/app/banner/edit/:id",
+            meta: {
+              name: "banner编辑"
+            },
+            component: BannerCreate
+          },
+        ]
+      },
+      {
+        path: "/app/util",
+        component: UtilModule
       }
     ]
   },

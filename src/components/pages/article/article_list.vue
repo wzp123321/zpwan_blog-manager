@@ -8,8 +8,12 @@
       :dataSource="dataSource"
       :pagination="pagination"
       :loading="loading"
+      bordered
       @change="handleTableChange"
     >
+      <template slot="isShelves" slot-scope="text,record">
+        <a-switch :checked="record.isShelves ===1" @change="handleisShelvesChange"></a-switch>
+      </template>
       <template slot="isRecommend" slot-scope="text,record">
         <a-switch :checked="record.isRecommend ===1" @change="handleIsRecommendChange"></a-switch>
       </template>
@@ -73,6 +77,11 @@ export default class ArticleList extends Vue {
       dataIndex: "description"
     },
     {
+      key: "isShelves",
+      title: "上架",
+      scopedSlots: { customRender: "isShelves" }
+    },
+    {
       key: "isRecommend",
       title: "推荐",
       scopedSlots: { customRender: "isRecommend" }
@@ -122,6 +131,10 @@ export default class ArticleList extends Vue {
    * 置顶change事件
    */
   private handleIsTopChange(value: boolean) {}
+  /**
+   * 上下架change事件
+   */
+  private handleisShelvesChange(value: boolean) {}
   created() {
     axios.get("/mock/test").then(res => {
       const list = res.data.data;
