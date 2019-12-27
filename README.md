@@ -41,3 +41,4 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 List<CpMsgPayDetail> findByid1Andid3 (@Param("pa") Map<String, Object> pa);
 https://www.cnblogs.com/DawnCHENXI/p/9221653.html
 swagger
+https://abelyang.blog.csdn.net/article/details/89296273

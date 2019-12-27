@@ -10,7 +10,16 @@
       <a-input v-decorator="['qq_number', { rules: [{ required: true, message: '请输入QQ号码!' }] }]" />
     </a-form-item>
     <a-form-item label="QQ二维码" :label-col="{ span: 3 }" :wrapper-col="{ span: 10 }">
-      <UploadHandler @change="handleUploadChange"></UploadHandler>
+      <UploadHandler @change="handleQQUploadChange"></UploadHandler>
+    </a-form-item>
+    <a-form-item label="微信号" :label-col="{ span: 3 }" :wrapper-col="{ span: 10 }">
+      <a-input v-decorator="['qweixin_number', { rules: [{ required: true, message: '请输入微信号!' }] }]" />
+    </a-form-item>
+    <a-form-item label="微信二维码" :label-col="{ span: 3 }" :wrapper-col="{ span: 10 }">
+      <UploadHandler @change="handleWXUploadChange"></UploadHandler>
+    </a-form-item>
+     <a-form-item label="GitHub链接" :label-col="{ span: 3 }" :wrapper-col="{ span: 10 }">
+      <a-input v-decorator="['github_number', { rules: [{ required: true, message: '请输入GitHub链接!' }] }]" />
     </a-form-item>
   </a-form>
 </template>
@@ -32,9 +41,15 @@ import UploadHandler from "@/components/Uploader.vue";
 export default class AdminModule extends Vue {
   private form: any = this.$form.createForm(this);
   /**
-   * 图片上传
+   * QQ图片上传
    */
-  private handleUploadChange(file: any) {
+  private handleQQUploadChange(file: any) {
+    console.log(file);
+  }
+   /**
+   * WX图片上传
+   */
+  private handleWXUploadChange(file: any) {
     console.log(file);
   }
   /**

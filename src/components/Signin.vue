@@ -1,7 +1,7 @@
 <template>
   <div class="signin-panel">
     <div class="login-content">
-      <div class="login-header">登录鸟</div>
+      <div class="login-header">后台登录</div>
       <Form :layout="formLayout" :form="form">
         <p class="errormsg">{{errorTip}}</p>
         <FormItem label="用户名" :label-col="{span:4}" :wrapper-col="{span:20}" :required="false">
@@ -62,6 +62,12 @@
         <FormItem class="loginbtn" :label-col="{span:4}" :wrapper-col="{span:20}">
           <Button :loading="loading" type="primary" @click="handleSubmit">登录</Button>
         </FormItem>
+        <FormItem label="您还可以通过以下方式登录:" :label-col="{span:12}" :wrapper-col="{offset:1,span:5}">
+          <!-- <i class="iconfont icon-"></i> -->
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-QQ" />
+          </svg>
+        </FormItem>
       </Form>
     </div>
   </div>
@@ -99,6 +105,8 @@ export default class Signin extends Vue {
    * 初始化
    */
   private created() {
+    // qq登录  https://wiki.connect.qq.com/%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C_oauth2-0
+    
     this.form = this.$form.createForm(this);
     this.$nextTick(() => {
       window.addEventListener("keypress", e => {
@@ -133,14 +141,14 @@ export default class Signin extends Vue {
   private handleSubmit() {
     this.form.validateFields((err: any, values: any) => {
       if (!err && this.checkIdentityCode(values.identifycode)) {
-        if(values.username==="zpwan" && values.password === "zpwan123"){
-            this.loading = true;
-            this.$router.push("/app")
-        }else{
-            this.form.setFields({
-                username:{value:"",errors:[new Error('用户名或密码错误')]},
-                password:{value:"",errors:[new Error('用户名或密码错误')]}
-            })
+        if (values.username === "zpwan" && values.password === "zpwan123") {
+          this.loading = true;
+          this.$router.push("/app");
+        } else {
+          this.form.setFields({
+            username: { value: "", errors: [new Error("用户名或密码错误")] },
+            password: { value: "", errors: [new Error("用户名或密码错误")] }
+          });
         }
       }
     });
@@ -151,18 +159,18 @@ export default class Signin extends Vue {
 .signin-panel {
   position: relative;
   height: 100%;
-  background-color: #f0f2f5;
+  background: rgba(0, 0, 0, 0.8);
   .login-content {
     position: fixed;
-    width: 480px;
-    height: 390px;
+    width: 440px;
+    height: 410px;
     right: 50%;
     top: 55%;
     transform: translate3d(50%, -65%, 0);
     background-color: #fff;
     border-radius: 5px;
     box-shadow: "0, 0, 5px #eee";
-    padding: 35px 59px 95px 59px;
+    padding: 25px 49px 85px 49px;
     .errormsg {
       color: red;
       margin: 3px 0 6px 60px;

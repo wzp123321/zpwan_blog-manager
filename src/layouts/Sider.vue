@@ -1,9 +1,9 @@
 <template>
   <a-layout-sider :trigger="null" collapsible v-model="collapsed">
     <h1 class="sider-title" v-if="!collapsed">博客管理后台</h1>
-    <Menu mode="inline" theme="dark" :selectedKeys="[defaultSelectKey]">
+    <Menu mode="inline" theme="dark" :selectedKeys="[defaultSelectKey]" :openKeys="openKeys" @openChange="onOpenChange" >
       <template v-for="menu in menus">
-        <SubMenu v-if="menu.children" :key="'menu_' + menu.name">
+        <SubMenu v-if="menu.children" :key="'menu_' + menu.en_name">
           <span slot="title">
             <a-icon :type="menu.icon"></a-icon>
             {{menu.name}}
@@ -45,6 +45,9 @@ import { Layout, Menu, Icon } from "ant-design-vue";
 export default class SiderBox extends Vue {
   @Prop({ default: false })
   private collapsed!: boolean;
+  // 一级目录数组
+  private rootSubmenuKeys:Array<string> = ["menu_webManager","menu_commentManager"];
+  private openKeys:Array<string> = ['menu_webManager'];
 
   private defaultSelectKey: string = "menu_0";
   /**
@@ -79,7 +82,7 @@ export default class SiderBox extends Vue {
           url: "/app/comment/list"
         },
         {
-          name: "首页banner管理",
+          name: "评论报白名单",
           en_name: "commentwhitelist",
           url: "/app/comment/whitelist"
         }
@@ -104,6 +107,15 @@ export default class SiderBox extends Vue {
       url: "/app/util"
     }
   ];
+
+  onOpenChange(openKeys:any) {
+      const latestOpenKey = openKeys.find((key:any) => this.openKeys.indexOf(key) === -1);
+      if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
+        this.openKeys = openKeys;
+      } else {
+        this.openKeys = latestOpenKey ? [latestOpenKey] : [];
+      }
+    }
 }
 </script>
 <style lang="less" scoped>
