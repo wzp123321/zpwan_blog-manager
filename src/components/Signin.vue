@@ -65,7 +65,7 @@
         <FormItem label="您还可以通过以下方式登录:" :label-col="{span:12}" :wrapper-col="{offset:1,span:5}">
           <!-- <i class="iconfont icon-"></i> -->
           <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-QQ" />
+            <use xlink:href="#icon-QQ" @click="()=>{$router.push('/signin_qq')}" style="font-size:14px"/>
           </svg>
         </FormItem>
       </Form>
@@ -106,7 +106,6 @@ export default class Signin extends Vue {
    */
   private created() {
     // qq登录  https://wiki.connect.qq.com/%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C_oauth2-0
-    
     this.form = this.$form.createForm(this);
     this.$nextTick(() => {
       window.addEventListener("keypress", e => {

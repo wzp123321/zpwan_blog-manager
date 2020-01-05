@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 const Home = () => import('@/views/Home.vue')
 const NotFound = () => import('@/components/404.vue')
 const SigninModule = () => import("@/components/Signin.vue")
+const QQ_LoginModule = () => import("@/components/QQ_Login.vue")
 //前台管理模块 用户信息&&banner
 const WebManagerModule = () => import("@/components/pages/web_manager/index.vue")
 const BannerModule = () => import("@/components/pages/web_manager/banners/index.vue")
@@ -166,6 +167,10 @@ const routes = [
   {
     path: "/signin",
     component: SigninModule
+  },
+  {
+    path: "/signin_qq",
+    component: QQ_LoginModule
   },
   {
     path: "/notfound",

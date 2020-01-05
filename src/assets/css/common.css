@@ -1,17 +1,24 @@
-body,html{
+body,
+html {
     height: 100%;
     overflow: hidden;
 }
 
-.frsp{
+.frsp {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
 .icon {
-    width: 1em; height: 1em;
+    width: 1em;
+    height: 1em;
     vertical-align: -0.15em;
     fill: currentColor;
+    font-size: 18px;
     overflow: hidden;
- }
+}
+
+.icon:hover {
+    cursor: pointer;
+}

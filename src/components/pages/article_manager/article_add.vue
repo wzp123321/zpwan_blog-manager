@@ -27,6 +27,7 @@ import axios from "axios";
 import { Vue, Component } from "vue-property-decorator";
 import { Form, Button, Input } from "ant-design-vue";
 import UploadHandler from "@/components/Uploader.vue";
+import HttpRequest from "@/assets/api/modules/index"
 @Component({
   name: "ArticleCreate",
   components: {
@@ -128,8 +129,9 @@ export default class ArticleCreate extends Vue {
     );
   }
 
-  created() {
+  async created() {
     this.form = this.$form.createForm(this);
+    const res =await HttpRequest.ArticleModule.getArticleList()
   }
 }
 </script>
