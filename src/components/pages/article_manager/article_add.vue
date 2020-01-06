@@ -1,14 +1,26 @@
 <template>
   <div class="article-add">
     <a-form :form="form" @submit="handleSubmit">
-      <a-form-item label="标题" :label-col="{ span: 1 }" :wrapper-col="{ offset:1,span: 10 }">
+      <a-form-item label="标题" :label-col="{ span: 3 }" :wrapper-col="{ offset:1,span: 10 }">
         <a-input v-decorator="['title', { rules: [{ required: true, message: '请输入文章标题!' }] }]" />
       </a-form-item>
-      <a-form-item label="封面" :label-col="{ span: 1 }" :wrapper-col="{ offset:1,span: 10 }">
+      <a-form-item label="封面" :label-col="{ span: 3 }" :wrapper-col="{ offset:1,span: 10 }">
         <UploadHandler
           v-decorator="['imgUrl', { rules: [{ required: true, message: '请上传文章封面!' }] }]"
           @change="handleUploadChange"
         ></UploadHandler>
+      </a-form-item>
+      <a-form-item label="一级目录" :label-col="{ span: 3 }" :wrapper-col="{ offset:1,span: 10 }">
+        <a-select placeholder="请选择" style="width: 320px" @change="handleFirstCatalogIdChange">
+          <a-select-option value="jack">Jack</a-select-option>
+          <a-select-option value="Yiminghe">yiminghe</a-select-option>
+        </a-select>
+      </a-form-item>
+      <a-form-item label="二级目录" :label-col="{ span: 3 }" :wrapper-col="{ offset:1,span: 10 }">
+        <a-select placeholder="请选择" style="width: 320px">
+          <a-select-option value="jack">Jack</a-select-option>
+          <a-select-option value="Yiminghe">yiminghe</a-select-option>
+        </a-select>
       </a-form-item>
       <mavon-editor
         ref="markdownEditor"
@@ -25,9 +37,9 @@
 <script lang="ts">
 import axios from "axios";
 import { Vue, Component } from "vue-property-decorator";
-import { Form, Button, Input } from "ant-design-vue";
+import { Form, Button, Input, Select } from "ant-design-vue";
 import UploadHandler from "@/components/Uploader.vue";
-import HttpRequest from "@/assets/api/modules/index"
+import HttpRequest from "@/assets/api/modules/index";
 @Component({
   name: "ArticleCreate",
   components: {
@@ -35,6 +47,8 @@ import HttpRequest from "@/assets/api/modules/index"
     "a-form-item": Form.Item,
     "a-input": Input,
     "a-button": Button,
+    "a-select": Select,
+    "a-select-option": Select.Option,
     UploadHandler
   }
 })
@@ -118,6 +132,10 @@ export default class ArticleCreate extends Vue {
    */
   private handleUploadChange(value: string) {}
   /**
+   * 一级目录选择
+   */
+  private handleFirstCatalogIdChange() {}
+  /**
    * 表单提交
    */
   private handleSubmit(e: any) {
@@ -131,7 +149,6 @@ export default class ArticleCreate extends Vue {
 
   async created() {
     this.form = this.$form.createForm(this);
-    const res =await HttpRequest.ArticleModule.getArticleList()
   }
 }
 </script>

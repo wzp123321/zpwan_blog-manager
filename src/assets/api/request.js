@@ -1,4 +1,8 @@
-import axios from 'axios';
+import axios, {
+  AxiosRequestConfig,
+  AxiosResponse,
+  AxiosError
+} from 'axios'
 
 const env = process.env.NODE_ENV;
 
