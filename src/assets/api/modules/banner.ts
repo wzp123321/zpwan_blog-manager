@@ -1,10 +1,10 @@
 import {
   getRequest,
   postRequest
-} from "../request.js"
+} from "../request"
 
 export default {
-  async getBannerList(params) {
+  async getBannerList(params: { [key: string]: any }) {
     const url = "/mock/banner/list"
     return getRequest(url, params)
   }

@@ -23,7 +23,7 @@ const axiosInstance = () => {
 
 
 // 请求实例
-const publicReq = async params => {
+const publicReq = async (params: { [key: string]: any }) => {
   const {
     url,
     method,
@@ -51,7 +51,7 @@ const publicReq = async params => {
       }
       return ret
     }]
-  }).then(res => {
+  }).then((res: AxiosResponse) => {
     if (res) {
       if (res.status !== 200) {
         throw new Error(res.statusText);
@@ -62,7 +62,7 @@ const publicReq = async params => {
 };
 
 // 请求超时函数
-const timeoutfn = (delay, url) => {
+const timeoutfn = (delay: number, url: string) => {
   return new Promise(resolve => {
     setTimeout(() => {
       resolve('请求超时');
@@ -71,16 +71,14 @@ const timeoutfn = (delay, url) => {
 };
 
 // 单个请求 存在请求超时
-export async function req(params, delay = Global_Delay) {
+export async function req(params: { [key: string]: any }, delay = Global_Delay) {
   try {
-    const response = await Promise.race([
+    const response: any = await Promise.race([
       timeoutfn(delay, params.url),
       publicReq(params),
     ]);
     if (response.data.code === 401) {
-      // this.$message.error(response.data.message);
       localStorage.removeItem("token");
-      sessionStorage.removeItem("adminLogin");
       location.href = '/';
     }
     return response;
@@ -90,7 +88,7 @@ export async function req(params, delay = Global_Delay) {
 }
 
 // GET request
-export async function getRequest(url, param) {
+export async function getRequest(url: string, param: { [key: string]: any }) {
   try {
     const response = await req({
       url,
@@ -105,7 +103,7 @@ export async function getRequest(url, param) {
 }
 
 // POST request
-export async function postRequest(url, param) {
+export async function postRequest(url: string, param: { [key: string]: any }) {
   try {
     const response = await req({
       url,

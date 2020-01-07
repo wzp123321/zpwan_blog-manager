@@ -3,6 +3,12 @@ declare module '*.vue' {
   export default Vue
 }
 
+interface ApiResponse<T> {
+  code: number,
+  data: T,
+  message: string
+}
+
 interface MenuInfo {
   name?: string,
   en_name?: string,
@@ -92,7 +98,21 @@ interface RouteInfo {
  */
 declare namespace DictionaryModule {
   interface DictionaryInfo {
-    id?: string
+    id: number,
+    code: string,
+    value: string,
+    type: number,
+    description: string,
+    pId: number,
+    pCode: string,
+    create_time: number,
+    modify_time: number,
+  }
+
+  interface SearchParamsInfo {
+    page?: number,
+    limit?: number,
+    type?: number
   }
 }
 
@@ -122,8 +142,8 @@ declare namespace ArticleModule {
 /**
  * banner模块
  */
-declare namespace BannerModule{
-  interface BannerInfo{
-    
+declare namespace BannerModule {
+  interface BannerInfo {
+
   }
 }
