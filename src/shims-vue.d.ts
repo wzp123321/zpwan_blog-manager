@@ -9,6 +9,11 @@ interface ApiResponse<T> {
   message: string
 }
 
+interface ListResponse<T> {
+  data: T,
+  total: number
+}
+
 interface MenuInfo {
   name?: string,
   en_name?: string,
@@ -136,6 +141,15 @@ declare namespace ArticleModule {
     likeCount?: number,
     createTime?: number,
     modifyTime?: number,
+  }
+
+  interface SearchParams {
+    first_catalogId?: string,
+    second_catalogId?: string,
+    title?: string,
+    isShelves?: number,
+    isTop?: number,
+    isRecommend?: number
   }
 }
 

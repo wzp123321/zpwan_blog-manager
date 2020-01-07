@@ -20,7 +20,7 @@ Vue.use(mavonEditor)
 // 引入mock 等接口好了在卸载
 require('./mock/index')  //引入mock.js
 // 引入绘制爱心的js
-import "@/utils/canvasword.js"
+// import "@/utils/canvasword.js"
 // 引入iconfont js
 import "@/assets/js/iconfont.js"
 

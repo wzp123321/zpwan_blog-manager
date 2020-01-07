@@ -12,28 +12,46 @@
       @change="handleTableChange"
     >
       <template slot="isShelves" slot-scope="text,record">
-        <a-switch :checked="record.isShelves ===1" @change="handleisShelvesChange"></a-switch>
+        <a-switch
+          :checked="record.isShelves ===1"
+          @change="(value)=>{
+          handleSwitchChange('isShelves',value)
+          }"
+        ></a-switch>
       </template>
       <template slot="isRecommend" slot-scope="text,record">
-        <a-switch :checked="record.isRecommend ===1" @change="handleIsRecommendChange"></a-switch>
+        <a-switch
+          :checked="record.isRecommend ===1"
+          @change="(value)=>{
+          handleSwitchChange('isRecommend',value)
+          }"
+        ></a-switch>
       </template>
       <template slot="isTop" slot-scope="text,record">
-        <a-switch :checked="record.isTop===1" @change="handleIsTopChange"></a-switch>
+        <a-switch
+          :checked="record.isTop===1"
+          @change="(value)=>{
+          handleSwitchChange('isTop',value)
+          }"
+        ></a-switch>
       </template>
       <template slot="action" slot-scope="text,record">
         <span class="action-span" @click="()=>{$router.push(`/app/article/detail/${record.id}`)}">查看</span>
         <a-divider type="vertical" />
         <span class="action-span" @click="()=>{$router.push(`/app/article/edit/${record.id}`)}">编辑</span>
+        <a-divider type="vertical" />
+        <span class="action-span" @click="handleArticleDel(record.id)">删除</span>
       </template>
     </a-table>
   </div>
 </template>
+// visitVount ---visit_count
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 import { Table, Switch, Divider } from "ant-design-vue";
 import ArticleHeader from "./article_list_header.vue";
 import { formatDate } from "@/utils/index";
-import axios from "axios";
+import HttpRequest from "@/assets/api/modules/index";
 @Component({
   name: "ArticleList",
   components: {
@@ -122,26 +140,17 @@ export default class ArticleList extends Vue {
     soter: any
   ) {}
   /**
+   * 删除文章
+   */
+  private handleArticleDel(id: string) {}
+  /**
    * 推荐change事件
    */
-  private handleIsRecommendChange(value: boolean) {
+  private handleSwitchChange(type: string, value: boolean) {
+    const method: string = "";
     console.log(value);
   }
-  /**
-   * 置顶change事件
-   */
-  private handleIsTopChange(value: boolean) {}
-  /**
-   * 上下架change事件
-   */
-  private handleisShelvesChange(value: boolean) {}
-  created() {
-    axios.get("/mock/test").then(res => {
-      const list = res.data.data;
-      this.dataSource = list;
-      this.pagination.total = list.length;
-    });
-  }
+  created() {}
 }
 </script>
 <style lang="less" scoped>

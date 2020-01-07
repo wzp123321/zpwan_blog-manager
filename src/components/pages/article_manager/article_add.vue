@@ -22,6 +22,9 @@
           <a-select-option value="Yiminghe">yiminghe</a-select-option>
         </a-select>
       </a-form-item>
+      <a-form-item label="描述" :label-col="{ span: 3 }" :wrapper-col="{ offset:1,span: 10 }">
+        <a-textarea placeholder="请输入描述" :rows="4" />
+      </a-form-item>
       <mavon-editor
         ref="markdownEditor"
         :toolbars="markdownOption"
@@ -46,6 +49,7 @@ import HttpRequest from "@/assets/api/modules/index";
     "a-form": Form,
     "a-form-item": Form.Item,
     "a-input": Input,
+    "a-textarea": Input.TextArea,
     "a-button": Button,
     "a-select": Select,
     "a-select-option": Select.Option,
@@ -135,6 +139,14 @@ export default class ArticleCreate extends Vue {
    * 一级目录选择
    */
   private handleFirstCatalogIdChange() {}
+  /**
+   * 根据id获取详情
+   */
+  private async getArticleInfoById() {}
+  /**
+   * 编辑 ---回显数据
+   */
+  private handleFormDataInsert(values: ArticleModule.ArticleInfo) {}
   /**
    * 表单提交
    */

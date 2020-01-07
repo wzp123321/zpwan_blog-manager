@@ -67,6 +67,11 @@
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-QQ" @click="()=>{$router.push('/signin_qq')}" style="font-size:14px"/>
           </svg>
+           <a  href="https://github.com/login/oauth/authorize?client_id=e8066bfd81332a5fd345&redirect_uri=http://localhost:8080/#/signin_github" >
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-github" style="font-size:14px"/>
+            </svg>
+           </a>
         </FormItem>
       </Form>
     </div>
@@ -101,6 +106,15 @@ export default class Signin extends Vue {
   private nativeIdentityCode: string = "";
   // 加载开关
   private loading: boolean = false;
+  /**
+   * github登录
+   * https://github.com/settings/applications/1199418
+   * http://www.ruanyifeng.com/blog/2019/04/github-oauth.html
+   */
+  private handleGithubLogin(){
+    console.log(1111111)
+    window.location="";
+  }
   /**
    * 初始化
    */

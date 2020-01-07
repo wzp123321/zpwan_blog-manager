@@ -7,7 +7,16 @@ import { Vue, Component } from "vue-property-decorator";
   name: "ArticleDetail",
   components: {}
 })
-export default class ArticleDetail extends Vue {}
+export default class ArticleDetail extends Vue {
+  private articleInfo:ArticleModule.ArticleInfo = {}
+
+  /**
+   * 根据id获取详情
+   */
+  private async getArticleInfoById(){
+    
+  }
+}
 </script>
 <style lang="less" scoped>
 </style>
