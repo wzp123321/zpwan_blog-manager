@@ -56,7 +56,7 @@ const publicReq = async (params: { [key: string]: any }) => {
       if (res.status !== 200) {
         throw new Error(res.statusText);
       }
-      return res;
+      return res.data;
     }
   });
 };

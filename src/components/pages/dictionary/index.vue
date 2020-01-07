@@ -1,6 +1,6 @@
 <template>
   <div class="dictionary-wrapper">
-    <DicHeader @change="handleSelectChange"></DicHeader>
+    <DicHeader @change="handleSelectChange" @add="handleDicAdd"></DicHeader>
     <a-table
       style="margin-top:10px"
       :columns="columns"
@@ -11,13 +11,18 @@
       bordered
       @change="handleTableChange"
     >
-      <template slot="name" slot-scope="name">{{name.first}} {{name.last}}</template>
+      <template slot="action" slot-scope="text,record">
+        <span @click="handleDicDelete(record.id)" style="cursor:pointer;color:#06a5ff">删除</span>
+        <Divider type="vertical" />
+        <!-- 明天重构这里 -->
+         <!-- <span @click="handleDicUpdate(record.id)" style="cursor:pointer;color:#06a5ff">编辑</span> -->
+      </template>
     </a-table>
   </div>
 </template>
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
-import { Table } from "ant-design-vue";
+import { Table, Modal,Divider } from "ant-design-vue";
 import HttpRequest from "@/assets/api/modules/index";
 import { formatDate } from "@/assets/js/index";
 import DicHeader from "./DicHeader.vue";
@@ -25,6 +30,8 @@ import DicHeader from "./DicHeader.vue";
   name: "DictionaryModule",
   components: {
     "a-table": Table,
+    Modal,
+    Divider,
     DicHeader
   }
 })
@@ -77,6 +84,11 @@ export default class DictionaryModule extends Vue {
       ) => {
         return formatDate(record.create_time);
       }
+    },
+    {
+      key: "action",
+      title: "操作",
+      scopedSlots: { customRender: "action" }
     }
   ];
   // 源数据
@@ -94,6 +106,35 @@ export default class DictionaryModule extends Vue {
     this.queryDictionaryList();
   }
   /**
+   * 新增回调
+   */
+  private handleDicAdd(){
+    this.queryDictionaryList();
+  }
+  /**
+   * 删除
+   */
+  private handleDicDelete(id: number) {
+    const that = this;
+    Modal.confirm({
+      title: "删除目录",
+      content: "确认删除吗?",
+      okText: "确认",
+      cancelText: "取消",
+      onCancel() {},
+      async onOk() {
+        const res: ApiResponse<
+          boolean
+        > = await HttpRequest.DictionaryModule.getDictionaryDelete({ id });
+
+        if (res && res.data) {
+          that.$message.success("删除成功");
+          that.queryDictionaryList();
+        }
+      }
+    });
+  }
+  /**
    * 请求字典列表数据
    */
   private async queryDictionaryList() {
@@ -103,11 +144,13 @@ export default class DictionaryModule extends Vue {
       limit: 10
     });
     const res: ApiResponse<
-      Array<DictionaryModule.DictionaryInfo>
+      ListResponse<Array<DictionaryModule.DictionaryInfo>>
     > = await HttpRequest.DictionaryModule.getDictionaryList(this.searchParams);
 
     if (res && res.data) {
-      console.log(res.data);
+      const dataSource = res.data.data;
+      this.dataSource = dataSource;
+      const total = res.data.total;
       this.loading = false;
     }
   }
@@ -122,9 +165,12 @@ export default class DictionaryModule extends Vue {
     console.log(pagination);
   }
   created() {
-    // this.queryDictionaryList();
+    this.queryDictionaryList();
   }
 }
 </script>
 <style lang="less" scoped>
+.dictionary-wrapper{
+  position: relative;
+}
 </style>

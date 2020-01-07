@@ -38,20 +38,21 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Emit } from "vue-property-decorator";
-import { Button, Select, Input } from "ant-design-vue";
+import { Button, Select, Input, Radio } from "ant-design-vue";
 @Component({
   name: "ArticleHeader",
   components: {
     Button,
     "a-input-search": Input.Search,
     "a-select": Select,
-    "a-select-option": Select.Option
+    "a-select-option": Select.Option,
+    "a-radio": Radio
   }
 })
 export default class ArticleHeader extends Vue {
   // 搜索参数
-  private searchParams:ArticleModule.SearchParams = {}
-  
+  private searchParams: ArticleModule.SearchParams = {};
+
   @Emit("change")
   private handleSearchData(type: string, value: string) {}
 }
