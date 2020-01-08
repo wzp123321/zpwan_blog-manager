@@ -15,10 +15,9 @@ import 'nprogress/nprogress.css'
 // editor
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
+import "@/assets/css/markdown.css"
 // use
 Vue.use(mavonEditor)
-// 引入mock 等接口好了在卸载
-require('./mock/index')  //引入mock.js
 // 引入绘制爱心的js
 // import "@/utils/canvasword.js"
 // 引入iconfont js

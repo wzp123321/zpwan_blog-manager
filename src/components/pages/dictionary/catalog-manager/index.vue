@@ -46,10 +46,11 @@
 </template>
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
-import { Table, Modal, Divider, Select, Button } from "ant-design-vue";
+import { Table, Modal, Divider, Select, Button, message } from "ant-design-vue";
 import HttpRequest from "@/assets/api/modules/index";
 import { formatDate } from "@/assets/js/index";
 import CatalogModal from "./catalogModal.vue";
+Vue.prototype.$message = message;
 @Component({
   name: "CatalogModule",
   components: {
@@ -158,6 +159,8 @@ export default class CatalogModule extends Vue {
   private handleSelectChange(type: number) {
     if (type) {
       this.searchParams = Object.assign({}, { type });
+    } else {
+      Vue.delete(this.searchParams, "type");
     }
     this.queryDictionaryList();
   }
@@ -201,7 +204,7 @@ export default class CatalogModule extends Vue {
     const res: ApiResponse<
       boolean
     > = await HttpRequest.DictionaryModule.getCatalogAdd(values);
-    if (res && res.code === 200) {
+    if (res && res.data && res.code === 200) {
       this.$message.success("新增成功");
       this.queryDictionaryList();
       this.dicInfo = {
@@ -217,7 +220,7 @@ export default class CatalogModule extends Vue {
       };
       this.visible = false;
     } else {
-      throw new Error(res.message);
+      this.$message.error("新增失败");
     }
   }
   /**
@@ -242,7 +245,7 @@ export default class CatalogModule extends Vue {
       boolean
     > = await HttpRequest.DictionaryModule.getCatalogInfoUpdate(values);
 
-    if (res && res.code === 200) {
+    if (res && res.data && res.code === 200) {
       this.$message.success("编辑成功");
       this.queryDictionaryList();
       this.dicInfo = {
@@ -258,7 +261,7 @@ export default class CatalogModule extends Vue {
       };
       this.visible = false;
     } else {
-      throw new Error(res.message);
+      this.$message.success("编辑失败");
     }
   }
   /**

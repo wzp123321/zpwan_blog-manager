@@ -10,6 +10,20 @@
           @change="handleUploadChange"
         ></UploadHandler>
       </a-form-item>
+      <a-form-item label="标签" :label-col="{ span: 3 }" :wrapper-col="{ offset:1,span: 10 }">
+        <a-select
+          placeholder="请选择文章标签"
+          mode="tags"
+          v-decorator="['tags', { rules: [{ required: true, message: '请选择文章标签!' }] }]"
+          :getPopupContainer="(triggerNode)=>{return triggerNode.parentNode|| document.body}"
+        >
+          <a-select-option
+            v-for="(item,index) in tags"
+            :key="index"
+            :value="item.code"
+          >{{item.value}}</a-select-option>
+        </a-select>
+      </a-form-item>
       <a-form-item label="一级目录" :label-col="{ span: 3 }" :wrapper-col="{ offset:1,span: 10 }">
         <a-select
           placeholder="请选择"
@@ -46,7 +60,7 @@
       <a-form-item label="内容" :label-col="{ span: 3 }" :wrapper-col="{ offset:1,span: 21 }">
         <mavon-editor
           ref="markdownEditor"
-          :toolbars="markdownOption"
+          @change="handleMarkdownChange"
           @save="handleEditorSave"
           @imgAdd="imgAdd"
           @imgDel="imgDel"
@@ -63,7 +77,6 @@
   </div>
 </template>
 <script lang="ts">
-import axios from "axios";
 import { Vue, Component, Watch } from "vue-property-decorator";
 import { Form, Button, Input, Select } from "ant-design-vue";
 import UploadHandler from "@/components/Uploader.vue";
@@ -87,6 +100,8 @@ export default class ArticleCreate extends Vue
   private form: any;
   // 编辑器内容
   private content: string = "";
+  // 编辑器html代码
+  private html:string= "";
   // 内容提示语
   private contentMsg: string = "";
   // 上传图片对象
@@ -95,6 +110,8 @@ export default class ArticleCreate extends Vue
   firstCatalogs = [];
   //二级目录数组
   secondCatalogs = [];
+  // tags数组
+  private tags: Array<DictionaryModule.TagInfo> = [];
   // 选择的一级目录id
   private pId: number = 0;
   // markdown配置
@@ -136,6 +153,12 @@ export default class ArticleCreate extends Vue
   // ctrl+s事件
   private handleEditorSave(value: string, render: string) {
     console.log(value);
+  }
+  /**
+   * 编辑器change事件
+   */
+  handleMarkdownChange(value: any, render: any) {
+    this.html = render;
   }
   /**
    * 添加图片事件
@@ -196,18 +219,40 @@ export default class ArticleCreate extends Vue
    */
   private handleSubmit(e: any) {
     e.preventDefault();
-    this.form.validateFields(
-      (err: Error, values: ArticleModule.ArticleInfo) => {
-        if (this.content === "") {
-          this.contentMsg = "请输入内容!";
-          return;
-        }
-        if (!err) {
-          console.log("Received values of form: ", values);
-          // 回显要加 class:markdown-body
+    this.form.validateFields(async (err: Error, values: any) => {
+      if (this.content === "") {
+        this.contentMsg = "请输入内容!";
+        return;
+      }
+      if (!err) {
+        const {
+          title,
+          imgUrl,
+          tags,
+          description,
+          first_catalogId,
+          second_catalogId
+        } = values;
+        const res: ApiResponse<
+          boolean
+        > = await HttpRequest.ArticleModule.getArticleAdd({
+          title,
+          description,
+          imgUrl: imgUrl.url,
+          tags: tags.join(","),
+          first_catalogId,
+          second_catalogId,
+          content: this.html
+        });
+
+        if (res && res.data) {
+          this.$message.success("新增成功");
+          this.$router.push("/app/article/list");
+        } else {
+          this.$message.error("新增失败");
         }
       }
-    );
+    });
   }
 
   /**
@@ -217,24 +262,42 @@ export default class ArticleCreate extends Vue
     params: { [key: string]: any },
     list: "firstCatalogs" | "secondCatalogs"
   ) {
-    const res: any = await HttpRequest.DictionaryModule.getCatalogList(
-      params
-    );
+    const res: any = await HttpRequest.DictionaryModule.getCatalogList(params);
 
     if (res && res.data) {
       this[list] = res.data.data;
     }
   }
+  /**
+   * 请求列表
+   */
+  private async getTagList() {
+    let page = 1;
+    const queryAll = async (page: number) => {
+      const res: ApiResponse<
+        ListResponse<Array<DictionaryModule.TagInfo>>
+      > = await HttpRequest.DictionaryModule.getTagList({ page });
+      if (res && res.data) {
+        const data = res.data.data;
+        this.tags = [...this.tags, ...data];
+        if (res.data.total > this.tags.length) {
+          queryAll(page + 1);
+        }
+      }
+    };
+    queryAll(page);
+  }
 
   async created() {
     this.form = this.$form.createForm(this);
     this.querySelectData({ type: 1 }, "firstCatalogs");
+    this.getTagList();
   }
 
-  @Watch('content')
-  handleContentChange(newVal:string,oldVal:string){
-    if(newVal !== ''){
-      this.contentMsg = ""
+  @Watch("content")
+  handleContentChange(newVal: string, oldVal: string) {
+    if (newVal !== "") {
+      this.contentMsg = "";
     }
   }
 }

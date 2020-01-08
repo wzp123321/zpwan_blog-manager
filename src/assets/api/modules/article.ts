@@ -8,6 +8,11 @@ const ArticleModule = {
 
     async getArticleAdd(params: { [key: string]: any }) {
         const url = '/article/add'
+        return postRequest(url, params);
+    },
+
+    async getArticleInfoById(params: { [key: string]: any }) {
+        const url = '/article/getById'
         return getRequest(url, params);
     }
 }

@@ -131,6 +131,14 @@ declare namespace DictionaryModule {
     limit?: number,
     type?: number
   }
+
+  interface TagInfo{
+    id:number,
+    code:string,
+    value:string,
+    create_time:number,
+    modify_time:number
+  }
 }
 
 /**
