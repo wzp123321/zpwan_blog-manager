@@ -7,7 +7,7 @@
     :beforeUpload="beforeUpload"
     @change="handleChange"
   >
-    <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
+    <img v-if="imageUrl" :src="imageUrl" alt="avatar" style="width:100px;height:100px"/>
     <div v-else>
       <a-icon :type="loading ? 'loading' : 'plus'" />
       <div class="ant-upload-text">上传图片</div>
@@ -34,14 +34,18 @@ export default class UploadHandler extends Vue {
   private file: any = null;
   @Emit("change")
   async handleChange(info: any) {
-    if (info.file.status === "uploading") {
-      return;
+    const res: ApiResponse<FileInfo> = await HttpRequest.UploaderModule.handleFileUploader({
+      file: this.file
+    });
+    if (res && res.data) {
+      this.loading = false;
+      this.imageUrl = res.data.url
+      return res.data;
     }
-    if (info.file.status === "done") {
-    }
-    return this.file;
   }
   async beforeUpload(file: any) {
+    this.file = {};
+    this.loading = true;
     const isJPG = file.type === "image/jpeg";
     if (!isJPG) {
       this.$message.error("请上传PNG或JPG格式!");
@@ -51,13 +55,6 @@ export default class UploadHandler extends Vue {
       this.$message.error("图片大小不得超过2M!");
     }
     this.file = file;
-    const res: any = await HttpRequest.UploaderModule.handleFileUploader({
-      file: this.file
-    });
-    console.log(res);
-    if (res && res.data) {
-      console.log(res.data);
-    }
     return false;
   }
 }

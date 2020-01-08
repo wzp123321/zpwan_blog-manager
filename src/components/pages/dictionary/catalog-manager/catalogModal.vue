@@ -69,7 +69,7 @@ import { Button, Form, Input, Modal, Select, message } from "ant-design-vue";
 import HttpRequest from "@/assets/api/modules/index";
 Vue.prototype.$message = message;
 @Component({
-  name: "DicModal",
+  name: "CatalogModal",
   components: {
     Button,
     Form,
@@ -81,7 +81,7 @@ Vue.prototype.$message = message;
     SelectOption: Select.Option
   }
 })
-export default class DicModal extends Vue {
+export default class CatalogModal extends Vue {
   // 对话框开关
   @Prop({ default: false })
   private visible!: boolean;
@@ -124,7 +124,7 @@ export default class DicModal extends Vue {
   private async handleSecondcatalogList(type: number) {
     const res: ApiResponse<
       ListResponse<Array<DictionaryModule.DictionaryInfo>>
-    > = await HttpRequest.DictionaryModule.getDictionaryList({ type });
+    > = await HttpRequest.DictionaryModule.getCatalogList({ type });
 
     if (res && res.data) {
       const dataSource = res.data.data;

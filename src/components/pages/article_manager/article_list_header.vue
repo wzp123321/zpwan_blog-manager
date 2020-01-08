@@ -125,7 +125,7 @@ export default class ArticleHeader extends Vue
     params: { [key: string]: any },
     list: "firstCatalogs" | "secondCatalogs"
   ) {
-    const res: any = await HttpRequest.DictionaryModule.getDictionaryList(
+    const res: any = await HttpRequest.DictionaryModule.getCatalogList(
       params
     );
 

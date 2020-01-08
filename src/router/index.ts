@@ -13,6 +13,8 @@ const BannerList = () => import("@/components/pages/web_manager/banners/banner_l
 const AdminModule = () => import("@/components/pages/web_manager/admin/index.vue")
 // 字典模块
 const DictionaryModule = () => import("@/components/pages/dictionary/index.vue")
+const CatalogModule = () => import("@/components/pages/dictionary/catalog-manager/index.vue")
+const TagModule = () => import("@/components/pages/dictionary/tag-manager/index.vue")
 //文章模块
 const ArticleModule = () => import("@/components/pages/article_manager/index.vue")
 const ArticleList = () => import("@/components/pages/article_manager/article_list.vue")
@@ -132,7 +134,24 @@ const routes = [
         meta: {
           name: "字典管理"
         },
-        component: DictionaryModule
+        redirect: "/app/catalog/list",
+        component: DictionaryModule,
+        children: [
+          {
+            path: "/app/catalog/list",
+            meta: {
+              name: "目录管理"
+            },
+            component: CatalogModule
+          },
+          {
+            path: "/app/tag/list",
+            meta: {
+              name: "tag管理"
+            },
+            component: TagModule
+          },
+        ]
       },
       {
         path: "/app/comment",

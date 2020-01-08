@@ -4,8 +4,6 @@ import axios, {
   AxiosError
 } from 'axios'
 
-const env = process.env.NODE_ENV;
-
 // timeout 10min
 const Global_Delay = 10 * 60 * 1000;
 
@@ -117,14 +115,13 @@ export async function postRequest(url: string, param: { [key: string]: any }) {
 }
 
 
-// 请求实例
+// 文件上传请求实例
 const fileReq = async (params: { [key: string]: any }) => {
   const {
     url,
     method,
     param
   } = params;
-  console.log("param------",param)
   const instance = axiosInstance();
   return await instance({
     url,
@@ -154,7 +151,7 @@ const fileReq = async (params: { [key: string]: any }) => {
   });
 };
 
-// POST request
+// file request
 export async function fielUploadRequest(url: string, param: { [key: string]: any }) {
   try {
     const response = await fileReq({

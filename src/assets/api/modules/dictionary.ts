@@ -1,27 +1,27 @@
 import { getRequest, postRequest } from '../request'
 
 export default {
-    async getDictionaryList(params: { [key: string]: any }) {
+    async getCatalogList(params: { [key: string]: any }) {
         const url = '/dictionary/list';
         return getRequest(url, params);
     },
 
-    async getDictionaryDelete(params: { [key: string]: any }) {
+    async getCatalogDelete(params: { [key: string]: any }) {
         const url = '/dictionary/delete';
         return getRequest(url, params);
     },
 
-    async getDictionaryAdd(params: { [key: string]: any }) {
+    async getCatalogAdd(params: { [key: string]: any }) {
         const url = '/dictionary/add';
         return postRequest(url, params);
     },
 
-    async getDictionaryInfoById(params: { [key: string]: any }) {
+    async getCatalogInfoById(params: { [key: string]: any }) {
         const url = '/dictionary/getById';
         return getRequest(url, params);
     },
 
-    async getDictionaryInfoUpdate(params: { [key: string]: any }) {
+    async getCatalogInfoUpdate(params: { [key: string]: any }) {
         const url = '/dictionary/update';
         return postRequest(url, params);
     }

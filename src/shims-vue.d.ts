@@ -99,6 +99,18 @@ interface RouteInfo {
 }
 
 /**
+ * 文件信息
+ */
+interface FileInfo {
+  id: string,
+  fileName: string,
+  md5: string,
+  url: string,
+  length: number,
+  create_time: number,
+}
+
+/**
  * 字典模块
  */
 declare namespace DictionaryModule {

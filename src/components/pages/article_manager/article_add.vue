@@ -11,35 +11,60 @@
         ></UploadHandler>
       </a-form-item>
       <a-form-item label="一级目录" :label-col="{ span: 3 }" :wrapper-col="{ offset:1,span: 10 }">
-        <a-select placeholder="请选择" style="width: 320px" @change="handleFirstCatalogIdChange">
-          <a-select-option value="jack">Jack</a-select-option>
-          <a-select-option value="Yiminghe">yiminghe</a-select-option>
+        <a-select
+          placeholder="请选择"
+          style="width: 320px"
+          @change="handleFirstCatalogIdChange"
+          v-decorator="['first_catalogId', { rules: [{ required: true, message: '请选择一级目录!' }] }]"
+          :getPopupContainer="(triggerNode)=>{return triggerNode.parentNode|| document.body}"
+        >
+          <a-select-option
+            v-for="(item,index) in firstCatalogs"
+            :key="index"
+            :value="item.id"
+          >{{item.value}}</a-select-option>
         </a-select>
       </a-form-item>
       <a-form-item label="二级目录" :label-col="{ span: 3 }" :wrapper-col="{ offset:1,span: 10 }">
-        <a-select placeholder="请选择" style="width: 320px">
-          <a-select-option value="jack">Jack</a-select-option>
-          <a-select-option value="Yiminghe">yiminghe</a-select-option>
+        <a-select
+          :disabled="pId === 0"
+          placeholder="请选择"
+          style="width: 320px"
+          v-decorator="['second_catalogId', { rules: [{ required: true, message: '请选择二级目录!' }] }]"
+          :getPopupContainer="(triggerNode)=>{return triggerNode.parentNode|| document.body}"
+        >
+          <a-select-option
+            v-for="(item,index) in secondCatalogs"
+            :key="index"
+            :value="item.id"
+          >{{item.value}}</a-select-option>
         </a-select>
       </a-form-item>
       <a-form-item label="描述" :label-col="{ span: 3 }" :wrapper-col="{ offset:1,span: 10 }">
-        <a-textarea placeholder="请输入描述" :rows="4" />
+        <a-textarea placeholder="请输入描述" v-decorator="['description']" :rows="4" />
       </a-form-item>
-      <mavon-editor
-        ref="markdownEditor"
-        :toolbars="markdownOption"
-        v-model="articleInfo"
-        @save="handleEditorSave"
-        @imgAdd="imgAdd"
-        @imgDel="imgDel"
-        :ishljs="true"
-      />
+      <a-form-item label="内容" :label-col="{ span: 3 }" :wrapper-col="{ offset:1,span: 21 }">
+        <mavon-editor
+          ref="markdownEditor"
+          :toolbars="markdownOption"
+          @save="handleEditorSave"
+          @imgAdd="imgAdd"
+          @imgDel="imgDel"
+          :ishljs="true"
+          v-model="content"
+        />
+        <p style="color:red">{{contentMsg}}</p>
+      </a-form-item>
+      <a-form-item :wrapper-col="{ offset:14,span: 10 }" style="margin-top:20px">
+        <a-button @click="$router.back()" style="width:200px;margin-right:20px">取消</a-button>
+        <a-button type="primary" html-type="submit" style="width:200px">新增</a-button>
+      </a-form-item>
     </a-form>
   </div>
 </template>
 <script lang="ts">
 import axios from "axios";
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component, Watch } from "vue-property-decorator";
 import { Form, Button, Input, Select } from "ant-design-vue";
 import UploadHandler from "@/components/Uploader.vue";
 import HttpRequest from "@/assets/api/modules/index";
@@ -56,13 +81,22 @@ import HttpRequest from "@/assets/api/modules/index";
     UploadHandler
   }
 })
-export default class ArticleCreate extends Vue {
+export default class ArticleCreate extends Vue
+  implements ArticleModule.CatalogArray {
   // form
   private form: any;
   // 编辑器内容
-  private articleInfo: string = "";
+  private content: string = "";
+  // 内容提示语
+  private contentMsg: string = "";
   // 上传图片对象
   private img_file: any = {};
+  // 一级目录数组
+  firstCatalogs = [];
+  //二级目录数组
+  secondCatalogs = [];
+  // 选择的一级目录id
+  private pId: number = 0;
   // markdown配置
   private markdownOption: markdownOption = {
     bold: true, // 粗体
@@ -106,24 +140,19 @@ export default class ArticleCreate extends Vue {
   /**
    * 添加图片事件
    */
-  private imgAdd(pos: any, file: any) {
+  private async imgAdd(pos: any, file: any) {
     // 第一步.将图片上传到服务器.
-    var formdata = new FormData();
-    formdata.append("image", file);
-    axios({
-      url: "server url",
-      method: "post",
-      data: formdata,
-      headers: { "Content-Type": "multipart/form-data" }
-    }).then(url => {
-      // 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
-      /**
-       * $vm 指为mavonEditor实例，可以通过如下两种方式获取
-       * 1. 通过引入对象获取: `import {mavonEditor} from ...` 等方式引入后，`$vm`为`mavonEditor`
-       * 2. 通过$refs获取: html声明ref
-       */
-      // this.$refs.markdownEditor.$img2Url(pos, url);
+    const res: ApiResponse<
+      FileInfo
+    > = await HttpRequest.UploaderModule.handleFileUploader({
+      file
     });
+    if (res && res.data) {
+      // 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
+      const markdown: any = this.$refs.markdownEditor;
+      markdown.$img2Url(pos, res.data.url);
+      return res.data;
+    }
   }
   /**
    * 图片删除
@@ -134,11 +163,17 @@ export default class ArticleCreate extends Vue {
   /**
    * 上传图片回调
    */
-  private handleUploadChange(value: string) {}
+  private handleUploadChange(file: FileInfo) {
+    this.form.setFieldsValue({ imgUrl: file.url });
+  }
   /**
    * 一级目录选择
    */
-  private handleFirstCatalogIdChange() {}
+  private handleFirstCatalogIdChange(pId: number) {
+    this.pId = pId;
+    this.form.setFieldsValue({ second_catalogId: undefined });
+    this.querySelectData({ pId }, "secondCatalogs");
+  }
   /**
    * 根据id获取详情
    */
@@ -147,20 +182,60 @@ export default class ArticleCreate extends Vue {
    * 编辑 ---回显数据
    */
   private handleFormDataInsert(values: ArticleModule.ArticleInfo) {}
+
+  /**
+   * 编辑文章
+   */
+  private async handleArticlUpdate(values: ArticleModule.ArticleInfo) {}
+  /**
+   * 新增文章
+   */
+  private async handleArticleAdd(values: ArticleModule.ArticleInfo) {}
   /**
    * 表单提交
    */
   private handleSubmit(e: any) {
     e.preventDefault();
-    this.form.veliDateFields(
+    this.form.validateFields(
       (err: Error, values: ArticleModule.ArticleInfo) => {
-        console.log(values);
+        if (this.content === "") {
+          this.contentMsg = "请输入内容!";
+          return;
+        }
+        if (!err) {
+          console.log("Received values of form: ", values);
+          // 回显要加 class:markdown-body
+        }
       }
     );
   }
 
+  /**
+   * 请求目录数据
+   */
+  private async querySelectData(
+    params: { [key: string]: any },
+    list: "firstCatalogs" | "secondCatalogs"
+  ) {
+    const res: any = await HttpRequest.DictionaryModule.getCatalogList(
+      params
+    );
+
+    if (res && res.data) {
+      this[list] = res.data.data;
+    }
+  }
+
   async created() {
     this.form = this.$form.createForm(this);
+    this.querySelectData({ type: 1 }, "firstCatalogs");
+  }
+
+  @Watch('content')
+  handleContentChange(newVal:string,oldVal:string){
+    if(newVal !== ''){
+      this.contentMsg = ""
+    }
   }
 }
 </script>
