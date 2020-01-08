@@ -14,5 +14,15 @@ export default {
     async getDictionaryAdd(params: { [key: string]: any }) {
         const url = '/dictionary/add';
         return postRequest(url, params);
+    },
+
+    async getDictionaryInfoById(params: { [key: string]: any }) {
+        const url = '/dictionary/getById';
+        return getRequest(url, params);
+    },
+
+    async getDictionaryInfoUpdate(params: { [key: string]: any }) {
+        const url = '/dictionary/update';
+        return postRequest(url, params);
     }
 }

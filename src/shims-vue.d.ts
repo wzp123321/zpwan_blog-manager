@@ -108,8 +108,8 @@ declare namespace DictionaryModule {
     value: string,
     type: number,
     description: string,
-    pId: number,
-    pCode: string,
+    pid: number,
+    pcode: string,
     create_time: number,
     modify_time: number,
   }
@@ -125,6 +125,11 @@ declare namespace DictionaryModule {
  * 文章模块
  */
 declare namespace ArticleModule {
+  interface CatalogArray {
+    firstCatalogs: Array<DictionaryModule.DictionaryInfo>;
+    secondCatalogs: Array<DictionaryModule.DictionaryInfo>;
+  }
+
   interface ArticleInfo {
     id?: string,
     title?: string,
@@ -133,23 +138,23 @@ declare namespace ArticleModule {
     description?: string,
     author?: string,
     tags?: string,
-    catalogId?: string,
-    catalogName?: string,
+    first_catalogId?: number,
+    first_catalogName?: string,
+    second_catalogId?: number,
+    second_catalogName?: string,
     isRecommend?: number,
     isTop?: number,
     visitCount?: number,
     likeCount?: number,
-    createTime?: number,
-    modifyTime?: number,
+    create_time?: number,
+    modify_time?: number,
   }
 
   interface SearchParams {
-    first_catalogId?: string,
-    second_catalogId?: string,
+    first_catalogId?: number,
+    second_catalogId?: number,
     title?: string,
     isShelves?: number,
-    isTop?: number,
-    isRecommend?: number
   }
 }
 

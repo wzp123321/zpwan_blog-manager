@@ -115,3 +115,55 @@ export async function postRequest(url: string, param: { [key: string]: any }) {
     console.log(err);
   }
 }
+
+
+// 请求实例
+const fileReq = async (params: { [key: string]: any }) => {
+  const {
+    url,
+    method,
+    param
+  } = params;
+  console.log("param------",param)
+  const instance = axiosInstance();
+  return await instance({
+    url,
+    method,
+    // 在请求头里面添加token 如果没有则为空字符串
+    headers: {
+      "Content-Type": "multipart/form-data",
+      'token': localStorage.getItem('token') === null ? '' : localStorage.getItem('token')
+    },
+    data: param,
+    transformRequest: [
+      function (oldData) {
+        var form = new FormData();
+        for (let item in oldData) {
+          form.append(item, oldData[item]);
+        }
+        return form;
+      }
+    ]
+  }).then((res: AxiosResponse) => {
+    if (res) {
+      if (res.status !== 200) {
+        throw new Error(res.statusText);
+      }
+      return res.data;
+    }
+  });
+};
+
+// POST request
+export async function fielUploadRequest(url: string, param: { [key: string]: any }) {
+  try {
+    const response = await fileReq({
+      url,
+      method: 'post',
+      param
+    });
+    return response;
+  } catch (err) {
+    console.log(err);
+  }
+}

@@ -6,7 +6,7 @@
       :columns="columns"
       :rowKey="record => record.id"
       :dataSource="dataSource"
-      :pagination="pagination"
+      :pagination="JSON.stringify(dataSource) === '[]' ? false :pagination"
       :loading="loading"
       bordered
       @change="handleTableChange"
@@ -87,7 +87,9 @@ export default class ArticleList extends Vue {
     {
       key: "catalogName",
       title: "所属目录",
-      dataIndex: "catalogName"
+      customRender:(text:string,record:ArticleModule.ArticleInfo,index:number)=>{
+        return record.first_catalogName+'---'+record.second_catalogName
+      }
     },
     {
       key: "description",
@@ -117,7 +119,7 @@ export default class ArticleList extends Vue {
         record: ArticleModule.ArticleInfo,
         index: number
       ) => {
-        return formatDate(record.createTime);
+        return formatDate(record.create_time);
       }
     },
     {
@@ -126,11 +128,21 @@ export default class ArticleList extends Vue {
       scopedSlots: { customRender: "action" }
     }
   ];
+  // 搜索数据
+  private searchParams: { [key: string]: any } = {};
   // 分页
   private pagination: PaginationInfo = {
     current: 1,
     total: 10
   };
+  /**
+   * 头部筛选
+   */
+  private handleHeaderSelect(params: ArticleModule.SearchParams) {
+    this.searchParams = Object.assign(this.searchParams, params);
+    this.pagination.current = 1;
+    this.queryArticleList();
+  }
   /**
    * 表格change事件
    */
@@ -150,7 +162,35 @@ export default class ArticleList extends Vue {
     const method: string = "";
     console.log(value);
   }
-  created() {}
+  /**
+   * 请求数据
+   */
+  private async queryArticleList() {
+    this.loading = true;
+    this.searchParams = Object.assign(this.searchParams, {
+      page: this.pagination.current,
+      limit: 10
+    });
+    const res: ApiResponse<
+      ListResponse<Array<ArticleModule.ArticleInfo>>
+    > = await HttpRequest.ArticleModule.getArticleList(this.searchParams);
+    if (res && res.data) {
+      const total = res.data.total;
+      this.pagination.total = total;
+      const dataSource = res.data.data;
+      this.dataSource = dataSource;
+      this.loading = false;
+      if (dataSource.length === 0 && total >= 10) {
+        this.pagination.current -= 1;
+        this.queryArticleList();
+      }
+    }
+  }
+  created() {
+    this.$nextTick(() => {
+      this.queryArticleList();
+    });
+  }
 }
 </script>
 <style lang="less" scoped>
