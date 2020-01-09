@@ -7,7 +7,7 @@
     :beforeUpload="beforeUpload"
     @change="handleChange"
   >
-    <img v-if="imageUrl" :src="imageUrl" alt="avatar" style="width:100px;height:100px"/>
+    <img v-if="imgUrl !==''" :src="imgUrl" alt="avatar" style="width:100px;height:100px" />
     <div v-else>
       <a-icon :type="loading ? 'loading' : 'plus'" />
       <div class="ant-upload-text">上传图片</div>
@@ -15,7 +15,7 @@
   </a-upload>
 </template>
 <script lang="ts">
-import { Vue, Component, Emit } from "vue-property-decorator";
+import { Vue, Component, Emit,Prop } from "vue-property-decorator";
 import { Upload, Icon, message } from "ant-design-vue";
 import HttpRequest from "@/assets/api/modules/index";
 Vue.prototype.$message = message;
@@ -29,18 +29,20 @@ Vue.prototype.$message = message;
 export default class UploadHandler extends Vue {
   private loading: boolean = false;
 
-  private imageUrl: string = "";
+  @Prop({ default: "" })
+  private imgUrl!: string ;
 
   private file: any = null;
   @Emit("change")
   async handleChange(info: any) {
-    const res: ApiResponse<FileInfo> = await HttpRequest.UploaderModule.handleFileUploader({
+    const res: ApiResponse<
+      FileInfo
+    > = await HttpRequest.UploaderModule.handleFileUploader({
       file: this.file
     });
     if (res && res.data) {
       this.loading = false;
-      this.imageUrl = res.data.url
-      return res.data;
+      return res.data.url;
     }
   }
   async beforeUpload(file: any) {

@@ -74,11 +74,11 @@ export default class ArticleHeader extends Vue
   // 上下架类型
   private types: Array<{ [key: string]: any }> = [
     {
-      key: 1,
+      key: 2,
       value: "上架"
     },
     {
-      key: 0,
+      key: 1,
       value: "下架"
     }
   ];
@@ -95,6 +95,7 @@ export default class ArticleHeader extends Vue
    */
   @Emit("change")
   private handleSearchData(type: string, value: any) {
+    console.log(type,value)
     if (!value) {
       Vue.delete(this.searchParams, type);
       if (type === "first_catalogId") {
@@ -109,7 +110,7 @@ export default class ArticleHeader extends Vue
           this.searchParams.second_catalogId = value;
           break;
         case "isShelves":
-          this.searchParams.isShelves = value;
+          this.searchParams.isShelves = value-1;
           break;
         case "title":
           this.searchParams.title = value;

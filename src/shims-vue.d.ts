@@ -3,6 +3,13 @@ declare module '*.vue' {
   export default Vue
 }
 
+/**
+ * 索引
+ */
+type tplotOptions = {
+  [key: string]: Function;
+};
+
 interface ApiResponse<T> {
   code: number,
   data: T,
@@ -76,6 +83,7 @@ interface ColumnsInfo {
   title: string,
   dataIndex?: string,
   width?: number,
+  fixed?: string,
   scopedSlots?: { customRender: string },
   customRender?: Function,
 }
@@ -132,12 +140,12 @@ declare namespace DictionaryModule {
     type?: number
   }
 
-  interface TagInfo{
-    id:number,
-    code:string,
-    value:string,
-    create_time:number,
-    modify_time:number
+  interface TagInfo {
+    id: number,
+    code: string,
+    value: string,
+    create_time: number,
+    modify_time: number
   }
 }
 

@@ -7,6 +7,7 @@
       <a-form-item label="封面" :label-col="{ span: 3 }" :wrapper-col="{ offset:1,span: 10 }">
         <UploadHandler
           v-decorator="['imgUrl', { rules: [{ required: true, message: '请上传文章封面!' }] }]"
+          :imgUrl="imgUrl"
           @change="handleUploadChange"
         ></UploadHandler>
       </a-form-item>
@@ -70,8 +71,8 @@
         <p style="color:red">{{contentMsg}}</p>
       </a-form-item>
       <a-form-item :wrapper-col="{ offset:14,span: 10 }" style="margin-top:20px">
-        <a-button @click="$router.back()" style="width:200px;margin-right:20px">取消</a-button>
-        <a-button type="primary" html-type="submit" style="width:200px">新增</a-button>
+        <a-button @click="$router.back()" style="width:160px;margin-right:20px">取消</a-button>
+        <a-button type="primary" html-type="submit" style="width:160px">确认</a-button>
       </a-form-item>
     </a-form>
   </div>
@@ -101,11 +102,13 @@ export default class ArticleCreate extends Vue
   // 编辑器内容
   private content: string = "";
   // 编辑器html代码
-  private html:string= "";
+  private html: string = "";
   // 内容提示语
   private contentMsg: string = "";
   // 上传图片对象
   private img_file: any = {};
+  // 上传封面url
+  private imgUrl: string = "";
   // 一级目录数组
   firstCatalogs = [];
   //二级目录数组
@@ -174,7 +177,6 @@ export default class ArticleCreate extends Vue
       // 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
       const markdown: any = this.$refs.markdownEditor;
       markdown.$img2Url(pos, res.data.url);
-      return res.data;
     }
   }
   /**
@@ -186,8 +188,9 @@ export default class ArticleCreate extends Vue
   /**
    * 上传图片回调
    */
-  private handleUploadChange(file: FileInfo) {
-    this.form.setFieldsValue({ imgUrl: file.url });
+  private handleUploadChange(url: string) {
+    this.imgUrl = url;
+    this.form.setFieldsValue({ imgUrl: url });
   }
   /**
    * 一级目录选择
@@ -200,20 +203,108 @@ export default class ArticleCreate extends Vue
   /**
    * 根据id获取详情
    */
-  private async getArticleInfoById() {}
+  private async getArticleInfoById() {
+    const id = this.$route.params.id;
+    const res: ApiResponse<
+      ArticleModule.ArticleInfo
+    > = await HttpRequest.ArticleModule.getArticleInfoById({ id });
+
+    if (res && res.data) {
+      this.handleFormDataInsert(res.data);
+    }
+  }
   /**
    * 编辑 ---回显数据
    */
-  private handleFormDataInsert(values: ArticleModule.ArticleInfo) {}
+  private handleFormDataInsert(values: ArticleModule.ArticleInfo) {
+    const {
+      title,
+      imgUrl,
+      description,
+      content,
+      tags,
+      first_catalogId,
+      second_catalogId
+    } = values;
+    this.pId = first_catalogId || 0;
+    this.imgUrl = imgUrl || "";
+    this.form.setFieldsValue({
+      title,
+      content,
+      imgUrl,
+      description,
+      tags: tags ? tags.split(",") : [],
+      first_catalogId,
+      second_catalogId
+    });
+    this.content = content || "";
+    this.querySelectData({ pId: first_catalogId }, "secondCatalogs");
+  }
 
   /**
    * 编辑文章
    */
-  private async handleArticlUpdate(values: ArticleModule.ArticleInfo) {}
+  private async handleArticlUpdate(values: any) {
+    const id = this.$route.params.id;
+    const {
+      title,
+      imgUrl,
+      tags,
+      description,
+      first_catalogId,
+      second_catalogId
+    } = values;
+    const res: ApiResponse<
+      boolean
+    > = await HttpRequest.ArticleModule.getArticleUpdate({
+      id,
+      title,
+      description,
+      imgUrl: imgUrl,
+      tags: tags.join(","),
+      first_catalogId,
+      second_catalogId,
+      content: this.html
+    });
+
+    if (res && res.data) {
+      this.$message.success("编辑成功");
+      this.$router.push("/app/article/list");
+    } else {
+      this.$message.error("编辑失败");
+    }
+  }
   /**
    * 新增文章
    */
-  private async handleArticleAdd(values: ArticleModule.ArticleInfo) {}
+  private async handleArticleAdd(values: any) {
+    const {
+      title,
+      imgUrl,
+      tags,
+      description,
+      first_catalogId,
+      second_catalogId
+    } = values;
+    const res: ApiResponse<
+      boolean
+    > = await HttpRequest.ArticleModule.getArticleAdd({
+      title,
+      description,
+      imgUrl: imgUrl,
+      tags: tags.join(","),
+      first_catalogId,
+      second_catalogId,
+      content: this.html
+    });
+
+    if (res && res.data) {
+      this.$message.success("新增成功");
+      this.$router.push("/app/article/list");
+    } else {
+      this.$message.error("新增失败");
+    }
+  }
   /**
    * 表单提交
    */
@@ -225,31 +316,10 @@ export default class ArticleCreate extends Vue
         return;
       }
       if (!err) {
-        const {
-          title,
-          imgUrl,
-          tags,
-          description,
-          first_catalogId,
-          second_catalogId
-        } = values;
-        const res: ApiResponse<
-          boolean
-        > = await HttpRequest.ArticleModule.getArticleAdd({
-          title,
-          description,
-          imgUrl: imgUrl.url,
-          tags: tags.join(","),
-          first_catalogId,
-          second_catalogId,
-          content: this.html
-        });
-
-        if (res && res.data) {
-          this.$message.success("新增成功");
-          this.$router.push("/app/article/list");
+        if (this.$route.path.includes("edit")) {
+          this.handleArticlUpdate(values);
         } else {
-          this.$message.error("新增失败");
+          this.handleArticleAdd(values);
         }
       }
     });
@@ -290,8 +360,14 @@ export default class ArticleCreate extends Vue
 
   async created() {
     this.form = this.$form.createForm(this);
-    this.querySelectData({ type: 1 }, "firstCatalogs");
     this.getTagList();
+    this.querySelectData({ type: 1 }, "firstCatalogs");
+    /**
+     * 判断是否是编辑
+     */
+    if (this.$route.path.includes("edit")) {
+      this.getArticleInfoById();
+    }
   }
 
   @Watch("content")

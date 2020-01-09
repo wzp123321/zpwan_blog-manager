@@ -1,16 +1,11 @@
 <template>
   <div class="detail-wrapper">
     <div class="detail-header">
-      <div class="header-info">
-        <h1>{{articleInfo.title}}</h1>
-        <div>{{time}}</div>
-      </div>
-      <div>
-        <Button @click="$router.back()" style="width:60px">返回</Button>
-      </div>
+      <h1>{{articleInfo.title}}</h1>
+      <div>{{time}}</div>
     </div>
     <Divider></Divider>
-    <div  class="markdown-body" v-html="articleInfo.content"></div>
+    <div class="markdown-body" v-html="articleInfo.content"></div>
   </div>
 </template>
 <script lang="ts">
@@ -56,12 +51,13 @@ export default class ArticleDetail extends Vue {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  .header-info {
+  h1 {
     flex: 1;
     text-align: center;
-    h1 {
-      margin: 0;
-    }
   }
+}
+img {
+  width: auto;
+  height: auto;
 }
 </style>
