@@ -1,9 +1,9 @@
 <template>
   <a-layout id="components-layout-demo-custom-trigger" style="height:100%">
     <SiderBox :collapsed="collapsed"></SiderBox>
-    <a-layout style="height:100%">
+    <a-layout style="height:100%;overflow:hidden">
       <HeaderBox @change="()=> collapsed = !collapsed" userName="zpwan" style="height:64px"></HeaderBox>
-      <ContentBox style="flex:1"></ContentBox>
+      <ContentBox style="flex:1;overflow:scroll"></ContentBox>
     </a-layout>
   </a-layout>
 </template>

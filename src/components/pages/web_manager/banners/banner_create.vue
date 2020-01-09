@@ -95,9 +95,11 @@ export default class BannerCreate extends Vue {
    * banner编辑
    */
   private async handleBannerUpdate(values: BannerModule.BannerInfo) {
+    const id = this.$route.params.id;
+    const params = Object.assign(values, { id });
     const res: ApiResponse<
       boolean
-    > = await HttpRequest.BannerModule.getBannerUpdate(values);
+    > = await HttpRequest.BannerModule.getBannerUpdate(params);
 
     if (res && res.data) {
       this.$message.success("编辑成功");
@@ -117,6 +119,7 @@ export default class BannerCreate extends Vue {
     > = await HttpRequest.BannerModule.getBannerInfoById({ id });
     if (res && res.data) {
       const { title, imgUrl, url } = res.data;
+      this.imgUrl = imgUrl;
       this.form.setFieldsValue({
         title,
         imgUrl,

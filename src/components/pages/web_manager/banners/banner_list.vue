@@ -31,8 +31,6 @@
           @click="()=>{$router.push(`/app/webmanager/banner/edit/${record.id}`)}"
         >编辑</span>
         <a-divider type="vertical"></a-divider>
-        <span class="action-span" @click="handleBannerDelete(record.id)">删除</span>
-        <a-divider type="vertical"></a-divider>
         <i
           class="iconfont icon-RectangleCopy action-span"
           @click="()=>{imgShow = true;imgUrl = record.imgUrl}"
@@ -144,7 +142,7 @@ export default class BannerList extends Vue {
    * 头部筛选
    */
   private handleTypeChange(isShelves: number) {
-    this.searchParams = Object.assign({}, { isShelves });
+    this.searchParams = Object.assign({}, { isShelves:isShelves-1 });
     if (!isShelves) {
       Vue.delete(this.searchParams, "isShelves");
     }
@@ -162,31 +160,11 @@ export default class BannerList extends Vue {
     this.getBannerList();
   }
   /**
-   * banner删除
-   */
-  private handleBannerDelete(id: number) {
-    Modal.confirm({
-      title: "删除banner",
-      content: "确认删除这个banner吗？",
-      okText: "确认",
-      cancelText: "取消",
-      onCancel: () => {},
-      async onOk() {
-        const res: ApiResponse<
-          boolean
-        > = await HttpRequest.BannerModule.getBannerDelete({ id });
-      }
-    });
-  }
-  /**
    * 请求banner列表
    */
   private async getBannerList() {
     const { current } = this.pagination;
-    const res = await HttpRequest.BannerModule.getBannerList({
-      page: current,
-      limit: 10
-    });
+    const res = await HttpRequest.BannerModule.getBannerList(this.searchParams);
 
     if (res && res.data) {
       const dataSource = res.data.data;
@@ -196,7 +174,7 @@ export default class BannerList extends Vue {
 
   created() {
     this.$nextTick(() => {
-      // this.getBannerList();
+      this.getBannerList();
     });
   }
 }

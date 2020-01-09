@@ -22,10 +22,5 @@ export default {
   async getBannerInfoById(params: { [key: string]: any }) {
     const url = "/banner/getById"
     return getRequest(url, params)
-  },
-
-  async getBannerDelete(params: { [key: string]: any }) {
-    const url = "/banner/delete"
-    return getRequest(url, params)
-  },
+  }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="article-add">
+  <div class="article-add" ref="article_add">
     <a-form :form="form" @submit="handleSubmit">
       <a-form-item label="标题" :label-col="{ span: 3 }" :wrapper-col="{ offset:1,span: 10 }">
         <a-input v-decorator="['title', { rules: [{ required: true, message: '请输入文章标题!' }] }]" />
@@ -75,6 +75,7 @@
         <a-button type="primary" html-type="submit" style="width:160px">确认</a-button>
       </a-form-item>
     </a-form>
+    <HeaderProgress :totalHeight="totalHeight" :currentHeight="currentHeight"></HeaderProgress>
   </div>
 </template>
 <script lang="ts">
@@ -82,6 +83,7 @@ import { Vue, Component, Watch } from "vue-property-decorator";
 import { Form, Button, Input, Select } from "ant-design-vue";
 import UploadHandler from "@/components/Uploader.vue";
 import HttpRequest from "@/assets/api/modules/index";
+import HeaderProgress from '@/components/HeaderProgress.vue'
 @Component({
   name: "ArticleCreate",
   components: {
@@ -92,11 +94,15 @@ import HttpRequest from "@/assets/api/modules/index";
     "a-button": Button,
     "a-select": Select,
     "a-select-option": Select.Option,
-    UploadHandler
+    UploadHandler,
+    HeaderProgress
   }
 })
 export default class ArticleCreate extends Vue
   implements ArticleModule.CatalogArray {
+  //
+  private totalHeight: number = 0;
+  private currentHeight: number = 0;
   // form
   private form: any;
   // 编辑器内容
@@ -357,9 +363,26 @@ export default class ArticleCreate extends Vue
     };
     queryAll(page);
   }
-
+  handleScrollListener() {
+    () => {};
+  }
+  mounted() {
+    this.$nextTick(() => {
+      const articleadd: any = this.$refs.article_add;
+       this.totalHeight = articleadd.offsetHeight ;
+      articleadd.parentNode.addEventListener(
+        "scroll",
+        () => {
+          var scrollTop = articleadd.parentNode.scrollTop;
+          this.currentHeight = scrollTop;
+        },
+        true
+      );
+    });
+  }
   async created() {
     this.form = this.$form.createForm(this);
+   
     this.getTagList();
     this.querySelectData({ type: 1 }, "firstCatalogs");
     /**

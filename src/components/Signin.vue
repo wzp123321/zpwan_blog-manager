@@ -118,6 +118,7 @@ export default class Signin extends Vue {
    * https://github.com/settings/applications/1199418
    * http://www.ruanyifeng.com/blog/2019/04/github-oauth.html
    * https://www.jianshu.com/p/0842b888d94a
+   * https://www.zhyd.me/article/141
    *
    */
   private handleGithubLogin() {
