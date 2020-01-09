@@ -59,19 +59,26 @@
             <IdentifyCode @codeChange="getIdenCode" ref="idenCode"></IdentifyCode>
           </div>
         </FormItem>
-        <FormItem class="loginbtn" :label-col="{span:4}" :wrapper-col="{span:20}">
+        <FormItem
+          class="loginbtn"
+          :label-col="{span:4}"
+          :wrapper-col="{span:20}"
+          style="margin-bottom:0"
+        >
           <Button :loading="loading" type="primary" @click="handleSubmit">登录</Button>
         </FormItem>
-        <FormItem label="您还可以通过以下方式登录:" :label-col="{span:12}" :wrapper-col="{offset:1,span:5}">
-          <!-- <i class="iconfont icon-"></i> -->
-          <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-QQ" @click="()=>{$router.push('/signin_qq')}" style="font-size:14px"/>
+        <FormItem label="您还可以通过以下方式登录:" :label-col="{span:13}" :wrapper-col="{offset:1,span:5}">
+          <svg
+            class="icon"
+            aria-hidden="true"
+            style="display: inline-block;margin-right: 10px;"
+            @click="()=>{$router.push('/signin_qq')}"
+          >
+            <use xlink:href="#icon-QQ" />
           </svg>
-           <a  href="https://github.com/login/oauth/authorize?client_id=e8066bfd81332a5fd345&redirect_uri=http://localhost:8080/#/signin_github" >
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-github" style="font-size:14px"/>
-            </svg>
-           </a>
+          <svg class="icon" aria-hidden="true" @click="handleGithubLogin">
+            <use xlink:href="#icon-github" />
+          </svg>
         </FormItem>
       </Form>
     </div>
@@ -110,10 +117,12 @@ export default class Signin extends Vue {
    * github登录
    * https://github.com/settings/applications/1199418
    * http://www.ruanyifeng.com/blog/2019/04/github-oauth.html
+   * https://www.jianshu.com/p/0842b888d94a
+   *
    */
-  private handleGithubLogin(){
-    console.log(1111111)
-    window.location="";
+  private handleGithubLogin() {
+    window.location.href =
+      "https://github.com/login/oauth/authorize?client_id=e8066bfd81332a5fd345&redirect_uri=http://localhost:9898/blogManage/login/github";
   }
   /**
    * 初始化

@@ -1,6 +1,15 @@
 <template>
   <div class="banner-wrapper">
     <div class="header">
+      <Select
+        style="width:120px"
+        @change="handleTypeChange"
+        placeholder="请选择"
+        :allowClear="true"
+        :getPopupContainer="(triggerNode)=>{return triggerNode.parentNode|| document.body}"
+      >
+        <SelectOption v-for="(item,index) in types" :key="index" :value="item.key">{{item.value}}</SelectOption>
+      </Select>
       <a-button type="primary" @click="()=>{$router.push('/app/webmanager/banner/add')}">新增banner</a-button>
     </div>
     <a-table
@@ -17,7 +26,10 @@
         <img :src="record.imgUrl" alt style="width:60px;height:60px;border-radius:6px" />
       </template>
       <template slot="action" slot-scope="text,record">
-        <span class="action-span" @click="()=>{$router.push(`/app/webmanager/banner/edit/${record.id}`)}">编辑</span>
+        <span
+          class="action-span"
+          @click="()=>{$router.push(`/app/webmanager/banner/edit/${record.id}`)}"
+        >编辑</span>
         <a-divider type="vertical"></a-divider>
         <span class="action-span" @click="handleBannerDelete(record.id)">删除</span>
         <a-divider type="vertical"></a-divider>
@@ -32,9 +44,9 @@
 </template>
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
-import { Button, Table, Divider, Modal } from "ant-design-vue";
+import { Button, Table, Divider, Modal, Select } from "ant-design-vue";
 import { formatDate } from "@/utils/index";
-import HttpRequest from "@/assets/api/modules/banner";
+import HttpRequest from "@/assets/api/modules/index";
 import ImagePreView from "@/components/ImagePreView.vue";
 @Component({
   name: "BannerList",
@@ -42,6 +54,8 @@ import ImagePreView from "@/components/ImagePreView.vue";
     "a-button": Button,
     "a-table": Table,
     "a-divider": Divider,
+    Select,
+    SelectOption: Select.Option,
     Modal,
     ImagePreView
   }
@@ -71,12 +85,12 @@ export default class BannerList extends Vue {
     },
     {
       key: "url",
-      title: "路径",
+      title: "跳转链接",
       dataIndex: "url"
     },
     {
       key: "imgUrl",
-      title: "封面",
+      title: "banner封面",
       scopedSlots: { customRender: "imgUrl" }
     },
     {
@@ -87,7 +101,18 @@ export default class BannerList extends Vue {
         record: ArticleModule.ArticleInfo,
         index: number
       ) => {
-        return formatDate(record.createTime);
+        return formatDate(record.create_time);
+      }
+    },
+    {
+      key: "modify_time",
+      title: "修改时间",
+      customRender: (
+        text: string,
+        record: ArticleModule.ArticleInfo,
+        index: number
+      ) => {
+        return formatDate(record.modify_time);
       }
     },
     {
@@ -96,6 +121,19 @@ export default class BannerList extends Vue {
       scopedSlots: { customRender: "action" }
     }
   ];
+  // 上下架类型
+  private types: Array<{ [key: string]: any }> = [
+    {
+      key: 2,
+      value: "上架"
+    },
+    {
+      key: 1,
+      value: "下架"
+    }
+  ];
+  // 搜索条件
+  private searchParams: { [key: string]: any } = {};
   private dataSource: Array<BannerModule.BannerInfo> = [];
   // 分页
   private pagination: PaginationInfo = {
@@ -103,25 +141,40 @@ export default class BannerList extends Vue {
     total: 10
   };
   /**
+   * 头部筛选
+   */
+  private handleTypeChange(isShelves: number) {
+    this.searchParams = Object.assign({}, { isShelves });
+    if (!isShelves) {
+      Vue.delete(this.searchParams, "isShelves");
+    }
+    this.getBannerList();
+  }
+  /**
    * 表格change事件
    */
   private handleTableChange(
     pagination: PaginationInfo,
     filters: any,
     soter: any
-  ) {}
+  ) {
+    this.pagination.current = pagination.current;
+    this.getBannerList();
+  }
   /**
    * banner删除
    */
-  private handleBannerDelete(id: string) {
+  private handleBannerDelete(id: number) {
     Modal.confirm({
       title: "删除banner",
-      content: "你确认删除这个banner吗？",
+      content: "确认删除这个banner吗？",
       okText: "确认",
       cancelText: "取消",
       onCancel: () => {},
-      onOk: () => {
-        console.log("删除");
+      async onOk() {
+        const res: ApiResponse<
+          boolean
+        > = await HttpRequest.BannerModule.getBannerDelete({ id });
       }
     });
   }
@@ -129,7 +182,11 @@ export default class BannerList extends Vue {
    * 请求banner列表
    */
   private async getBannerList() {
-    const res = await HttpRequest.getBannerList();
+    const { current } = this.pagination;
+    const res = await HttpRequest.BannerModule.getBannerList({
+      page: current,
+      limit: 10
+    });
 
     if (res && res.data) {
       const dataSource = res.data.data;
@@ -139,7 +196,7 @@ export default class BannerList extends Vue {
 
   created() {
     this.$nextTick(() => {
-      this.getBannerList();
+      // this.getBannerList();
     });
   }
 }
@@ -147,8 +204,10 @@ export default class BannerList extends Vue {
 <style lang="less" scoped>
 .banner-wrapper {
   .header {
-    text-align: right;
-    margin-right: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0 10px;
   }
   .action-span {
     color: #06a5ff;

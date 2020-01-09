@@ -191,6 +191,12 @@ declare namespace ArticleModule {
  */
 declare namespace BannerModule {
   interface BannerInfo {
-
+    id: number,
+    title: string,
+    imgUrl: string,
+    url: string,
+    isShelves: number,
+    create_time: number,
+    modify_time: number
   }
 }

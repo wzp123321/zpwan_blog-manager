@@ -143,6 +143,17 @@ export default class ArticleList extends Vue {
         return formatDate(record.create_time);
       }
     },
+       {
+      key: "modify_time",
+      title: "修改时间",
+      customRender: (
+        text: string,
+        record: ArticleModule.ArticleInfo,
+        index: number
+      ) => {
+        return formatDate(record.modify_time);
+      }
+    },
     {
       key: "action",
       title: "操作",

@@ -13,6 +13,13 @@
       </a-breadcrumb>
     </div>
     <div class="userinfo">
+      <svg
+          class="icon"
+          aria-hidden="true"
+        >
+          <use xlink:href="#icon-xingzhuanggongnengtubiao-" />
+        </svg>
+      <span style="font-size:12px"> {{cityinfo}} </span>
       <span class="avatar">
         <img src="../assets/imgs/headshot.png" alt />
       </span>
@@ -46,6 +53,8 @@ export default class HeaderBox extends Vue {
     default: ""
   })
   private userName!: string;
+  // 城市定位
+  private cityinfo: string = "";
   // 路由数组
   private routers: Array<RouteInfo> = [];
   /**
@@ -64,6 +73,22 @@ export default class HeaderBox extends Vue {
       }
     });
   }
+
+  //获取用户所在城市信息
+  showCityInfo() {
+    //实例化城市查询类
+    const citysearch = new AMap.CitySearch();
+    const that = this;
+    //自动获取用户IP，返回当前城市
+    citysearch.getLocalCity(function(status: string, result: any) {
+      if (status === "complete" && result.info === "OK") {
+        if (result && result.city && result.bounds) {
+          const cityinfo = result.province+''+result.city;
+          that.cityinfo = cityinfo;
+        }
+      }
+    });
+  }
   /**
    * 监听路有变化
    */
@@ -73,6 +98,8 @@ export default class HeaderBox extends Vue {
   }
   created() {
     this.routers = this.$route.matched.filter(item => item.meta.name);
+
+    this.showCityInfo();
   }
 }
 </script>

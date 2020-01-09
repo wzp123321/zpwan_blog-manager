@@ -16,12 +16,13 @@
       </a-form-item>
       <a-form-item label="Banner封面" :label-col="{ span: 5 }" :wrapper-col="{ span: 8 }">
         <UploadHandler
+          :imgUrl="imgUrl"
           v-decorator="['imgUrl', { rules: [{ required: true, message: '请上传Banner封面!' }] }]"
           @change="handleUploadChange"
         ></UploadHandler>
       </a-form-item>
-      <a-form-item :wrapper-col="{ offset: 10 }">
-        <a-button type="primary" html-type="submit" style="width:120px">提交</a-button>
+      <a-form-item :wrapper-col="{ offset: 10}">
+        <a-button type="primary" html-type="submit" style="width:120px" :loading="loading">提交</a-button>
       </a-form-item>
     </a-form>
   </div>
@@ -30,6 +31,7 @@
 import { Vue, Component } from "vue-property-decorator";
 import { Form, Input, Button } from "ant-design-vue";
 import UploadHandler from "@/components/Uploader.vue";
+import HttpRequest from "@/assets/api/modules/index";
 @Component({
   name: "BannerCreate",
   components: {
@@ -45,23 +47,89 @@ export default class BannerCreate extends Vue {
   // 上传加载
   private loading: boolean = false;
   // 上传图片url
-  private imageUrl: string = "";
-
+  private imgUrl: string = "";
   /**
-   * 上传操作
+   * 上传操作回调
    */
-  private handleUploadChange(value: string) {}
+  private handleUploadChange(imgUrl: string) {
+    this.imgUrl = imgUrl;
+    this.form.setFieldsValue({
+      imgUrl
+    });
+  }
   /**
    * 提交表单
    */
   private handleSubmit(e: any) {
     e.preventDefault();
-    this.form.veliDateFields((err: Error, values: BannerModule.BannerInfo) => {
-      console.log(values);
+    this.form.validateFields((err: Error, values: BannerModule.BannerInfo) => {
+      if (!err) {
+        this.loading = true;
+        if (this.$route.path.includes("edit")) {
+          this.handleBannerUpdate(values);
+        } else {
+          this.handleBannerAdd(values);
+        }
+      }
     });
+  }
+  /**
+   * banner新增
+   */
+  private async handleBannerAdd(values: BannerModule.BannerInfo) {
+    const res: ApiResponse<
+      boolean
+    > = await HttpRequest.BannerModule.getBannerAdd(values);
+
+    if (res && res.data) {
+      if (res && res.data) {
+        this.$message.success("新增成功");
+        this.$router.push("/app/webmanager/banner/list");
+        this.loading = false;
+      } else {
+        this.$message.error("新增失败");
+      }
+    }
+  }
+  /**
+   * banner编辑
+   */
+  private async handleBannerUpdate(values: BannerModule.BannerInfo) {
+    const res: ApiResponse<
+      boolean
+    > = await HttpRequest.BannerModule.getBannerUpdate(values);
+
+    if (res && res.data) {
+      this.$message.success("编辑成功");
+      this.$router.push("/app/webmanager/banner/list");
+      this.loading = false;
+    } else {
+      this.$message.error("编辑失败");
+    }
+  }
+  /**
+   * 请求banner详情
+   */
+  private async getBannerInfoById() {
+    const id = this.$route.params.id;
+    const res: ApiResponse<
+      BannerModule.BannerInfo
+    > = await HttpRequest.BannerModule.getBannerInfoById({ id });
+    if (res && res.data) {
+      const { title, imgUrl, url } = res.data;
+      this.form.setFieldsValue({
+        title,
+        imgUrl,
+        url
+      });
+    }
   }
   created() {
     this.form = this.$form.createForm(this);
+
+    if (this.$route.path.includes("edit")) {
+      this.getBannerInfoById();
+    }
   }
 }
 </script>

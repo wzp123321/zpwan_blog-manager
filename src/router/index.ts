@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 const Home = () => import('@/views/Home.vue')
+const Dashboard = () => import('@/components/pages/dashboard/index.vue')
 const NotFound = () => import('@/components/404.vue')
 const SigninModule = () => import("@/components/Signin.vue")
 const GIthub_LoginModule = () => import("@/components/Github_Login.vue")
@@ -41,8 +42,12 @@ const routes = [
     meta: {
       name: "首页"
     },
-    redirect: "/app/webmanager",
+    redirect: "/app/dashboard",
     children: [
+      {
+        path: '/app/dashboard',
+        component: Dashboard,
+      },
       {
         path: "/app/webmanager",
         meta: {
