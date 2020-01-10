@@ -10,12 +10,11 @@ import "@/assets/css/common.css"
 // 引入阿里图标
 import "@/assets/css/iconfont.css"
 // 引入nprogress
-import NProgress from "nprogress"
+import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 // editor
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
-import "@/assets/css/markdown.css"
 // use
 Vue.use(mavonEditor)
 // 引入绘制爱心的js

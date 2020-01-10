@@ -1,13 +1,13 @@
 <template>
   <div class="signin-panel">
     <div class="login-content">
-      <div class="login-header">后台登录</div>
-      <Form :layout="formLayout" :form="form">
-        <p class="errormsg">{{errorTip}}</p>
+      <div class="login-header">管理后台登录</div>
+      <Form layout="horizontal" :form="form">
+        <p class="errormsg">{{ errorTip }}</p>
         <FormItem label="用户名" :label-col="{span:4}" :wrapper-col="{span:20}" :required="false">
           <Input
             style="height:40px"
-            @focus="inputFocus"
+            @focus="()=>{errorTip = ''}"
             :class="{'haserror':errorTip.length>0}"
             v-decorator="[
               'username',
@@ -24,7 +24,7 @@
             type="password"
             style="height:40px"
             :class="{'haserror':errorTip.length>0}"
-            @focus="inputFocus"
+            @focus="()=>{errorTip = ''}"
             v-decorator="[
               'password',
               {
@@ -107,8 +107,6 @@ export default class Signin extends Vue {
   // 错误提示
   private errorTip: string = "";
   private form: any;
-  // 表单布局
-  private formLayout: string = "horizontal";
   // 生成的验证码
   private nativeIdentityCode: string = "";
   // 加载开关
@@ -154,10 +152,6 @@ export default class Signin extends Vue {
       return false;
     }
     return true;
-  }
-  // 输入框聚焦
-  inputFocus() {
-    this.errorTip = "";
   }
   /**
    *  登录表单提交

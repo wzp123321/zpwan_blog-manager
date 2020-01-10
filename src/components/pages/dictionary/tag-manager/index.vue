@@ -46,7 +46,7 @@
 import { Vue, Component } from "vue-property-decorator";
 import { Table, Button, Modal, Form, Input, message } from "ant-design-vue";
 import HttpRequest from "@/assets/api/modules/index";
-import { formatDate } from "@/utils/index";
+import { formatDate } from "@/assets/js/index";
 Vue.prototype.$message = message;
 @Component({
   name: "TagModule",

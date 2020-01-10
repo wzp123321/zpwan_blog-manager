@@ -28,7 +28,6 @@
 <script lang="ts">
 import { Vue, Component, Emit, Prop, Watch } from "vue-property-decorator";
 import { Layout, Icon, Avatar, Modal, Breadcrumb } from "ant-design-vue";
-
 @Component({
   name: "HeaderBox",
   components: {
@@ -74,7 +73,7 @@ export default class HeaderBox extends Vue {
 
   //获取用户所在城市信息
   showCityInfo() {
-    //实例化城市查询类
+    //实例化城市查询类  https://www.jianshu.com/p/e945c3ce28fd
     const citysearch = new AMap.CitySearch();
     const that = this;
     //自动获取用户IP，返回当前城市

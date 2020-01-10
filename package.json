@@ -5,9 +5,11 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "build:test": "NODE_ENV=reprod vue-cli-service build --mode development",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@types/nprogress": "^0.2.0",
     "ant-design-vue": "^1.4.10",
     "axios": "^0.19.0",
     "babel-plugin-import": "^1.13.0",

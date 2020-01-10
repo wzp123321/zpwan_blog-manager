@@ -61,5 +61,3 @@ export default class UploadHandler extends Vue {
   }
 }
 </script>
-<style lang="less" scoped>
-</style>

@@ -12,7 +12,7 @@
 import { Vue, Component } from "vue-property-decorator";
 import { Divider } from "ant-design-vue";
 import HttpRequest from "@/assets/api/modules/index";
-import { formatDate } from "@/utils/index";
+import { formatDate } from "@/assets/js/index";
 @Component({
   name: "ArticleDetail",
   components: {
@@ -37,7 +37,7 @@ export default class ArticleDetail extends Vue {
     if (res && res.data) {
       const data = res.data;
       this.articleInfo = data;
-      this.time = formatDate(this.articleInfo.create_time);
+      this.time = formatDate(this.articleInfo.create_time || 0);
     }
   }
   created() {

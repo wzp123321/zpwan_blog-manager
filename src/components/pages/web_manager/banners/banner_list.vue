@@ -43,7 +43,7 @@
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 import { Button, Table, Divider, Modal, Select } from "ant-design-vue";
-import { formatDate } from "@/utils/index";
+import { formatDate } from "@/assets/js/index";
 import HttpRequest from "@/assets/api/modules/index";
 import ImagePreView from "@/components/ImagePreView.vue";
 @Component({
@@ -99,7 +99,7 @@ export default class BannerList extends Vue {
         record: ArticleModule.ArticleInfo,
         index: number
       ) => {
-        return formatDate(record.create_time);
+        return formatDate(record.create_time || 0);
       }
     },
     {
@@ -110,7 +110,7 @@ export default class BannerList extends Vue {
         record: ArticleModule.ArticleInfo,
         index: number
       ) => {
-        return formatDate(record.modify_time);
+        return formatDate(record.modify_time || 0);
       }
     },
     {

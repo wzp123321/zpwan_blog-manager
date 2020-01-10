@@ -58,7 +58,7 @@
 import { Vue, Component } from "vue-property-decorator";
 import { Table, Switch, Divider, Modal, message, Tag } from "ant-design-vue";
 import ArticleHeader from "./article_list_header.vue";
-import { formatDate } from "@/utils/index";
+import { formatDate } from "@/assets/js/index";
 import HttpRequest from "@/assets/api/modules/index";
 Vue.prototype.$message = message;
 
@@ -140,7 +140,7 @@ export default class ArticleList extends Vue {
         record: ArticleModule.ArticleInfo,
         index: number
       ) => {
-        return formatDate(record.create_time);
+        return formatDate(record.create_time || 0);
       }
     },
        {
@@ -151,7 +151,7 @@ export default class ArticleList extends Vue {
         record: ArticleModule.ArticleInfo,
         index: number
       ) => {
-        return formatDate(record.modify_time);
+        return formatDate(record.modify_time || 0);
       }
     },
     {
