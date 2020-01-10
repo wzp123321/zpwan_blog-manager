@@ -129,7 +129,6 @@ const fileReq = async (params: { [key: string]: any }) => {
     // 在请求头里面添加token 如果没有则为空字符串
     headers: {
       "Content-Type": "multipart/form-data",
-      'token': localStorage.getItem('token') === null ? '' : localStorage.getItem('token')
     },
     data: param,
     transformRequest: [

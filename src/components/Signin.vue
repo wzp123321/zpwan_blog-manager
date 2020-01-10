@@ -119,11 +119,12 @@ export default class Signin extends Vue {
    * http://www.ruanyifeng.com/blog/2019/04/github-oauth.html
    * https://www.jianshu.com/p/0842b888d94a
    * https://www.zhyd.me/article/141
+   * https://lyci.xyz/article/6578502487528599552
    *
    */
   private handleGithubLogin() {
     window.location.href =
-      "https://github.com/login/oauth/authorize?client_id=e8066bfd81332a5fd345&redirect_uri=http://localhost:9898/blogManage/login/github";
+      "/githubAuthorize?client_id=e8066bfd81332a5fd345&redirect_uri=http://localhost:8080/signin_github";
   }
   /**
    * 初始化

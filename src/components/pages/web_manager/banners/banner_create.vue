@@ -21,6 +21,9 @@
           @change="handleUploadChange"
         ></UploadHandler>
       </a-form-item>
+      <a-form-item label="上下架" :label-col="{ span: 5 }" :wrapper-col="{ span: 8 }">
+        <a-switch v-decorator="['isShelves']" :checked="isShelves" @change="()=>{isShelves = !isShelves}"/>
+      </a-form-item>
       <a-form-item :wrapper-col="{ offset: 10}">
         <a-button type="primary" html-type="submit" style="width:120px" :loading="loading">提交</a-button>
       </a-form-item>
@@ -29,7 +32,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
-import { Form, Input, Button } from "ant-design-vue";
+import { Form, Input, Button, Switch } from "ant-design-vue";
 import UploadHandler from "@/components/Uploader.vue";
 import HttpRequest from "@/assets/api/modules/index";
 @Component({
@@ -39,11 +42,13 @@ import HttpRequest from "@/assets/api/modules/index";
     "a-form-item": Form.Item,
     "a-input": Input,
     "a-button": Button,
+    "a-switch": Switch,
     UploadHandler
   }
 })
 export default class BannerCreate extends Vue {
   private form: any;
+  private isShelves:boolean = false;
   // 上传加载
   private loading: boolean = false;
   // 上传图片url
@@ -77,18 +82,19 @@ export default class BannerCreate extends Vue {
    * banner新增
    */
   private async handleBannerAdd(values: BannerModule.BannerInfo) {
+    values = Object.assign(values, {
+      isShelves: values.isShelves ? 1 : 0
+    });
     const res: ApiResponse<
       boolean
     > = await HttpRequest.BannerModule.getBannerAdd(values);
 
     if (res && res.data) {
-      if (res && res.data) {
-        this.$message.success("新增成功");
-        this.$router.push("/app/webmanager/banner/list");
-        this.loading = false;
-      } else {
-        this.$message.error("新增失败");
-      }
+      this.$message.success("新增成功");
+      this.$router.push("/app/webmanager/banner/list");
+      this.loading = false;
+    } else {
+      this.$message.error("新增失败");
     }
   }
   /**
@@ -96,7 +102,11 @@ export default class BannerCreate extends Vue {
    */
   private async handleBannerUpdate(values: BannerModule.BannerInfo) {
     const id = this.$route.params.id;
-    const params = Object.assign(values, { id });
+    const params = Object.assign(values, {
+      id,
+      isShelves: values.isShelves ? 1 : 0
+    });
+    console.log(values);
     const res: ApiResponse<
       boolean
     > = await HttpRequest.BannerModule.getBannerUpdate(params);
@@ -118,12 +128,14 @@ export default class BannerCreate extends Vue {
       BannerModule.BannerInfo
     > = await HttpRequest.BannerModule.getBannerInfoById({ id });
     if (res && res.data) {
-      const { title, imgUrl, url } = res.data;
+      const { title, imgUrl, url, isShelves } = res.data;
       this.imgUrl = imgUrl;
+      this.isShelves = isShelves === 1 ? true : false;
       this.form.setFieldsValue({
         title,
         imgUrl,
-        url
+        url,
+        isShelves: isShelves === 1 ? true : false
       });
     }
   }

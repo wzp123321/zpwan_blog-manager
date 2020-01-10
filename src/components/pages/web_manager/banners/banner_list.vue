@@ -142,7 +142,7 @@ export default class BannerList extends Vue {
    * 头部筛选
    */
   private handleTypeChange(isShelves: number) {
-    this.searchParams = Object.assign({}, { isShelves:isShelves-1 });
+    this.searchParams = Object.assign({}, { isShelves: isShelves - 1 });
     if (!isShelves) {
       Vue.delete(this.searchParams, "isShelves");
     }
@@ -163,12 +163,14 @@ export default class BannerList extends Vue {
    * 请求banner列表
    */
   private async getBannerList() {
+    this.loading = true;
     const { current } = this.pagination;
     const res = await HttpRequest.BannerModule.getBannerList(this.searchParams);
 
     if (res && res.data) {
       const dataSource = res.data.data;
       this.dataSource = dataSource;
+      this.loading = false;
     }
   }
 

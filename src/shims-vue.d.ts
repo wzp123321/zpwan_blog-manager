@@ -195,7 +195,7 @@ declare namespace BannerModule {
     title: string,
     imgUrl: string,
     url: string,
-    isShelves: number,
+    isShelves: number | boolean,
     create_time: number,
     modify_time: number
   }
