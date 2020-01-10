@@ -29,6 +29,7 @@ const UtilModule = () => import("@/components/pages/util/index.vue")
 const CommentModule = () => import("@/components/pages/comment_manager/index.vue")
 const CommentList = () => import("@/components/pages/comment_manager/comment_list/index.vue")
 const WhiteList = () => import("@/components/pages/comment_manager/whitelist_manager/index.vue")
+const LeaveMessageList = () => import("@/components/pages/comment_manager/leaveMessage_manager/index.vue")
 Vue.use(VueRouter)
 
 const routes = [
@@ -179,6 +180,13 @@ const routes = [
               name: "评论白名单管理"
             },
             component: WhiteList
+          },
+          {
+            path: "/app/message/list",
+            meta: {
+              name: "留言列表"
+            },
+            component: LeaveMessageList
           },
         ]
       },

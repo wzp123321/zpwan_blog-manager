@@ -13,13 +13,10 @@
       </a-breadcrumb>
     </div>
     <div class="userinfo">
-      <svg
-          class="icon"
-          aria-hidden="true"
-        >
-          <use xlink:href="#icon-xingzhuanggongnengtubiao-" />
-        </svg>
-      <span style="font-size:12px"> {{cityinfo}} </span>
+      <svg class="icon" aria-hidden="true">
+        <use xlink:href="#icon-xingzhuanggongnengtubiao-" />
+      </svg>
+      <span style="font-size:12px">{{cityinfo}}</span>
       <span class="avatar">
         <img src="../assets/imgs/headshot.png" alt />
       </span>
@@ -31,6 +28,7 @@
 <script lang="ts">
 import { Vue, Component, Emit, Prop, Watch } from "vue-property-decorator";
 import { Layout, Icon, Avatar, Modal, Breadcrumb } from "ant-design-vue";
+
 @Component({
   name: "HeaderBox",
   components: {
@@ -83,7 +81,7 @@ export default class HeaderBox extends Vue {
     citysearch.getLocalCity(function(status: string, result: any) {
       if (status === "complete" && result.info === "OK") {
         if (result && result.city && result.bounds) {
-          const cityinfo = result.province+''+result.city;
+          const cityinfo = result.province + "" + result.city;
           that.cityinfo = cityinfo;
         }
       }
@@ -98,7 +96,6 @@ export default class HeaderBox extends Vue {
   }
   created() {
     this.routers = this.$route.matched.filter(item => item.meta.name);
-
     this.showCityInfo();
   }
 }

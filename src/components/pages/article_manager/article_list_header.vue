@@ -95,7 +95,6 @@ export default class ArticleHeader extends Vue
    */
   @Emit("change")
   private handleSearchData(type: string, value: any) {
-    console.log(type,value)
     if (!value) {
       Vue.delete(this.searchParams, type);
       if (type === "first_catalogId") {

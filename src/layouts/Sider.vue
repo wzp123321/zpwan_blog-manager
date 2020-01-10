@@ -95,6 +95,11 @@ export default class SiderBox extends Vue {
           name: "评论报白名单",
           en_name: "commentwhitelist",
           url: "/app/comment/whitelist"
+        },
+        {
+          name: "留言列表",
+          en_name: "leaveMessageList",
+          url: "/app/message/list"
         }
       ]
     },

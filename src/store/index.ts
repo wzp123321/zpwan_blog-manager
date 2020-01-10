@@ -3,13 +3,11 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
-  modules: {
-  }
-})
+// 引入模块
+import { IUserState } from "./module/user"
+
+interface IRootState{
+  user:IUserState
+}
+
+export default new Vuex.Store<IRootState>({})

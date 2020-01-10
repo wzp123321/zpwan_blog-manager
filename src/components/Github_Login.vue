@@ -1,22 +1,27 @@
 <template>
   <div class="login">
-    <a-spin tip=" 登录中...">
-      <a-icon slot="indicator" type="loading" style="font-size: 24px" spin />
-    </a-spin>
+    <div class="login-form">
+      <svg class="icon" aria-hidden="true" style="font-size:50px">
+        <use xlink:href="#icon-github" />
+      </svg>
+      <div class="loading">
+        <span v-for="(item,index) in total%6" :key="index">-</span>
+      </div>
+      <img src="../assets/imgs/favicon.png" alt class="logo" />
+      <span class="logining">登录中</span>
+    </div>
   </div>
 </template>
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
-import { Spin, Icon } from "ant-design-vue";
+import { UserModule } from "@/store/module/user";
 import axios from "axios";
 @Component({
   name: "QQ_LoginModule",
-  components: {
-    "a-spin": Spin,
-    "a-icon": Icon
-  }
 })
 export default class QQ_LoginModule extends Vue {
+  private total: number = 1;
+  private timer: any = null;
   /**
    * 根据access-token获取用户信息
    */
@@ -31,6 +36,7 @@ export default class QQ_LoginModule extends Vue {
       }
     }).then(res => {
       if (res && res.data) {
+        UserModule.setUserInfo(res.data)
         localStorage.setItem("user", res.data);
         this.$router.push("/");
       } else {
@@ -45,23 +51,6 @@ export default class QQ_LoginModule extends Vue {
     const client_id = "e8066bfd81332a5fd345";
     const client_secret = "dbd033bca15cd61b1b8b5666dfe41f2d50581bc1";
     const code = this.$route.query.code;
-
-    // axios({
-    //   method: "get",
-    //   url:
-    //     "/githubAccessToken?client_id=" +
-    //     client_id +
-    //     "&client_secret=" +
-    //     client_secret +
-    //     "&code=" +
-    //     code,
-    //   headers:{
-
-    //   }
-    // }).then(response => {
-    //   console.log(1111111111)
-    //   console.log(response); //打印下 github 返回的 结果,包含 token
-    // });
     const tokenResponse = await axios({
       method: "get",
       url: "/githubAccessToken",
@@ -81,6 +70,15 @@ export default class QQ_LoginModule extends Vue {
   }
   mounted() {
     this.getAccessTokenByCode();
+    this.timer = setInterval(() => {
+      this.total += 1;
+    }, 500);
+  }
+  /**
+   * 页面销毁前 ---清除定时器
+   */
+  beforeDestroy() {
+    clearInterval();
   }
 }
 </script>
@@ -88,8 +86,35 @@ export default class QQ_LoginModule extends Vue {
 .login {
   width: 100%;
   height: 100%;
-  text-align: center;
+  background: #fff;
+  display: flex;
+  justify-content: center;
   padding-top: 200px;
-  background: rgba(0, 0, 0, 0.7);
+  .login-form {
+    width: 400px;
+    height: 80px;
+    text-align: center;
+    border: 1px solid #eee;
+    position: relative;
+    border-radius: 5px;
+    padding-top: 12px;
+    .loading {
+      display: inline-block;
+      width: 100px;
+    }
+    .logo {
+      margin-bottom: 24px;
+      width: 53px;
+      height: 53px;
+      border-radius: 50px;
+    }
+    .logining {
+      display: inline-block;
+      position: absolute;
+      top: 28px;
+      left: 181px;
+      font-size: 11px;
+    }
+  }
 }
 </style>
