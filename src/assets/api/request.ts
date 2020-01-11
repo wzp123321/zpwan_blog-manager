@@ -59,7 +59,11 @@ const publicReq = async (params: { [key: string]: any }) => {
         localStorage.removeItem("token")
         throw new Error(res.statusText);
       }
-      return res.data;
+      if (res.data.code !== 200) {
+        throw new Error(res.data.data)
+      } else {
+        return res.data;
+      }
     }
   });
 };
@@ -100,7 +104,6 @@ export async function getRequest(url: string, param: { [key: string]: any }) {
     });
     return response;
   } catch (err) {
-    // 这里走本地模拟数据
     console.log(err);
   }
 }
@@ -119,52 +122,3 @@ export async function postRequest(url: string, param: { [key: string]: any }) {
   }
 }
 
-
-// 文件上传请求实例
-const fileReq = async (params: { [key: string]: any }) => {
-  const {
-    url,
-    method,
-    param
-  } = params;
-  const instance = axiosInstance();
-  return await instance({
-    url,
-    method,
-    // 在请求头里面添加token 如果没有则为空字符串
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-    data: param,
-    transformRequest: [
-      function (oldData) {
-        var form = new FormData();
-        for (let item in oldData) {
-          form.append(item, oldData[item]);
-        }
-        return form;
-      }
-    ]
-  }).then((res: AxiosResponse) => {
-    if (res) {
-      if (res.status !== 200) {
-        throw new Error(res.statusText);
-      }
-      return res.data;
-    }
-  });
-};
-
-// file request
-export async function fielUploadRequest(url: string, param: { [key: string]: any }) {
-  try {
-    const response = await fileReq({
-      url,
-      method: 'post',
-      param
-    });
-    return response;
-  } catch (err) {
-    console.log(err);
-  }
-}

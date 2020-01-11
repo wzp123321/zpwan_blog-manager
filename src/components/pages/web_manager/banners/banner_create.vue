@@ -106,7 +106,6 @@ export default class BannerCreate extends Vue {
       id,
       isShelves: values.isShelves ? 1 : 0
     });
-    console.log(values);
     const res: ApiResponse<
       boolean
     > = await HttpRequest.BannerModule.getBannerUpdate(params);

@@ -18,9 +18,10 @@
       </svg>
       <span style="font-size:12px">{{cityinfo}}</span>
       <span class="avatar">
-        <img :src="avatar_url || '../assets/imgs/headshot.png'" alt />
+        <img v-if="avatar_url!==''" :src="avatar_url" alt />
+        <img src="../assets/imgs/headshot.png" alt />
       </span>
-      <span class="username">{{ name || "zpwan" }}</span>
+      <span class="username">{{ name  }}</span>
       <span class="logout" @click="quiteAccount">退出登录</span>
     </div>
   </a-layout-header>
@@ -65,7 +66,10 @@ export default class HeaderBox extends Vue {
       cancelText: "取消",
       onCancel: () => {},
       onOk: () => {
-        console.log("退出");
+        localStorage.removeItem("name");
+        localStorage.removeItem("id");
+        localStorage.removeItem("avatar_url");
+        localStorage.removeItem("token")
         this.$router.push("/signin");
       }
     });
@@ -96,8 +100,8 @@ export default class HeaderBox extends Vue {
   created() {
     this.routers = this.$route.matched.filter(item => item.meta.name);
     this.showCityInfo();
-    this.name = localStorage.getItem("name") || "";
-    this.avatar_url = localStorage.getItem("avatar_url") || "";
+    this.name = localStorage.getItem("name") || "zpwan";
+    this.avatar_url = localStorage.getItem("avatar_url") || "../assets/imgs/headshot.png";
   }
 }
 </script>
@@ -115,9 +119,9 @@ export default class HeaderBox extends Vue {
   .userinfo {
     .avatar {
       img {
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
+        max-width: 30px;
+        max-height: 30px;
+        border-radius: 50px
       }
       img:hover {
         cursor: pointer;

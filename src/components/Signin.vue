@@ -89,6 +89,7 @@
 import { Vue, Component, Watch } from "vue-property-decorator";
 import { Form, Button, Input, message } from "ant-design-vue";
 import IdentifyCode from "./IdentifyCode.vue";
+import HttpRequest from "@/assets/api/modules/index";
 
 @Component({
   name: "Signin",
@@ -154,13 +155,20 @@ export default class Signin extends Vue {
     return true;
   }
   /**
-   *  登录表单提交
+   *  登录表单提交  getAdminLogin
    */
   private handleSubmit() {
-    this.form.validateFields((err: any, values: any) => {
+    this.form.validateFields(async (err: any, values: any) => {
       if (!err && this.checkIdentityCode(values.identifycode)) {
-        if (values.username === "zpwan" && values.password === "zpwan123") {
-          this.loading = true;
+        this.loading = true;
+        const { username, password } = values;
+        const res: ApiResponse<
+          string
+        > = await HttpRequest.AdminModule.getAdminLogin({ username, password });
+        if (res && res.data) {
+          this.loading = false;
+          localStorage.setItem("token", res.data);
+          localStorage.setItem("name", username);
           this.$router.push("/app");
         } else {
           this.form.setFields({

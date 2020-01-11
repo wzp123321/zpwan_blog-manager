@@ -17,6 +17,7 @@ import { Vue, Component } from "vue-property-decorator";
 import { UserModule } from "@/store/module/user";
 import HttpRequest from "@/assets/api/modules/index";
 import axios from "axios";
+
 @Component({
   name: "QQ_LoginModule"
 })
@@ -50,7 +51,7 @@ export default class QQ_LoginModule extends Vue {
             name
           });
           localStorage.setItem("token", response.data);
-          localStorage.setItem("id",id);
+          localStorage.setItem("id", id);
           localStorage.setItem("avatar_url", avatar_url);
           localStorage.setItem("name", name);
           this.$router.push("/");
