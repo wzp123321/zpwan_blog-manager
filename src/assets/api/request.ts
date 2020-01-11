@@ -51,7 +51,12 @@ const publicReq = async (params: { [key: string]: any }) => {
     }]
   }).then((res: AxiosResponse) => {
     if (res) {
-      if (res.status !== 200) {
+      if (res.data.code === 403) {
+        window.location.href = "/signin";
+        localStorage.removeItem("name");
+        localStorage.removeItem("id");
+        localStorage.removeItem("avatar_url");
+        localStorage.removeItem("token")
         throw new Error(res.statusText);
       }
       return res.data;

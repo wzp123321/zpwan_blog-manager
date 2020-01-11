@@ -18,9 +18,9 @@
       </svg>
       <span style="font-size:12px">{{cityinfo}}</span>
       <span class="avatar">
-        <img src="../assets/imgs/headshot.png" alt />
+        <img :src="avatar_url || '../assets/imgs/headshot.png'" alt />
       </span>
-      <span class="username">{{ userName }}</span>
+      <span class="username">{{ name || "zpwan" }}</span>
       <span class="logout" @click="quiteAccount">退出登录</span>
     </div>
   </a-layout-header>
@@ -46,14 +46,14 @@ export default class HeaderBox extends Vue {
     default: false
   })
   private collapsed!: boolean;
-  @Prop({
-    default: ""
-  })
-  private userName!: string;
   // 城市定位
   private cityinfo: string = "";
   // 路由数组
   private routers: Array<RouteInfo> = [];
+  // 用户名
+  private name: string = "";
+  //用户头像
+  private avatar_url: string = "";
   /**
    * 退出
    */
@@ -96,6 +96,8 @@ export default class HeaderBox extends Vue {
   created() {
     this.routers = this.$route.matched.filter(item => item.meta.name);
     this.showCityInfo();
+    this.name = localStorage.getItem("name") || "";
+    this.avatar_url = localStorage.getItem("avatar_url") || "";
   }
 }
 </script>
@@ -113,6 +115,8 @@ export default class HeaderBox extends Vue {
   .userinfo {
     .avatar {
       img {
+        width: 30px;
+        height: 30px;
         border-radius: 50%;
       }
       img:hover {

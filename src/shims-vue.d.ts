@@ -34,6 +34,9 @@ interface MenuInfo {
  * admin信息
  */
 interface UserInfo {
+  id:string,
+  avatar_url:string,
+  name:string
 }
 
 

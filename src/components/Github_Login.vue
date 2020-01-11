@@ -15,9 +15,10 @@
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 import { UserModule } from "@/store/module/user";
+import HttpRequest from "@/assets/api/modules/index";
 import axios from "axios";
 @Component({
-  name: "QQ_LoginModule",
+  name: "QQ_LoginModule"
 })
 export default class QQ_LoginModule extends Vue {
   private total: number = 1;
@@ -34,11 +35,26 @@ export default class QQ_LoginModule extends Vue {
         accept: "application/json",
         Authorization: `token ${access_token}`
       }
-    }).then(res => {
+    }).then(async res => {
       if (res && res.data) {
-        UserModule.setUserInfo(res.data)
-        localStorage.setItem("user", res.data);
-        this.$router.push("/");
+        const response: ApiResponse<
+          string
+        > = await HttpRequest.AdminModule.getTokenByUserId({
+          user_id: res.data.id
+        });
+        if (response) {
+          const { id, avatar_url, name } = res.data;
+          UserModule.setUserInfo({
+            id,
+            avatar_url,
+            name
+          });
+          localStorage.setItem("token", response.data);
+          localStorage.setItem("id",id);
+          localStorage.setItem("avatar_url", avatar_url);
+          localStorage.setItem("name", name);
+          this.$router.push("/");
+        }
       } else {
         this.$router.push("/signin");
       }
