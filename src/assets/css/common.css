@@ -10,6 +10,12 @@ html {
     justify-content: space-between;
 }
 
+.frsart {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+}
+
 .icon {
     width: 1em;
     height: 1em;

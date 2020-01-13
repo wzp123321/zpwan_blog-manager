@@ -154,7 +154,7 @@ export default class Signin extends Vue {
     return true;
   }
   /**
-   *  登录表单提交  getAdminLogin
+   *  登录表单提交
    */
   private handleSubmit() {
     this.form.validateFields(async (err: any, values: any) => {
