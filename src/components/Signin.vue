@@ -87,7 +87,7 @@
 
 <script lang="ts">
 import { Vue, Component, Watch } from "vue-property-decorator";
-import { Form, Button, Input, message } from "ant-design-vue";
+import { Form, Button, Input, message, notification } from "ant-design-vue";
 import IdentifyCode from "./IdentifyCode.vue";
 import HttpRequest from "@/assets/api/modules/index";
 
@@ -129,7 +129,6 @@ export default class Signin extends Vue {
    * 初始化
    */
   private created() {
-    // qq登录  https://wiki.connect.qq.com/%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C_oauth2-0
     this.form = this.$form.createForm(this);
     this.$nextTick(() => {
       window.addEventListener("keypress", e => {
@@ -170,6 +169,10 @@ export default class Signin extends Vue {
           localStorage.setItem("token", res.data);
           localStorage.setItem("name", username);
           this.$router.push("/app");
+          notification.success({
+            message: "登录成功",
+            description: "恭喜你登录成功，欢迎回来！"
+          });
         } else {
           this.form.setFields({
             username: { value: "", errors: [new Error("用户名或密码错误")] },

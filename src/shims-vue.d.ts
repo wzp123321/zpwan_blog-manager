@@ -34,9 +34,9 @@ interface MenuInfo {
  * admin信息
  */
 interface UserInfo {
-  id:string,
-  avatar_url:string,
-  name:string
+  id: string,
+  avatar_url: string,
+  name: string
 }
 
 
@@ -163,5 +163,15 @@ declare namespace BannerModule {
     isShelves: number | boolean,
     create_time: number,
     modify_time: number
+  }
+
+}
+
+declare namespace CommentModule {
+  interface CommentInfo {
+
+  }
+  interface LeaveMessageInfo{
+    
   }
 }

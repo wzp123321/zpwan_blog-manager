@@ -34,13 +34,13 @@ export default class UtilModule extends Vue {
    */
   private beforeUpload(fileList: Array<any>) {
     this.fileList = fileList;
-    console.log("file", fileList);
     return false;
   }
   /**
    * change事件
    */
   private handleChange(info: any) {}
+
 }
 </script>
 <style lang="less" scoped>

@@ -59,6 +59,8 @@
         <a-textarea placeholder="请输入描述" v-decorator="['description']" :rows="4" />
       </a-form-item>
       <a-form-item label="内容" :label-col="{ span: 3 }" :wrapper-col="{ offset:1,span: 21 }">
+        <!-- https://github.com/StarSky1/blog/issues/13 -->
+        <!--Todo 数据库修改成支持表情 -->
         <mavon-editor
           ref="markdownEditor"
           @change="handleMarkdownChange"
@@ -82,6 +84,7 @@ import { Vue, Component, Watch } from "vue-property-decorator";
 import { Form, Button, Input, Select } from "ant-design-vue";
 import UploadHandler from "@/components/Uploader.vue";
 import HttpRequest from "@/assets/api/modules/index";
+import { handleFileUpload } from "@/assets/api/upload";
 @Component({
   name: "ArticleCreate",
   components: {
@@ -132,16 +135,13 @@ export default class ArticleCreate extends Vue
    */
   private async imgAdd(pos: any, file: any) {
     // 第一步.将图片上传到服务器.
-    const res: ApiResponse<
-      FileInfo
-    > = await HttpRequest.UploaderModule.handleFileUploader({
-      file
+    await handleFileUpload(file, (res: ApiResponse<FileInfo>) => {
+      if (res && res.data) {
+        // 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
+        const markdown: any = this.$refs.markdownEditor;
+        markdown.$img2Url(pos, res.data.url);
+      }
     });
-    if (res && res.data) {
-      // 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
-      const markdown: any = this.$refs.markdownEditor;
-      markdown.$img2Url(pos, res.data.url);
-    }
   }
   /**
    * 图片删除

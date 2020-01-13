@@ -16,6 +16,7 @@
 import { Vue, Component } from "vue-property-decorator";
 import { UserModule } from "@/store/module/user";
 import HttpRequest from "@/assets/api/modules/index";
+import { notification } from "ant-design-vue";
 import axios from "axios";
 
 @Component({
@@ -55,6 +56,10 @@ export default class QQ_LoginModule extends Vue {
           localStorage.setItem("avatar_url", avatar_url);
           localStorage.setItem("name", name);
           this.$router.push("/");
+          notification.success({
+            message: "登录成功",
+            description: "恭喜你登录成功，欢迎回来！"
+          });
         }
       } else {
         this.$router.push("/signin");
