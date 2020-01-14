@@ -92,6 +92,11 @@ export default class ArticleList extends Vue {
       }
     },
     {
+      key: "id",
+      title: "ID",
+      dataIndex: "id"
+    },
+    {
       key: "title",
       title: "标题",
       dataIndex: "title"
@@ -143,7 +148,7 @@ export default class ArticleList extends Vue {
         return formatDate(record.create_time || 0);
       }
     },
-       {
+    {
       key: "modify_time",
       title: "修改时间",
       customRender: (
@@ -266,9 +271,9 @@ export default class ArticleList extends Vue {
       page: this.pagination.current,
       limit: 10
     });
-    const res: ApiResponse<
-      ListResponse<Array<ArticleModule.ArticleInfo>>
-    > = await HttpRequest.ArticleModule.getArticleList(this.searchParams);
+    const res: ApiResponse<ListResponse<
+      Array<ArticleModule.ArticleInfo>
+    >> = await HttpRequest.ArticleModule.getArticleList(this.searchParams);
     if (res && res.data) {
       const total = res.data.total;
       this.pagination.total = total;

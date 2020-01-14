@@ -19,6 +19,7 @@
     </div>
     <a-table
       bordered
+      :loading="loading"
       :rowKey="rowKey=>rowKey.id"
       :columns="columns"
       :dataSource="dataSource"
@@ -48,6 +49,7 @@ Vue.prototype.$message = message;
   }
 })
 export default class CommentList extends Vue {
+  private loading: boolean = false;
   private columns: Array<ColumnsInfo> = [
     {
       key: "sort",
@@ -75,6 +77,17 @@ export default class CommentList extends Vue {
       key: "content",
       title: "评论内容",
       dataIndex: "content"
+    },
+    {
+      key: "is_root",
+      title: "父级评论",
+      customRender: (
+        text: string,
+        record: CommentModule.CommentInfo,
+        index: number
+      ) => {
+        return record.is_root;
+      }
     },
     {
       key: "ups",
@@ -179,6 +192,7 @@ export default class CommentList extends Vue {
    * 请求数据
    */
   private async queryCommentList() {
+    this.loading = true;
     this.searchParams = Object.assign(this.searchParams, {
       page: this.pagination.current,
       limit: 10
@@ -193,6 +207,11 @@ export default class CommentList extends Vue {
       const total = res.data.total;
       this.dataSource = dataSource;
       this.pagination.total = total;
+      this.loading = false;
+      if (total >= 10 && dataSource.length === 0) {
+        this.pagination.current -= 1;
+        this.queryCommentList();
+      }
     }
   }
 
