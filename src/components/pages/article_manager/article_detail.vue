@@ -38,6 +38,13 @@ export default class ArticleDetail extends Vue {
       this.time = formatDate(this.articleInfo.create_time || 0);
     }
   }
+  /**
+   * 请求评论
+   */
+  private async getArticleCommentList(){
+    const id = this.$route.params.id;
+    
+  }
   created() {
     const id = this.$route.params.id;
     this.getArticleInfoById(id);

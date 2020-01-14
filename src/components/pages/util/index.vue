@@ -2,6 +2,7 @@
   <div class="comment-wrapper">
     <!-- 这里加一个输入框 评论 -->
     <CommentInput @release="releaseComment"></CommentInput>
+    <h1 class="title">全部评论</h1>
     <div v-for="(item,index) in comments" :key="index">
       <div class="frsp">
         <div>
@@ -124,8 +125,10 @@ export default class UtilModule extends Vue {
 }
 </script>
 <style lang="less" scoped>
-.first_comment {
-  height: 80px;
-  margin: 10px 0;
+.title {
+  font-size: 18px;
+  padding-left: 20px;
+  border-left: 3px solid #42c02e;
+  margin-top: 30px;
 }
 </style>

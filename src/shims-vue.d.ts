@@ -36,7 +36,8 @@ interface MenuInfo {
 interface UserInfo {
   id: string,
   avatar_url: string,
-  name: string
+  name: string,
+  loation:string
 }
 
 
