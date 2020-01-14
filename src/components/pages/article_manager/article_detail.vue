@@ -25,7 +25,11 @@
       <p>{{item.content}}</p>
       <p>
         点赞 --
-        <Button @click="()=>{ floor =index ;id= item.id}" style="background:#67c33d;border-radius:15px;border:0;color:#fff" :ghost="true">回复</Button>
+        <Button
+          @click="()=>{ floor =index ;id= item.id}"
+          style="background:#67c33d;border-radius:15px;border:0;color:#fff"
+          :ghost="true"
+        >回复</Button>
       </p>
       <div>
         <Input
@@ -61,11 +65,14 @@
               v-if="floor===index && id === childItem.id"
             />
           </div>
-          <p  placeholder="点击回复的时候传两个参数 一个是外层item表示是第几个评论楼  小的是当前需要回复的评论id-----这里没有@xxx"
-              v-if="floor===index && id === childItem.id">添加新评论</p>
+          <p
+            placeholder="点击回复的时候传两个参数 一个是外层item表示是第几个评论楼  小的是当前需要回复的评论id-----这里没有@xxx"
+            v-if="floor===index && id === childItem.id"
+          >添加新评论</p>
         </div>
       </div>
     </div>
+    <Button @click="test">1111111</Button>
   </div>
 </template>
 <script lang="ts">
@@ -91,7 +98,23 @@ export default class ArticleDetail extends Vue {
   private time: string = "";
 
   private comments: Array<{ [key: string]: any }> = [];
+  private async test() {
+    const res: any = await HttpRequest.CommentModule.getCommentCreate({
+      article_id: "f7c8c0f9-2d51-4915-b690-7bfd460beca2",
+      author:JSON.stringify( {
+        user_id:"22222323",
+        name: "万直鹏",
+        avatar_url: "http://127.0.0.1:9898/B4B269BDBD69EF82FE920B2BBB489AFC.jpg",
+        location:"location"
+      }),
+      content: "111111111",
+      parent_id: "",
+      is_root: true,
+      reply_userInfo: JSON.stringify({})
+    });
 
+    console.log("res", res);
+  }
   /**
    * 根据id获取详情
    */

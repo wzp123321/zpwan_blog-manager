@@ -169,9 +169,19 @@ declare namespace BannerModule {
 
 declare namespace CommentModule {
   interface CommentInfo {
-
+    id: string,
+    author: UserInfo,
+    article_id: string,
+    content: string,
+    is_delete: number,
+    ups: number,
+    downs: number,
+    parent_id: string,
+    is_root: string
+    reply_userInfo: string
+    create_time: number
   }
-  interface LeaveMessageInfo{
-    
+  interface LeaveMessageInfo {
+
   }
 }

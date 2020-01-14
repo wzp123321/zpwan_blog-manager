@@ -1,14 +1,10 @@
 export const comment_types: Array<{ [key: string]: any }> = [
     {
         key: 1,
-        value: "待审核"
+        value: "未删除"
     },
     {
         key: 2,
-        value: "审核通过"
+        value: "已删除"
     },
-    {
-        key: 3,
-        value: "审核不通过"
-    }
 ]
