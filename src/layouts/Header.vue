@@ -29,6 +29,9 @@
 <script lang="ts">
 import { Vue, Component, Emit, Prop, Watch } from "vue-property-decorator";
 import { Layout, Icon, Avatar, Modal, Breadcrumb } from "ant-design-vue";
+// 解决AMap使用语法提示
+declare let AMap:any;
+
 @Component({
   name: "HeaderBox",
   components: {

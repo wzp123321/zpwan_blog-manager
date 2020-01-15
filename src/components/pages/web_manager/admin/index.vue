@@ -63,7 +63,7 @@ export default class AdminModule extends Vue {
    */
   private handleSubmit(e: any) {
     e.preventDefault();
-    this.form.validateFields((err: any, values: UserInfo) => {
+    this.form.validateFields((err: any, values: WebManagerModule.UserInfo) => {
       console.log(values);
     });
   }

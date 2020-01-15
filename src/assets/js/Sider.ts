@@ -13,6 +13,17 @@ export const SiderRouters: Array<MenuInfo> = [
                 name: "首页banner管理",
                 en_name: "banner",
                 url: "/app/webmanager/banner/list"
+            },
+            {
+
+                name: "访客列表",
+                en_name: "touristList",
+                url: "/app/webManager/tourist"
+            },
+            {
+                name: "友情链接列表",
+                en_name: "friendly_link",
+                url: "/app/webManager/friendly_link"
             }
         ]
     },

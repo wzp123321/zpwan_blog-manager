@@ -132,7 +132,7 @@ export default class BannerList extends Vue {
   ];
   // 搜索条件
   private searchParams: { [key: string]: any } = {};
-  private dataSource: Array<BannerModule.BannerInfo> = [];
+  private dataSource: Array<WebManagerModule.BannerInfo> = [];
   // 分页
   private pagination: PaginationInfo = {
     current: 1,

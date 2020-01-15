@@ -128,7 +128,7 @@ export default class UtilModule extends Vue {
 .title {
   font-size: 18px;
   padding-left: 20px;
-  border-left: 3px solid #42c02e;
+  border-left: 3px solid #626362;
   margin-top: 30px;
 }
 </style>

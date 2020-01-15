@@ -12,6 +12,8 @@ const BannerModule = () => import("@/components/pages/web_manager/banners/index.
 const BannerCreate = () => import("@/components/pages/web_manager/banners/banner_create.vue")
 const BannerList = () => import("@/components/pages/web_manager/banners/banner_list.vue")
 const AdminModule = () => import("@/components/pages/web_manager/admin/index.vue")
+const TouristModule = () => import("@/components/pages/web_manager/tourist-manage/index.vue")
+const FriendlyLink = ()=>import("@/components/pages/web_manager/friendly_link/index.vue")
 // 字典模块
 const DictionaryModule = () => import("@/components/pages/dictionary/index.vue")
 const CatalogModule = () => import("@/components/pages/dictionary/catalog-manager/index.vue")
@@ -95,6 +97,16 @@ const routes = [
               },
             ]
           },
+          {
+            path: "/app/webManager/tourist",
+            component: TouristModule,
+            meta: { name: "访客管理" },
+          },
+          {
+            path: "/app/webManager/friendly_link",
+            component: FriendlyLink,
+            meta: { name: "友情链接管理" },
+          }
         ]
       },
       {

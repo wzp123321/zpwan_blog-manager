@@ -34,9 +34,9 @@ export default class TouristManage extends Vue {
       }
     },
     {
-      key: "id",
+      key: "user_id",
       title: "游客ID",
-      dataIndex: "id"
+      dataIndex: "user_id"
     },
     {
       key: "name",
@@ -60,7 +60,7 @@ export default class TouristManage extends Vue {
     total: 10
   };
   // 数据源
-  private dataSource: Array<UserInfo> = [];
+  private dataSource: Array<WebManagerModule.UserInfo> = [];
   /**
    * 表格change事件
    */
@@ -75,7 +75,7 @@ export default class TouristManage extends Vue {
     this.loading = true;
 
     const res: ApiResponse<ListResponse<
-      Array<UserInfo>
+      Array<WebManagerModule.UserInfo>
     >> = await HttpRequest.AdminModule.geTouristList({
       page: this.pagination.current,
       limit: 10

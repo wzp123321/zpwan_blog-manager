@@ -67,7 +67,7 @@ export default class BannerCreate extends Vue {
    */
   private handleSubmit(e: any) {
     e.preventDefault();
-    this.form.validateFields((err: Error, values: BannerModule.BannerInfo) => {
+    this.form.validateFields((err: Error, values: WebManagerModule.BannerInfo) => {
       if (!err) {
         this.loading = true;
         if (this.$route.path.includes("edit")) {
@@ -81,7 +81,7 @@ export default class BannerCreate extends Vue {
   /**
    * banner新增
    */
-  private async handleBannerAdd(values: BannerModule.BannerInfo) {
+  private async handleBannerAdd(values: WebManagerModule.BannerInfo) {
     values = Object.assign(values, {
       isShelves: values.isShelves ? 1 : 0
     });
@@ -100,7 +100,7 @@ export default class BannerCreate extends Vue {
   /**
    * banner编辑
    */
-  private async handleBannerUpdate(values: BannerModule.BannerInfo) {
+  private async handleBannerUpdate(values: WebManagerModule.BannerInfo) {
     const id = this.$route.params.id;
     const params = Object.assign(values, {
       id,
@@ -124,7 +124,7 @@ export default class BannerCreate extends Vue {
   private async getBannerInfoById() {
     const id = this.$route.params.id;
     const res: ApiResponse<
-      BannerModule.BannerInfo
+      WebManagerModule.BannerInfo
     > = await HttpRequest.BannerModule.getBannerInfoById({ id });
     if (res && res.data) {
       const { title, imgUrl, url, isShelves } = res.data;

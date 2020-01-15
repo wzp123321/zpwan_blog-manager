@@ -30,16 +30,6 @@ interface MenuInfo {
   children?: Array<MenuInfo>
 }
 
-/**
- * admin信息
- */
-interface UserInfo {
-  id: string,
-  avatar_url: string,
-  name: string,
-  loation:string
-}
-
 
 /**
  * 列数据
@@ -152,26 +142,11 @@ declare namespace ArticleModule {
   }
 }
 
-/**
- * banner模块
- */
-declare namespace BannerModule {
-  interface BannerInfo {
-    id: number,
-    title: string,
-    imgUrl: string,
-    url: string,
-    isShelves: number | boolean,
-    create_time: number,
-    modify_time: number
-  }
-
-}
 
 declare namespace CommentModule {
   interface CommentInfo {
     id: string,
-    author: UserInfo,
+    author: WebManagerModule.UserInfo,
     article_id: string,
     content: string,
     is_delete: number,
@@ -184,5 +159,38 @@ declare namespace CommentModule {
   }
   interface LeaveMessageInfo {
 
+  }
+}
+
+/**
+ * 前台管理模块
+ */
+declare namespace WebManagerModule {
+  interface FriendlyLinkInfo {
+    id:number,
+    name:string,
+    url:string,
+    isShelves:number,
+    create_time:number,
+    modify_time:number,
+  }
+
+  interface BannerInfo {
+    id: number,
+    title: string,
+    imgUrl: string,
+    url: string,
+    isShelves: number | boolean,
+    create_time: number,
+    modify_time: number
+  }
+  /**
+    * 访客信息
+    */
+  interface UserInfo {
+    id: string,
+    avatar_url: string,
+    name: string,
+    loation?: string
   }
 }

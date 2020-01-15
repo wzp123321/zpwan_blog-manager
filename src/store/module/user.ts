@@ -3,21 +3,21 @@ import store from "@/store"
 
 
 export interface IUserState {
-    userInfo: UserInfo
+    userInfo: WebManagerModule.UserInfo
 }
 
 @Module({ dynamic: true, store, name: 'user' })
 class User extends VuexModule implements IUserState {
-    public userInfo!:UserInfo ;
+    public userInfo!:WebManagerModule.UserInfo ;
 
     @Mutation
-    private SET_USER_INFO(data: UserInfo) {
+    private SET_USER_INFO(data: WebManagerModule.UserInfo) {
         console.log(data)
         this.userInfo = data
     }
 
     @Action
-    public async setUserInfo(userInfo: UserInfo) {
+    public async setUserInfo(userInfo: WebManagerModule.UserInfo) {
         this.SET_USER_INFO(userInfo);
     }
 }
