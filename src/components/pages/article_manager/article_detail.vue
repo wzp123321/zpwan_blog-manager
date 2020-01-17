@@ -4,6 +4,8 @@
       <h1>{{articleInfo.title}}</h1>
       <div>{{time}}</div>
     </div>
+    <Divider></Divider>
+    <div class="markdown-body" v-html="articleInfo.content"></div>
   </div>
 </template>
 <script lang="ts">
@@ -26,11 +28,11 @@ export default class ArticleDetail extends Vue {
    * 根据id获取详情
    */
   private async getArticleInfoById(id: string) {
-    const res: ApiResponse<
-      ArticleModule.ArticleInfo
-    > = await HttpRequest.ArticleModule.getArticleInfoById({
-      id
-    });
+    const res: ApiResponse<ArticleModule.ArticleInfo> = await HttpRequest.ArticleModule.getArticleInfoById(
+      {
+        id
+      }
+    );
 
     if (res && res.data) {
       const data = res.data;
@@ -41,9 +43,8 @@ export default class ArticleDetail extends Vue {
   /**
    * 请求评论
    */
-  private async getArticleCommentList(){
+  private async getArticleCommentList() {
     const id = this.$route.params.id;
-    
   }
   created() {
     const id = this.$route.params.id;
