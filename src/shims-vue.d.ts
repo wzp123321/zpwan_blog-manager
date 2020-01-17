@@ -119,9 +119,11 @@ declare namespace ArticleModule {
     title?: string,
     imgUrl?: string,
     content?: string,
+    md?: string,
     description?: string,
     author?: string,
     tags?: string,
+    quotes?: string,
     first_catalogId?: number,
     first_catalogName?: string,
     second_catalogId?: number,
@@ -167,12 +169,12 @@ declare namespace CommentModule {
  */
 declare namespace WebManagerModule {
   interface FriendlyLinkInfo {
-    id:number,
-    name:string,
-    url:string,
-    isShelves:number,
-    create_time:number,
-    modify_time:number,
+    id: number,
+    name: string,
+    url: string,
+    isShelves: number,
+    create_time: number,
+    modify_time: number,
   }
 
   interface BannerInfo {

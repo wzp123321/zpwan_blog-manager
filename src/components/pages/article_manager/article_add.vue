@@ -55,13 +55,13 @@
           >{{item.value}}</a-select-option>
         </a-select>
       </a-form-item>
+       <a-form-item label="名言警句" :label-col="{ span: 3 }" :wrapper-col="{ offset:1,span: 10 }">
+        <a-input placeholder="请输入名言警句" v-decorator="['quotes', { rules: [{ required: true, message: '请输入名言警句!' }] }]" />
+      </a-form-item>
       <a-form-item label="描述" :label-col="{ span: 3 }" :wrapper-col="{ offset:1,span: 10 }">
         <a-textarea placeholder="请输入描述" v-decorator="['description']" :rows="4" />
       </a-form-item>
       <a-form-item label="内容" :label-col="{ span: 3 }" :wrapper-col="{ offset:1,span: 21 }">
-        <!-- https://github.com/StarSky1/blog/issues/13 -->
-
-        <!--Todo 数据库修改成支持表情 -->
         <mavon-editor
           ref="markdownEditor"
           @change="handleMarkdownChange"
@@ -70,9 +70,7 @@
           @imgDel="imgDel"
           :ishljs="true"
           :toolbars="toolbars"
-          v-model="content"
-          :navigation="true"
-          @navigationToggle="navigationToggle"
+          v-model="md"
         />
         <p style="color:red">{{contentMsg}}</p>
       </a-form-item>
@@ -110,8 +108,8 @@ export default class ArticleCreate extends Vue
   implements ArticleModule.CatalogArray {
   // form
   private form: any;
-  // 编辑器内容
-  private content: string = "";
+  // 编辑器内容--
+  private md: string = "";
   // 编辑器html代码
   private html: string = "";
   // 内容提示语
@@ -168,19 +166,10 @@ export default class ArticleCreate extends Vue
     console.log(value);
   }
   /**
-   * 开启导航目录事件
-   */
-  private navigationToggle(status: boolean, value: string) {
-    console.log("status", status);
-    console.log("value", value.split('\n'));
-  }
-  /**
    * 编辑器change事件
    */
   handleMarkdownChange(value: any, render: any) {
-    // <!-- https://github.com/markdown-it/markdown-it-emoji -->
-    // <!-- https://github.com/highlightjs/highlight.js -->
-    // https://github.com/hinesboy/mavonEditor
+    this.md = value;
     this.html = render;
   }
   /**
@@ -238,8 +227,9 @@ export default class ArticleCreate extends Vue
       title,
       imgUrl,
       description,
-      content,
+      md,
       tags,
+      quotes,
       first_catalogId,
       second_catalogId
     } = values;
@@ -247,14 +237,14 @@ export default class ArticleCreate extends Vue
     this.imgUrl = imgUrl || "";
     this.form.setFieldsValue({
       title,
-      content,
       imgUrl,
       description,
       tags: tags ? tags.split(",") : [],
+      quotes,
       first_catalogId,
       second_catalogId
     });
-    this.content = content || "";
+    this.md = md || "";
     this.querySelectData({ pId: first_catalogId }, "secondCatalogs");
   }
 
@@ -267,6 +257,7 @@ export default class ArticleCreate extends Vue
       title,
       imgUrl,
       tags,
+      quotes,
       description,
       first_catalogId,
       second_catalogId
@@ -280,7 +271,9 @@ export default class ArticleCreate extends Vue
         tags: tags.join(","),
         first_catalogId,
         second_catalogId,
-        content: this.html
+        md: this.md,
+        content: this.html,
+        quotes
       }
     );
 
@@ -300,6 +293,7 @@ export default class ArticleCreate extends Vue
       imgUrl,
       tags,
       description,
+      quotes,
       first_catalogId,
       second_catalogId
     } = values;
@@ -311,7 +305,9 @@ export default class ArticleCreate extends Vue
         tags: tags.join(","),
         first_catalogId,
         second_catalogId,
-        content: this.html
+        md: this.md,
+        content: this.html,
+        quotes
       }
     );
 
@@ -328,7 +324,7 @@ export default class ArticleCreate extends Vue
   private handleSubmit(e: any) {
     e.preventDefault();
     this.form.validateFields(async (err: Error, values: any) => {
-      if (this.content === "") {
+      if (this.md === "") {
         this.contentMsg = "请输入内容!";
         return;
       }
@@ -374,21 +370,6 @@ export default class ArticleCreate extends Vue
     };
     queryAll(page);
   }
-  // mounted() {
-  //   this.$nextTick(() => {
-  //     const articleadd: any = this.$refs.article_add;
-  //     this.totalHeight =
-  //       articleadd.offsetHeight - document.documentElement.clientHeight + 64;
-  //     articleadd.parentNode.addEventListener(
-  //       "scroll",
-  //       () => {
-  //         var scrollTop = articleadd.parentNode.scrollTop;
-  //         this.currentHeight = scrollTop;
-  //       },
-  //       true
-  //     );
-  //   });
-  // }
   async created() {
     this.form = this.$form.createForm(this);
 
