@@ -23,7 +23,7 @@ export const SiderRouters: Array<MenuInfo> = [
             {
                 name: "友情链接列表",
                 en_name: "friendly_link",
-                url: "/app/webManager/friendly_link"
+                url: "/app/webManager/friendlink"
             }
         ]
     },
@@ -36,11 +36,6 @@ export const SiderRouters: Array<MenuInfo> = [
                 name: "评论列表",
                 en_name: "commentlist",
                 url: "/app/comment/list"
-            },
-            {
-                name: "评论白名单",
-                en_name: "commentwhitelist",
-                url: "/app/comment/whitelist"
             },
             {
                 name: "留言列表",

@@ -13,7 +13,9 @@ const BannerCreate = () => import("@/components/pages/web_manager/banners/banner
 const BannerList = () => import("@/components/pages/web_manager/banners/banner_list.vue")
 const AdminModule = () => import("@/components/pages/web_manager/admin/index.vue")
 const TouristModule = () => import("@/components/pages/web_manager/tourist-manage/index.vue")
-const FriendlyLink = ()=>import("@/components/pages/web_manager/friendly_link/index.vue")
+const FriendlyModule = () => import("@/components/pages/web_manager/friendly_link/index.vue")
+const FriendlyLinkList = () => import("@/components/pages/web_manager/friendly_link/friendly_link_list.vue")
+const FriendlyLinkEditAdd = () => import("@/components/pages/web_manager/friendly_link/friendly_link_edit_add.vue")
 // 字典模块
 const DictionaryModule = () => import("@/components/pages/dictionary/index.vue")
 const CatalogModule = () => import("@/components/pages/dictionary/catalog-manager/index.vue")
@@ -30,7 +32,6 @@ const UtilModule = () => import("@/components/pages/util/index.vue")
 // 评论模块
 const CommentModule = () => import("@/components/pages/comment_manager/index.vue")
 const CommentList = () => import("@/components/pages/comment_manager/comment_list/index.vue")
-const WhiteList = () => import("@/components/pages/comment_manager/whitelist_manager/index.vue")
 const LeaveMessageList = () => import("@/components/pages/comment_manager/leaveMessage_manager/index.vue")
 Vue.use(VueRouter)
 
@@ -103,9 +104,27 @@ const routes = [
             meta: { name: "访客管理" },
           },
           {
-            path: "/app/webManager/friendly_link",
-            component: FriendlyLink,
+            path: "/app/webManager/friendlink",
+            component: FriendlyModule,
             meta: { name: "友情链接管理" },
+            redirect: "/app/webManager/friendlink/list",
+            children: [
+              {
+                path: "/app/webManager/friendlink/list",
+                component: FriendlyLinkList,
+                meta: { name: "友情链接列表" },
+              },
+              {
+                path: "/app/webManager/friendlink/add",
+                component: FriendlyLinkEditAdd,
+                meta: { name: "友情链接新增" },
+              },
+              {
+                path: "/app/webManager/friendlink/edit/:id",
+                component: FriendlyLinkEditAdd,
+                meta: { name: "友情链接编辑" },
+              }
+            ]
           }
         ]
       },
@@ -185,13 +204,6 @@ const routes = [
               name: "评论列表"
             },
             component: CommentList
-          },
-          {
-            path: "/app/comment/whitelist",
-            meta: {
-              name: "评论白名单管理"
-            },
-            component: WhiteList
           },
           {
             path: "/app/message/list",

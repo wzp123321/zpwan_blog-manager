@@ -2,12 +2,16 @@
   <a-table
     bordered
     :loading="loading"
-    :rowKey="rowKey=>rowKey.id"
+    :rowKey="rowKey=>rowKey.user_id"
     :columns="columns"
     :dataSource="dataSource"
     :pagination="JSON.stringify(dataSource) ==='[]' ? false : pagination"
     @change="handleTableChange"
-  ></a-table>
+  >
+    <template slot="avatar_url" slot-scope="text,record">
+      <img :src="record.avatar_url" alt style="width:60px;height:60px;border-radius:4px;"/>
+    </template>
+  </a-table>
 </template>
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";

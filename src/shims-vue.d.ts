@@ -169,12 +169,13 @@ declare namespace CommentModule {
  */
 declare namespace WebManagerModule {
   interface FriendlyLinkInfo {
-    id: number,
-    name: string,
-    url: string,
-    isShelves: number,
-    create_time: number,
-    modify_time: number,
+    id?: number,
+    name?: string,
+    ico?: string,
+    url?: string,
+    isShelves?: number,
+    create_time?: number,
+    modify_time?: number,
   }
 
   interface BannerInfo {
