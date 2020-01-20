@@ -1,13 +1,9 @@
 <template>
   <div>
-    今日访客：111
-    今天留言：111，
-    1.本月方可量
-    2.本月点赞量
-    3.本月分享量
+   1.新建表情管理表  可新增表情  存储Unicode编码
     // 1F923 可以根据http://unicode.org/emoji/charts/full-emoji-list.html这里面找对应的
     <span
-      v-html="`&\#`+`x1F923`"
+      v-html="`&\#x1F923`"
     ></span>
   </div>
 </template>

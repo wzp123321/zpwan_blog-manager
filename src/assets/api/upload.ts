@@ -22,5 +22,10 @@ export const handleFileUpload = async (file: File, callback: Function) => {
             }
         ]
     })
+
+    if (res.data.code === 403) {
+        window.location.href = "/signin";
+        localStorage.clear();
+    }
     callback(res.data);
 }

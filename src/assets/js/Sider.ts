@@ -16,9 +16,9 @@ export const SiderRouters: Array<MenuInfo> = [
             },
             {
 
-                name: "访客列表",
-                en_name: "touristList",
-                url: "/app/webManager/tourist"
+                name: "管理员列表",
+                en_name: "adminList",
+                url: "/app/webManager/adminlist"
             },
             {
                 name: "友情链接列表",

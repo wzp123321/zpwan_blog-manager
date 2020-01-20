@@ -47,9 +47,10 @@ export default class QQ_LoginModule extends Vue {
         if (response) {
           const { id, avatar_url, name } = res.data;
           UserModule.setUserInfo({
-            id,
+            user_id:id,
             avatar_url,
-            name
+            name,
+            location:""
           });
           localStorage.setItem("token", response.data);
           localStorage.setItem("id", id);

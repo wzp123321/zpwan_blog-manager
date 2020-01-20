@@ -12,7 +12,7 @@ const BannerModule = () => import("@/components/pages/web_manager/banners/index.
 const BannerCreate = () => import("@/components/pages/web_manager/banners/banner_create.vue")
 const BannerList = () => import("@/components/pages/web_manager/banners/banner_list.vue")
 const AdminModule = () => import("@/components/pages/web_manager/admin/index.vue")
-const TouristModule = () => import("@/components/pages/web_manager/tourist-manage/index.vue")
+const AdminListManage = () => import("@/components/pages/web_manager/admin-manage/index.vue")
 const FriendlyModule = () => import("@/components/pages/web_manager/friendly_link/index.vue")
 const FriendlyLinkList = () => import("@/components/pages/web_manager/friendly_link/friendly_link_list.vue")
 const FriendlyLinkEditAdd = () => import("@/components/pages/web_manager/friendly_link/friendly_link_edit_add.vue")
@@ -28,7 +28,7 @@ const ArticleDetail = () => import("@/components/pages/article_manager/article_d
 const ArticleEdit = () => import("@/components/pages/article_manager/article_add.vue")
 
 // 工具模块
-const UtilModule = () => import("@/components/pages/util/index.vue")
+const UtilModule = () => import("@/components/pages/web-util/index.vue")
 // 评论模块
 const CommentModule = () => import("@/components/pages/comment_manager/index.vue")
 const CommentList = () => import("@/components/pages/comment_manager/comment_list/index.vue")
@@ -99,9 +99,9 @@ const routes = [
             ]
           },
           {
-            path: "/app/webManager/tourist",
-            component: TouristModule,
-            meta: { name: "访客管理" },
+            path: "/app/webManager/adminlist",
+            component: AdminListManage,
+            meta: { name: "管理员管理" },
           },
           {
             path: "/app/webManager/friendlink",

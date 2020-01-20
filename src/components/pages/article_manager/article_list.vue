@@ -3,7 +3,7 @@
     <ArticleHeader @change="handleHeaderSelect"></ArticleHeader>
     <a-table
       style="margin-top:10px"
-      :scroll="{ x: 1100 }"
+      :scroll="{ x: 2000 }"
       :columns="columns"
       :rowKey="record => record.id"
       :dataSource="dataSource"

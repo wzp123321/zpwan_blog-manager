@@ -84,10 +84,6 @@ export async function req(params: { [key: string]: any }, delay = Global_Delay) 
       timeoutfn(delay, params.url),
       publicReq(params),
     ]);
-    if (response.data.code === 401) {
-      localStorage.removeItem("token");
-      location.href = '/';
-    }
     return response;
   } catch (error) {
     throw new Error(error);

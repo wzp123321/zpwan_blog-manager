@@ -188,12 +188,22 @@ declare namespace WebManagerModule {
     modify_time: number
   }
   /**
-    * 访客信息
+    *  管理员信息
     */
+  interface AdminInfo {
+    admin_id: string,
+    admin_name: string,
+    role: number,
+    isShelves: number,
+    operator: string,
+    create_time: number,
+    modify_time: number,
+  }
+
   interface UserInfo {
-    id: string,
-    avatar_url: string,
+    user_id: string,
     name: string,
-    loation?: string
+    avatar_url: string,
+    location: string,
   }
 }

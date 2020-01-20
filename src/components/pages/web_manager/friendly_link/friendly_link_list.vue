@@ -5,6 +5,7 @@
       :friendlyLinkInfo="friendlyLinkInfo"
       @select="handleHeaderSelect"
     ></FriendlyLinkHeader>
+    <p>备注：再审核的时候注意头像是否可用 如果不可用记得给个默认头像</p>
     <a-table
       style="margin-top:10px"
       bordered
