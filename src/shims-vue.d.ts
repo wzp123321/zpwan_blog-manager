@@ -193,9 +193,9 @@ declare namespace WebManagerModule {
   interface AdminInfo {
     admin_id: string,
     admin_name: string,
+    admin_password: string,
     role: number,
-    isShelves: number,
-    operator: string,
+    avatar_url: string,
     create_time: number,
     modify_time: number,
   }

@@ -5,7 +5,7 @@ export const SiderRouters: Array<MenuInfo> = [
         icon: "user",
         children: [
             {
-                name: "用户信息管理",
+                name: "管理员信息管理",
                 en_name: "personal",
                 url: "/app/webmanager/admin"
             },
