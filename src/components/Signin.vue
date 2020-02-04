@@ -178,6 +178,7 @@ export default class Signin extends Vue {
             username: { value: "", errors: [new Error("用户名或密码错误")] },
             password: { value: "", errors: [new Error("用户名或密码错误")] }
           });
+          this.loading =false;
         }
       }
     });
