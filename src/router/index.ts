@@ -11,7 +11,7 @@ const WebManagerModule = () => import("@/components/pages/web_manager/index.vue"
 const BannerModule = () => import("@/components/pages/web_manager/banners/index.vue")
 const BannerCreate = () => import("@/components/pages/web_manager/banners/banner_create.vue")
 const BannerList = () => import("@/components/pages/web_manager/banners/banner_list.vue")
-const AdminModule = () => import("@/components/pages/web_manager/admin/index.vue")
+const NoticeManage = () => import("@/components/pages/web_manager/notice-manage/index.vue")
 const AdminListManage = () => import("@/components/pages/web_manager/admin-manage/index.vue")
 const FriendlyModule = () => import("@/components/pages/web_manager/friendly_link/index.vue")
 const FriendlyLinkList = () => import("@/components/pages/web_manager/friendly_link/friendly_link_list.vue")
@@ -61,11 +61,11 @@ const routes = [
         component: WebManagerModule,
         children: [
           {
-            path: "/app/webmanager/admin",
+            path: "/app/webmanager/notice",
             meta: {
-              name: "用户信息管理"
+              name: "web通知管理"
             },
-            component: AdminModule,
+            component: NoticeManage,
           },
           {
             path: "/app/webmanager/banner",
@@ -239,7 +239,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  mode: "history",
+  mode: "hash",
   routes
 })
 

@@ -1,6 +1,6 @@
 <template>
   <div class="admin-wrapper">
-    <Button type="primary" @click="()=>{visible=true}">新增管理员</Button>
+    <Button type="primary" @click="handleAddAdmin">新增管理员</Button>
     <a-table
       style="margin-top:10px;"
       bordered
@@ -187,6 +187,18 @@ export default class AdminListManage extends Vue {
     this.pagination.current = pagination.current;
     this.queryTouristList();
   }
+  // 新增打开对话框
+  private handleAddAdmin() {
+    this.form.setFieldsValue({
+      admin_name: "",
+      admin_password: "",
+      role: 1,
+      avatar_url: ""
+    });
+    this.admin_id = "";
+    this.visible = true;
+  }
+  // 打开对话框
   private handleAdminOperation(e: any) {
     e.preventDefault();
     this.form.validateFields(
@@ -201,6 +213,7 @@ export default class AdminListManage extends Vue {
       }
     );
   }
+  // 编辑
   private async handleAdminEdit(values: WebManagerModule.AdminInfo) {
     const { admin_name, admin_password, role, avatar_url } = values;
     const { admin_id } = this;
@@ -220,6 +233,7 @@ export default class AdminListManage extends Vue {
       this.queryTouristList();
     }
   }
+  // 新增
   private async handleAdminAdd(values: WebManagerModule.AdminInfo) {
     const { admin_name, admin_password, role, avatar_url } = values;
     const res: ApiResponse<boolean> = await HttpRequest.AdminModule.getAdminCreate(
@@ -254,7 +268,7 @@ export default class AdminListManage extends Vue {
             that.$message.success("删除成功");
             that.queryTouristList();
           } else {
-            that.$message.error("不可删除！");
+            that.$message.error("权限不足,不可删除！");
           }
         }
       }

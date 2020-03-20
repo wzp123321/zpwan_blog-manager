@@ -46,7 +46,7 @@ export default class Home extends Vue {
     if (res && res.code === 200) {
       next();
     } else {
-      window.location.href = "/signin";
+      window.location.href = "/#/signin";
     }
   }
 }

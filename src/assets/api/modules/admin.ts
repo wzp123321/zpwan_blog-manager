@@ -39,5 +39,25 @@ export default {
     async getAdminUpdateById(params: { [key: string]: any }) {
         const url = "/admin/update";
         return postRequest(url, params);
+    },
+    async getNoticeAdd(params: { [key: string]: any }) {
+        const url = "/notice/add";
+        return postRequest(url, params);
+    },
+    async getNoticeUpdate(params: { [key: string]: any }) {
+        const url = "/notice/update";
+        return postRequest(url, params);
+    },
+    async getNoticeDelete(params: { [key: string]: any }) {
+        const url = "/notice/delete";
+        return getRequest(url, params);
+    },
+    async getNoticeInfoById(params: { [key: string]: any }) {
+        const url = "/notice/getById";
+        return getRequest(url, params);
+    },
+    async getNoticeList(params: { [key: string]: any }) {
+        const url = "/notice/list";
+        return getRequest(url, params);
     }
 }

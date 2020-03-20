@@ -6,7 +6,7 @@ export interface IUserState {
     userInfo: WebManagerModule.UserInfo
 }
 
-@Module({ dynamic: true, store, name: 'user' })
+@Module({ dynamic: true, store, name: 'User' })
 class User extends VuexModule implements IUserState {
     public userInfo!:WebManagerModule.UserInfo ;
 

@@ -5,9 +5,9 @@ export const SiderRouters: Array<MenuInfo> = [
         icon: "user",
         children: [
             {
-                name: "管理员信息管理",
-                en_name: "personal",
-                url: "/app/webmanager/admin"
+                name: "web通知管理",
+                en_name: "notice",
+                url: "/app/webmanager/notice"
             },
             {
                 name: "首页banner管理",

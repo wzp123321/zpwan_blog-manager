@@ -206,4 +206,14 @@ declare namespace WebManagerModule {
     avatar_url: string,
     location: string,
   }
+  /**
+   * 通知信息
+   */
+  interface NoticeInfo {
+    id?: number,
+    content?: string,
+    isEmergency?: number,
+    create_time?: number,
+    modify_time?: number,
+  }
 }
