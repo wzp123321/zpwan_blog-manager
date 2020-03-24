@@ -92,11 +92,6 @@ export default class ArticleList extends Vue {
       }
     },
     {
-      key: "id",
-      title: "ID",
-      dataIndex: "id"
-    },
-    {
       key: "title",
       title: "标题",
       dataIndex: "title"

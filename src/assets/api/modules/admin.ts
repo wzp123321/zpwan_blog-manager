@@ -57,7 +57,7 @@ export default {
         return getRequest(url, params);
     },
     async getNoticeList(params: { [key: string]: any }) {
-        const url = "/notice/list";
+        const url = "/notice/web/list";
         return getRequest(url, params);
     }
 }
