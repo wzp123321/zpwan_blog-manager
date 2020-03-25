@@ -1,19 +1,18 @@
 <template>
   <div class="pictuer-canvas frsart">
+    <!-- 
+      CanvasRenderingContext2D.restore() 是 Canvas 2D API 通过在绘图状态栈中弹出顶端的状态，将 canvas 恢复到最近的保存状态的方法。 如果没有保存状态，此方法不做任何改变。
+CanvasRenderingContext2D.save() 是 Canvas 2D API 通过将当前状态放入栈中，保存 canvas 全部状态的方法。
+    -->
     <!-- /**
-    2.颜色选择
-    3.完成撤销
-    4.完成恢复
     5.生成图片
-    6.完成一键清空(只清空鼠标画的)
-    7.完成画布删除(清空画布包括图片以及鼠标画的)
     */-->
     <!-- https://juejin.im/post/5e717376e51d4526dd1ec2e6?utm_source=gold_browser_extension#heading-14 -->
     <!-- https://www.jianshu.com/p/a84e8b760ed1 -->
     <div class="canvas-wrapper">
       <canvas
-        width="800"
-        height="400"
+        :width="WIDTH"
+        :height="HEIGHT"
         id="pic_canvas"
         ref="pic_canvas"
         @mousedown="handleCanvasMouseDown"
@@ -24,22 +23,54 @@
       <UploadHandler :imgUrl="current_imgUrl" @change="handleImgUploader"></UploadHandler>
       <p>画布操作:</p>
       <div class="operation-icon">
-        <svg
-          :class="['icon',!isClear ? 'clear-active' : '']"
-          aria-hidden="true"
-          @click="handleMouseModeChange(false)"
-        >
-          <use xlink:href="#icon-pencil" />
-        </svg>
-        <svg
-          :class="['icon',isClear ? 'clear-active' : '']"
-          aria-hidden="true"
-          @click="handleMouseModeChange(true)"
-        >
-          <use xlink:href="#icon-xiangpica1" />
-        </svg>
-        <i class="iconfont icon-houtui-shi"></i>
-        <i class="iconfont icon-qianjin-shi"></i>
+        <Tooltip placement="bottomLeft">
+          <template slot="title">
+            <span>画笔</span>
+          </template>
+          <svg
+            :class="['icon',!isClear ? 'clear-active' : '']"
+            aria-hidden="true"
+            @click="handleMouseModeChange(false)"
+          >
+            <use xlink:href="#icon-pencil" />
+          </svg>
+        </Tooltip>
+        <Tooltip placement="bottomLeft">
+          <template slot="title">
+            <span>橡皮擦</span>
+          </template>
+          <svg
+            :class="['icon',isClear ? 'clear-active' : '']"
+            aria-hidden="true"
+            @click="handleMouseModeChange(true)"
+          >
+            <use xlink:href="#icon-xiangpica1" />
+          </svg>
+        </Tooltip>
+        <Tooltip placement="bottomLeft">
+          <template slot="title">
+            <span>撤销</span>
+          </template>
+          <i
+            :class="['iconfont','icon-houtui-shi',canvasHistoryList.length<2 ? 'no-click' : '']"
+            @click="handleCanvasGoBack"
+          ></i>
+        </Tooltip>
+        <Tooltip placement="bottomLeft">
+          <template slot="title">
+            <span>前进</span>
+          </template>
+          <i
+            :class="['iconfont','icon-qianjin-shi',cancelHistoryList.length<1 ? 'no-click' : '']"
+            @click="handleCanvasForward"
+          ></i>
+        </Tooltip>
+        <Tooltip placement="bottomLeft">
+          <template slot="title">
+            <span>清空画布</span>
+          </template>
+          <i class="iconfont icon-qingkonglishijilu" @click="clearAllData"></i>
+        </Tooltip>
       </div>
       <p>颜色选取:</p>
       <div class="color-choose">
@@ -51,24 +82,36 @@
           @click="handleColorChoose(index)"
         ></span>
       </div>
+      <p>画笔尺寸:</p>
+      <Slider :value="pencilSize" :max="10" :min="0" @change="(value)=>{pencilSize= value}" />
+      <p>橡皮尺寸:</p>
+      <Slider :value="clearSize" :max="50" :min="0" @change="(value)=>{clearSize= value}" />
+      <div class="clear-size"></div>
+      <Button type="default" @click="handleImageCreate">生成图片</Button>
     </div>
   </div>
 </template>
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
-import { Input, message, Button } from "ant-design-vue";
+import { Input, message, Button, Tooltip, Slider } from "ant-design-vue";
 import UploadHandler from "@/components/Uploader.vue";
 import HttpRequest from "@/assets/api/modules/index";
+import html2canvas from "html2canvas";
 Vue.prototype.$message = message;
+
 @Component({
   name: "UtilModule",
   components: {
     Input,
     Button,
-    UploadHandler
+    UploadHandler,
+    Tooltip,
+    Slider
   }
 })
 export default class UtilModule extends Vue {
+  private WIDTH: number = 800;
+  private HEIGHT: number = 400;
   // 画布对象
   private theCanvas: any = null;
   // 2d对象
@@ -79,8 +122,6 @@ export default class UtilModule extends Vue {
   private isClear: boolean = false;
   // 是否拖动鼠标
   private isdragging: boolean = false;
-  // 鼠标图片地址
-  private mouseImg: string = "http://cdn.algbb.cn/pencil.ico"; // 默认
   // 选取颜色数组
   private colors: string[] = [
     "#333333",
@@ -93,13 +134,21 @@ export default class UtilModule extends Vue {
   ];
   // 当前颜色索引
   private colorIndex: number = 0;
+  // 每次画完之后存储canvas数组
+  private canvasHistoryList: ImageData[] = [];
+  // 撤销的imageData数组
+  private cancelHistoryList: ImageData[] = [];
+  // 画笔尺寸
+  private pencilSize: number = 1;
+  // 橡皮擦尺寸
+  private clearSize: number = 20;
   // 图片上传
   private handleImgUploader(url: string) {
     this.current_imgUrl = url;
     let img = new Image();
     img.src = url;
     img.onload = () => {
-      this.context.drawImage(img, 0, 0, 800, 400);
+      this.context.drawImage(img, 0, 0, this.WIDTH, this.HEIGHT);
     };
   }
   // 鼠标图标选择
@@ -139,22 +188,23 @@ export default class UtilModule extends Vue {
       console.warn("暂不支持canvas");
       return false;
     } else {
+      // 打开拖拽开关
       this.isdragging = true;
       //获得鼠标按下的点相对canvas的坐标。
       let ele = this.windowToCanvas(e.clientX, e.clientY);
-      //es6的解构赋值
       let { x, y } = ele;
       //绘制起点。
+      context.beginPath();
       context.moveTo(x, y);
+      context.lineWidth = this.pencilSize;
       document.onmousemove = (el: any) => {
         if (this.isdragging) {
           //移动时获取新的坐标位置，用lineTo记录当前的坐标，然后stroke绘制上一个点到当前点的路径
           let ele = this.windowToCanvas(el.clientX, el.clientY);
           let { x, y } = ele;
           if (this.isClear) {
-            context.save(); //入栈
-            this.clearCanvas(x, y);
-            context.restore();
+            // 橡皮擦
+            this.clearCanvas(x, y, this.clearSize, this.clearSize);
           } else {
             context.lineTo(x, y);
             context.strokeStyle = colors[colorIndex];
@@ -164,20 +214,95 @@ export default class UtilModule extends Vue {
       };
       // 鼠标抬起
       document.onmouseup = (el: any) => {
-        this.isdragging = false;
+        if (this.isdragging) {
+          this.isdragging = false;
+          // 每次鼠标抬起 就存下当前绘制的内容
+          const imageData: ImageData = context.getImageData(
+            0,
+            0,
+            this.WIDTH,
+            this.HEIGHT
+          );
+          this.canvasHistoryList.push(imageData);
+          // putImageData 通过这个来
+        }
       };
     }
   }
   // 清除功能
-  clearCanvas(x: number, y: number) {
+  clearCanvas(x: number, y: number, width: number, height: number) {
     const { context } = this;
+    context.save(); //入栈
     context.beginPath(); //  我们在创建一个集合图形之前，都应当先调用该方法，该方法会清除上一次绘制时留下的路径，并将本次绘制的路径作为 ~当前路径~。
-    context.clearRect(x, y, 20, 20);
+    context.clearRect(x, y, width, height);
+    context.restore();
   }
-  mounted() {
+  // 清空全部数据
+  private clearAllData() {
+    this.clearCanvas(0, 0, 800, 400);
+    this.cancelHistoryList = [];
+    this.canvasHistoryList = [];
+    this.initData();
+  }
+  // 撤销
+  private handleCanvasGoBack() {
+    const { canvasHistoryList, cancelHistoryList } = this;
+    if (canvasHistoryList.length === 1) {
+      return;
+    }
+    let newImgData = canvasHistoryList[canvasHistoryList.length - 1];
+    cancelHistoryList.push(newImgData);
+    canvasHistoryList.pop();
+    newImgData = canvasHistoryList[canvasHistoryList.length - 1];
+    this.context.beginPath();
+    this.context.putImageData(newImgData, 0, 0);
+  }
+  // 前进
+  private handleCanvasForward() {
+    const { canvasHistoryList, cancelHistoryList } = this;
+    if (cancelHistoryList.length === 0) {
+      return;
+    }
+    let newImgData = cancelHistoryList[cancelHistoryList.length - 1];
+    canvasHistoryList.push(newImgData);
+    cancelHistoryList.pop();
+    newImgData = canvasHistoryList[canvasHistoryList.length - 1];
+    this.context.beginPath();
+    this.context.putImageData(newImgData, 0, 0);
+  }
+  // 生成图片
+  private handleImageCreate() {
+    const canvas_pic: any = document.getElementById("pic_canvas");
+    html2canvas(canvas_pic, {
+      logging: false
+    }).then((canvas: any) => {
+      let img = new Image();
+      const imgUrl = canvas.toDataURL("image/png");
+      img.src = imgUrl;
+      let a = document.createElement("a");
+      a.href = imgUrl;
+      a.download = "canvas";
+      a.click();
+    });
+  }
+  // 初始化
+  private initData() {
+    /**
+     * 初始化画布 绘制一个白色背景 将内容存进imageData
+     */
+    const { WIDTH, HEIGHT } = this;
     this.theCanvas = document.querySelector("#pic_canvas");
     this.context = this.theCanvas.getContext("2d");
+    this.context.fillStyle = "#fff";
+    this.context.fillRect(0, 0, this.WIDTH, this.HEIGHT);
+    const imageData: ImageData = this.context.getImageData(0, 0, WIDTH, HEIGHT);
+    this.canvasHistoryList.push(imageData);
     this.handleMouseModeChange(false);
+  }
+  mounted() {
+    this.$nextTick(() => {
+      this.initData();
+    });
   }
 }
 </script>
@@ -196,7 +321,7 @@ export default class UtilModule extends Vue {
     p {
       font-size: 14px;
       color: #999;
-      margin: 5px;
+      margin: 15px 5px 5px 0;
     }
     .operation-icon {
       padding: 2px;
@@ -231,6 +356,12 @@ export default class UtilModule extends Vue {
       .color-span-active {
         border: 1px solid #000;
       }
+    }
+    button {
+      margin: 15px 0;
+      padding: 0 30px;
+      color: #06a5ff;
+      border: none;
     }
   }
 }

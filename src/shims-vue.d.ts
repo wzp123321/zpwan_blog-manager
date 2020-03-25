@@ -3,13 +3,12 @@ declare module '*.vue' {
   export default Vue
 }
 
-
 /**
  * 索引
  */
 type tplotOptions = {
   [key: string]: Function;
-};
+}
 
 interface ApiResponse<T> {
   code: number,
