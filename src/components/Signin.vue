@@ -161,14 +161,21 @@ export default class Signin extends Vue {
       if (!err && this.checkIdentityCode(values.identifycode)) {
         this.loading = true;
         const { username, password } = values;
-        const res: ApiResponse<
-          string
-        > = await HttpRequest.AdminModule.getAdminLogin({ username, password });
+        const res: ApiResponse<string> = await HttpRequest.AdminModule.getAdminLogin(
+          { username, password }
+        );
         if (res && res.data) {
           this.loading = false;
           localStorage.setItem("token", res.data);
           localStorage.setItem("name", username);
-          this.$router.push("/app");
+          // 判断是否为ie
+          if (!!window.ActiveXObject || "ActiveXObject" in window) {
+            window.location.href = "/#/app";
+            window.location.reload();
+          } else {
+            this.$router.push("/app");
+          }
+
           notification.success({
             message: "登录成功",
             description: "恭喜你登录成功，欢迎回来！"
@@ -178,7 +185,7 @@ export default class Signin extends Vue {
             username: { value: "", errors: [new Error("用户名或密码错误")] },
             password: { value: "", errors: [new Error("用户名或密码错误")] }
           });
-          this.loading =false;
+          this.loading = false;
         }
       }
     });

@@ -58,7 +58,7 @@ CanvasRenderingContext2D.save() 是 Canvas 2D API 通过将当前状态放入栈
         </Tooltip>
         <Tooltip placement="bottomLeft">
           <template slot="title">
-            <span>前进</span>
+            <span>恢复</span>
           </template>
           <i
             :class="['iconfont','icon-qianjin-shi',cancelHistoryList.length<1 ? 'no-click' : '']"
@@ -243,6 +243,7 @@ export default class UtilModule extends Vue {
     this.cancelHistoryList = [];
     this.canvasHistoryList = [];
     this.initData();
+    this.$message.success("清空画布成功");
   }
   // 撤销
   private handleCanvasGoBack() {
@@ -257,7 +258,7 @@ export default class UtilModule extends Vue {
     this.context.beginPath();
     this.context.putImageData(newImgData, 0, 0);
   }
-  // 前进
+  // 恢复
   private handleCanvasForward() {
     const { canvasHistoryList, cancelHistoryList } = this;
     if (cancelHistoryList.length === 0) {
@@ -311,13 +312,12 @@ export default class UtilModule extends Vue {
   position: relative;
   background: #f1f1f1;
   .canvas-wrapper {
-    flex: 1;
     background: #fff;
     border: 1px solid #eee;
   }
   .operation-wrapper {
+    flex: 1;
     padding: 0 5px;
-    width: 250px;
     p {
       font-size: 14px;
       color: #999;
