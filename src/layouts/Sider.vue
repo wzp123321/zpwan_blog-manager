@@ -56,7 +56,8 @@ export default class SiderBox extends Vue {
   private rootSubmenuKeys: Array<string> = [
     "menu_webManager",
     "menu_commentManager",
-    "menu_dictionary"
+    "menu_dictionary",
+    "menu_util"
   ];
   private openKeys: Array<string> = ["menu_webManager"];
 

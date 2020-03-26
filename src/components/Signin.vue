@@ -168,14 +168,8 @@ export default class Signin extends Vue {
           this.loading = false;
           localStorage.setItem("token", res.data);
           localStorage.setItem("name", username);
-          // 判断是否为ie
-          if (!!window.ActiveXObject || "ActiveXObject" in window) {
-            window.location.href = "/#/app";
-            window.location.reload();
-          } else {
-            this.$router.push("/app");
-          }
-
+          window.location.href = "/#/app";
+          window.location.reload();
           notification.success({
             message: "登录成功",
             description: "恭喜你登录成功，欢迎回来！"

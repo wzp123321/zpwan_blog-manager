@@ -28,7 +28,9 @@ const ArticleDetail = () => import("@/components/pages/article_manager/article_d
 const ArticleEdit = () => import("@/components/pages/article_manager/article_add.vue")
 
 // 工具模块
-const UtilModule = () => import("@/components/pages/web-util/index.vue")
+const UtilModule = () => import("@/components/pages/common-manage/index.vue")
+const UtilManage = () => import("@/components/pages/common-manage/util-manage/index.vue")
+const TaskManage = () => import("@/components/pages/common-manage/task-manage/index.vue")
 // 评论模块
 const CommentModule = () => import("@/components/pages/comment_manager/index.vue")
 const CommentList = () => import("@/components/pages/comment_manager/comment_list/index.vue")
@@ -215,8 +217,28 @@ const routes = [
         ]
       },
       {
-        path: "/app/util",
-        component: UtilModule
+        path: "/app/manage",
+        meta: {
+          name: "工具管理"
+        },
+        component: UtilModule,
+        redirect: "/app/manage/util",
+        children: [
+          {
+            path: "/app/manage/util",
+            meta: {
+              name: "工具操作"
+            },
+            component: UtilManage
+          },
+          {
+            path: "/app/manage/task",
+            meta: {
+              name: "任务管理"
+            },
+            component: TaskManage
+          },
+        ]
       }
     ]
   },

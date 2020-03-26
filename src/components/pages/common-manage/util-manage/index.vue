@@ -21,6 +21,11 @@ CanvasRenderingContext2D.save() 是 Canvas 2D API 通过将当前状态放入栈
     <div class="operation-wrapper">
       <p>图片选择:</p>
       <UploadHandler :imgUrl="current_imgUrl" @change="handleImgUploader"></UploadHandler>
+      <p>绘制文字:</p>
+      <div class="text-input">
+        <Input v-model="canvasText" placeholder="请输入文字" />
+        <Button type="primary" @click="handleCanvasText">绘制</Button>
+      </div>
       <p>画布操作:</p>
       <div class="operation-icon">
         <Tooltip placement="bottomLeft">
@@ -87,7 +92,7 @@ CanvasRenderingContext2D.save() 是 Canvas 2D API 通过将当前状态放入栈
       <p>橡皮尺寸:</p>
       <Slider :value="clearSize" :max="50" :min="0" @change="(value)=>{clearSize= value}" />
       <div class="clear-size"></div>
-      <Button type="default" @click="handleImageCreate">生成图片</Button>
+      <Button type="default" @click="handleImageCreate" class="create-image">生成图片</Button>
     </div>
   </div>
 </template>
@@ -142,6 +147,8 @@ export default class UtilModule extends Vue {
   private pencilSize: number = 1;
   // 橡皮擦尺寸
   private clearSize: number = 20;
+  // 需要绘制的文字
+  private canvasText: string = "";
   // 图片上传
   private handleImgUploader(url: string) {
     this.current_imgUrl = url;
@@ -286,6 +293,19 @@ export default class UtilModule extends Vue {
       a.click();
     });
   }
+  // 绘制文字
+  private handleCanvasText() {
+    const { WIDTH, HEIGHT } = this;
+    this.context.beginPath();
+    this.context.font = "36px serif"
+    this.context.fillStyle = this.colors[this.colorIndex]
+    this.context.fillText(
+      this.canvasText,
+      Math.random() * (WIDTH-100),
+      Math.random() * (HEIGHT-50)
+    );
+    this.canvasText = "";
+  }
   // 初始化
   private initData() {
     /**
@@ -294,8 +314,8 @@ export default class UtilModule extends Vue {
     const { WIDTH, HEIGHT } = this;
     this.theCanvas = document.querySelector("#pic_canvas");
     this.context = this.theCanvas.getContext("2d");
-    this.context.fillStyle = "#fff";
-    this.context.fillRect(0, 0, this.WIDTH, this.HEIGHT);
+    // this.context.fillStyle = "#fff";
+    // this.context.fillRect(0, 0, this.WIDTH, this.HEIGHT);
     const imageData: ImageData = this.context.getImageData(0, 0, WIDTH, HEIGHT);
     this.canvasHistoryList.push(imageData);
     this.handleMouseModeChange(false);
@@ -322,6 +342,10 @@ export default class UtilModule extends Vue {
       font-size: 14px;
       color: #999;
       margin: 15px 5px 5px 0;
+    }
+    .text-input {
+      display: flex;
+      flex-direction: row;
     }
     .operation-icon {
       padding: 2px;
@@ -357,7 +381,7 @@ export default class UtilModule extends Vue {
         border: 1px solid #000;
       }
     }
-    button {
+    .create-image {
       margin: 15px 0;
       padding: 0 30px;
       color: #06a5ff;

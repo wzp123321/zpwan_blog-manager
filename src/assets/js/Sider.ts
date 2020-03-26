@@ -69,9 +69,21 @@ export const SiderRouters: Array<MenuInfo> = [
         url: "/app/article/list"
     },
     {
-        name: "Util工具",
+        name: "公共模块",
         icon: "setting",
         en_name: "util",
-        url: "/app/util"
+        url: "/app/manage",
+        children: [
+            {
+                name: "工具管理",
+                en_name: "utilmanage",
+                url: "/app/manage/util"
+            },
+            {
+                name: "任务管理",
+                en_name: "tasklist",
+                url: "/app/manage/task"
+            }
+        ]
     }
 ];
