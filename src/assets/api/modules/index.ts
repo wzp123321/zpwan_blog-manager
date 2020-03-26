@@ -4,6 +4,7 @@ import BannerModule from "./banner"
 import DictionaryModule from "./dictionary"
 import CommentModule from "./comment"
 import FriendlyLinkModule  from "./friendly_link"
+import TaskModule from "./task"
 
 export default {
   AdminModule,
@@ -11,5 +12,6 @@ export default {
   BannerModule,
   DictionaryModule,
   CommentModule,
-  FriendlyLinkModule
+  FriendlyLinkModule,
+  TaskModule
 }

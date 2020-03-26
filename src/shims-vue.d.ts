@@ -219,10 +219,11 @@ declare namespace WebManagerModule {
    * 任务
    */
   interface TaskInfo{
-    id?:string,
+    task_id?:string,
     title?:string,
     priority?:number,
     is_complete?:number,
+    endline?:string,
     create_time?:number,
     modify_time?:number
   }
