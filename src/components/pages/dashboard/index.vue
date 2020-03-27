@@ -6,6 +6,7 @@
     5.https://caniuse.com/览器兼容性查询
     6.https://www.easy-mock.com mock数据
     7.react react native https://www.bilibili.com/video/BV11t411S7iG?from=search&seid=5924084010239047082
+    https://juejin.im/post/5e7c08bde51d455c4c66ddad?utm_source=gold_browser_extension
     <span
       v-html="`&\#x1F923`"
     ></span>

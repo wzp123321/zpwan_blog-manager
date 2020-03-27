@@ -17,7 +17,17 @@ const TaskModule = {
 
     async getTaskBathComplete(params: { [key: string]: any }) {
         const url = "/task/bathComplete";
-        return postRequest(url, params);
+        return getRequest(url, params);
+    },
+
+    async getTaskInfoById(params: { [key: string]: any }) {
+        const url = "/task/getById";
+        return getRequest(url, params);
+    },
+
+    async getTaskDeleteById(params: { [key: string]: any }) {
+        const url = "/task/delete";
+        return getRequest(url, params);
     }
 }
 export default TaskModule

@@ -1,6 +1,6 @@
 <template>
   <div class="banner-wrapper">
-    <div class="header">
+    <div class="frsp">
       <Select
         style="width:120px"
         @change="handleTypeChange"
@@ -183,12 +183,6 @@ export default class BannerList extends Vue {
 </script>
 <style lang="less" scoped>
 .banner-wrapper {
-  .header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 0 10px;
-  }
   .action-span {
     color: #06a5ff;
     cursor: pointer;

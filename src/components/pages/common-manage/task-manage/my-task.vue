@@ -8,12 +8,13 @@
     cancelText="取消"
   >
     <Timeline v-if="JSON.stringify(todayTasks) !== '[]'">
-      <TimelineItem color="green">Create a services site 2015-09-01</TimelineItem>
-      <TimelineItem color="blue">Solve initial network problems 2015-09-01</TimelineItem>
-      <TimelineItem color="green">Technical testing 2015-09-01</TimelineItem>
-      <TimelineItem color="blue">Network problems being solved 2015-09-01</TimelineItem>
+      <TimelineItem
+        v-for="(item,index) in todayTasks"
+        :key="index"
+        :color="item.is_complete===0 ? 'blue':'green'"
+      >{{item.title}} {{item.endline}}</TimelineItem>
     </Timeline>
-    <Empty v-else description="暂无任务"/>
+    <Empty v-else description="暂无任务" />
   </Modal>
 </template>
 <script lang="ts">
