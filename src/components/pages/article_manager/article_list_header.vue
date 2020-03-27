@@ -1,5 +1,5 @@
 <template>
-  <div class="frsp">
+  <div class="frsp" style="position:relative">
     <div class="select">
       <a-select
         placeholder="一级目录"

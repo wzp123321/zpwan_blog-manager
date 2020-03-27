@@ -8,6 +8,9 @@
         placeholder="完成状态"
         @change="handleStatusChange"
         :allowClear="true"
+        :getPopupContainer="triggerNode=>{
+          return triggerNode.parentNode || document.body
+        }"
       >
         <SelectOption :value="0">未完成</SelectOption>
         <SelectOption :value="1">已完成</SelectOption>
@@ -17,11 +20,20 @@
         placeholder="优先级"
         @change="handlePriorityChange"
         :allowClear="true"
+        :getPopupContainer="triggerNode=>{
+          return triggerNode.parentNode || document.body
+        }"
       >
         <SelectOption :value="1">低</SelectOption>
         <SelectOption :value="2">高</SelectOption>
       </Select>
-      <DatePicker @change="handleDateSelect" placeholder="选择日期" />
+      <DatePicker
+        @change="handleDateSelect"
+        placeholder="选择日期"
+        :getCalendarContainer="triggerNode=>{
+          return triggerNode.parentNode || document.body
+        }"
+      />
       <Button type="primary" @click="handleCreateTask">新增任务</Button>
       <Button
         type="primary"
@@ -273,7 +285,7 @@ export default class TaskManage extends Vue {
   }
   // 日期筛选
   private handleDateSelect(date: Date, dateString: string) {
-    this.pagination.current =1 ;
+    this.pagination.current = 1;
     this.searchParams = Object.assign(
       {},
       {
@@ -356,9 +368,11 @@ export default class TaskManage extends Vue {
   }
   // 删除
   private async handleTaskDelete(task_id: string) {
-    const res:ApiResponse<boolean> = await HttpRequest.TaskModule.getTaskDeleteById({task_id})
+    const res: ApiResponse<boolean> = await HttpRequest.TaskModule.getTaskDeleteById(
+      { task_id }
+    );
 
-    if(res && res.data){
+    if (res && res.data) {
       this.$message.success("删除成功");
       this.getTaskList();
     }

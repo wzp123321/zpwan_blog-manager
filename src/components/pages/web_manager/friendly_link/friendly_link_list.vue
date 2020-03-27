@@ -195,5 +195,12 @@ export default class FriendlyLinkList extends Vue {
 <style lang="less" scoped>
 .friednly-link-wrapper {
   position: relative;
+  p{
+    font-size: 12px;
+    padding: 5px;
+    color: red;
+    background: #eee;
+    margin-top: 5px;
+  }
 }
 </style>

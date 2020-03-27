@@ -149,6 +149,7 @@ declare namespace CommentModule {
     id: string,
     author: WebManagerModule.UserInfo,
     article_id: string,
+    article_name?: string,
     content: string,
     is_delete: number,
     ups: number,
@@ -218,13 +219,13 @@ declare namespace WebManagerModule {
   /**
    * 任务
    */
-  interface TaskInfo{
-    task_id?:string,
-    title?:string,
-    priority?:number,
-    is_complete?:number,
-    endline?:string,
-    create_time?:number,
-    modify_time?:number
+  interface TaskInfo {
+    task_id?: string,
+    title?: string,
+    priority?: number,
+    is_complete?: number,
+    endline?: string,
+    create_time?: number,
+    modify_time?: number
   }
 }

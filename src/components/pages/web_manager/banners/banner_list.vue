@@ -183,6 +183,7 @@ export default class BannerList extends Vue {
 </script>
 <style lang="less" scoped>
 .banner-wrapper {
+  position: relative;
   .action-span {
     color: #06a5ff;
     cursor: pointer;

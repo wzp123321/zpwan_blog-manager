@@ -63,6 +63,11 @@ export default class CommentList extends Vue {
       }
     },
     {
+      key: "article_name",
+      title: "所属文章",
+      dataIndex: "article_name"
+    },
+    {
       key: "author",
       title: "评论人",
       customRender: (
@@ -100,11 +105,6 @@ export default class CommentList extends Vue {
       dataIndex: "downs"
     },
     {
-      key: "is_delete",
-      title: "被删除",
-      scopedSlots: { customRender: "is_delete" }
-    },
-    {
       key: "create_time",
       title: "创建时间",
       customRender: (
@@ -114,6 +114,11 @@ export default class CommentList extends Vue {
       ) => {
         return formatDate(record.create_time);
       }
+    },
+    {
+      key: "is_delete",
+      title: "操作",
+      scopedSlots: { customRender: "is_delete" }
     }
   ];
   // 分页
@@ -205,7 +210,7 @@ export default class CommentList extends Vue {
     if (res && res.data) {
       const dataSource = res.data.data;
       const total = res.data.total;
-      this.dataSource = dataSource;
+      this.dataSource = this.operateComment(dataSource);
       this.pagination.total = total;
       this.loading = false;
       if (total >= 10 && dataSource.length === 0) {
@@ -214,7 +219,21 @@ export default class CommentList extends Vue {
       }
     }
   }
-
+  private operateComment(
+    datas: CommentModule.CommentInfo[]
+  ): CommentModule.CommentInfo[] {
+    let newData: CommentModule.CommentInfo[] = [];
+    datas.forEach(async item => {
+      const res: ApiResponse<ArticleModule.ArticleInfo> = await HttpRequest.ArticleModule.getArticleInfoById(
+        { id: item.article_id }
+      );
+      if (res && res.data) {
+        let newItem = Object.assign(item, { article_name: res.data.title });
+        newData.push(newItem);
+      }
+    });
+    return newData;
+  }
   mounted() {
     this.statuses = comment_types;
     this.queryCommentList();
