@@ -6,7 +6,7 @@ const getRoot = (env) => {
   let root = ''
   switch (env) {
     case 'production':
-      root = './'
+      root = './blogManage'
       break
     case 'development':
       root = '/'
