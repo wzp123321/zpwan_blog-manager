@@ -1,7 +1,7 @@
 <template>
   <div class="tag-wrapper">
     <div class="tag-header">
-      <Button type="primary" @click="()=>{visible=true}">新增Tag</Button>
+      <Button type="primary" @click="handleAddModal">新增Tag</Button>
     </div>
     <Table
       style="margin-top:10px"
@@ -111,7 +111,11 @@ export default class TagModule extends Vue {
   };
 
   private visible: boolean = false;
-
+  //打开新增对话框
+  private handleAddModal(){
+    this.visible =true;
+    this.form.resetFields();
+  }
   /**
    * 新增tag
    */

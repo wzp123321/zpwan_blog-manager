@@ -67,7 +67,7 @@
         >
           <Button :loading="loading" type="primary" @click="handleSubmit">登录</Button>
         </FormItem>
-        <FormItem label="您还可以通过以下方式登录:" :label-col="{span:13}" :wrapper-col="{offset:1,span:5}">
+        <!-- <FormItem label="您还可以通过以下方式登录:" :label-col="{span:13}" :wrapper-col="{offset:1,span:5}">
           <svg
             class="icon"
             aria-hidden="true"
@@ -79,7 +79,7 @@
           <svg class="icon" aria-hidden="true" @click="handleGithubLogin">
             <use xlink:href="#icon-github" />
           </svg>
-        </FormItem>
+        </FormItem> -->
       </Form>
     </div>
   </div>
@@ -168,7 +168,7 @@ export default class Signin extends Vue {
           this.loading = false;
           localStorage.setItem("token", res.data);
           localStorage.setItem("name", username);
-          window.location.href = "/#/app";
+          window.location.href = "/blogManageWeb/#/app";
           window.location.reload();
           notification.success({
             message: "登录成功",
