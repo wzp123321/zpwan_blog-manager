@@ -79,7 +79,7 @@
           <svg class="icon" aria-hidden="true" @click="handleGithubLogin">
             <use xlink:href="#icon-github" />
           </svg>
-        </FormItem> -->
+        </FormItem>-->
       </Form>
     </div>
   </div>
@@ -168,8 +168,7 @@ export default class Signin extends Vue {
           this.loading = false;
           localStorage.setItem("token", res.data);
           localStorage.setItem("name", username);
-          window.location.href = "/blogManageWeb/#/app";
-          window.location.reload();
+          this.$router.push("/blogManageWeb/#/app");
           notification.success({
             message: "登录成功",
             description: "恭喜你登录成功，欢迎回来！"

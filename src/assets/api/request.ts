@@ -9,7 +9,7 @@ const env = process.env.NODE_ENV;
 // timeout 10min
 const Global_Delay = 10 * 60 * 1000;
 
-const BASE_URL = env ==='production' ? 'http://132.232.66.140:9898/blogManage' : 'http://127.0.0.1:9899/blogManage';
+const BASE_URL = env ==='production' ? 'http://132.232.66.140:9898/blogManage' : 'http://127.0.0.1:9898/blogManage';
 // 定义一个空的数组，用于存放请求中的参数
 
 // 创建axios实例
@@ -55,6 +55,7 @@ const publicReq = async (params: { [key: string]: any }) => {
     if (res) {
       if (res.data.code === 403) {
         window.location.href = "/blogManageWeb/#/signin";
+        window.location.reload();
         localStorage.removeItem("name");
         localStorage.removeItem("id");
         localStorage.removeItem("avatar_url");
