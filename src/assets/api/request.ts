@@ -54,7 +54,7 @@ const publicReq = async (params: { [key: string]: any }) => {
   }).then((res: AxiosResponse) => {
     if (res) {
       if (res.data.code === 403) {
-        window.location.href = "/blogManageWeb/#/signin";
+        window.location.href = "/blogManageWeb/signin";
         window.location.reload();
         localStorage.removeItem("name");
         localStorage.removeItem("id");

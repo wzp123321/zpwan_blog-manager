@@ -261,6 +261,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
+  base:'/blogManageWeb',
   mode: "history",
   routes
 })
