@@ -114,12 +114,6 @@ export default class Signin extends Vue {
   private loading: boolean = false;
   /**
    * github登录
-   * https://github.com/settings/applications/1199418
-   * http://www.ruanyifeng.com/blog/2019/04/github-oauth.html
-   * https://www.jianshu.com/p/0842b888d94a
-   * https://www.zhyd.me/article/141
-   * https://lyci.xyz/article/6578502487528599552
-   *
    */
   private handleGithubLogin() {
     window.location.href =
@@ -168,7 +162,7 @@ export default class Signin extends Vue {
           this.loading = false;
           localStorage.setItem("token", res.data);
           localStorage.setItem("name", username);
-          this.$router.push("/blogManageWeb/#/app");
+          this.$router.push("/app");
           notification.success({
             message: "登录成功",
             description: "恭喜你登录成功，欢迎回来！"
