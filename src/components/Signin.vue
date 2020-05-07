@@ -67,7 +67,7 @@
         >
           <Button :loading="loading" type="primary" @click="handleSubmit">登录</Button>
         </FormItem>
-        <!-- <FormItem label="您还可以通过以下方式登录:" :label-col="{span:13}" :wrapper-col="{offset:1,span:5}">
+        <FormItem label="您还可以通过以下方式登录:" :label-col="{span:13}" :wrapper-col="{offset:1,span:5}">
           <svg
             class="icon"
             aria-hidden="true"
@@ -79,7 +79,7 @@
           <svg class="icon" aria-hidden="true" @click="handleGithubLogin">
             <use xlink:href="#icon-github" />
           </svg>
-        </FormItem>-->
+        </FormItem>
       </Form>
     </div>
   </div>
@@ -90,7 +90,7 @@ import { Vue, Component, Watch } from "vue-property-decorator";
 import { Form, Button, Input, message, notification } from "ant-design-vue";
 import IdentifyCode from "./IdentifyCode.vue";
 import HttpRequest from "@/assets/api/modules/index";
-
+const env = process.env.NODE_ENV;
 @Component({
   name: "Signin",
   components: {
@@ -116,8 +116,11 @@ export default class Signin extends Vue {
    * github登录
    */
   private handleGithubLogin() {
-    window.location.href =
-      "/githubAuthorize?client_id=e8066bfd81332a5fd345&redirect_uri=http://localhost:8080/signin_github";
+    const url =
+      env === "production"
+        ? "http://zpwan-yz.com/blogManageWeb"
+        : "http://localhost:8080";
+    window.location.href = `/githubAuthorize?client_id=e8066bfd81332a5fd345&redirect_uri=${url}/signin_github`;
   }
   /**
    * 初始化

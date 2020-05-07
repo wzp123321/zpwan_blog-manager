@@ -160,7 +160,15 @@ declare namespace CommentModule {
     create_time: number
   }
   interface LeaveMessageInfo {
-
+    content?: string,
+    author?: any,
+    create_time: number,
+    init_date?: string,
+    is_delete: number,
+    is_good: number,
+    is_shelves: number,
+    leave_message_id?: string,
+    modify_time: number,
   }
 }
 

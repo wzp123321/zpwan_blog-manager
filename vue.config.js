@@ -37,14 +37,14 @@ const moduleConfig = {
           '^/githubAccessToken': ''
         }
       },
-        // GitHub请求token的请求
-        '/githubUserInfo': {
-          target: 'https://api.github.com/user',
-          changeOrigin: true,
-          pathRewrite: {
-            '^/githubUserInfo': ''
-          }
+      // 获取用户信息
+      '/githubUserInfo': {
+        target: 'https://api.github.com/user',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/githubUserInfo': ''
         }
+      }
     }
   },
   publicPath: getRoot(env),

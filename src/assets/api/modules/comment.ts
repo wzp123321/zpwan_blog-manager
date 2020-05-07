@@ -23,5 +23,26 @@ export default {
     async getCommentArticleType(params: { [key: string]: any }) {
         const url = "/comment/articletype";
         return postRequest(url, params);
-    }
+    },
+
+    async getLeaveMessageList(params: { [key: string]: any }) {
+        const url = "/leavemessage/web/list";
+        return getRequest(url, params);
+    },
+
+    async getLeaveMessageShelves(params: { [key: string]: any }) {
+        const url = "/leavemessage/isShelves";
+        return postRequest(url, params);
+    },
+
+    async getLeaveMessageGood(params: { [key: string]: any }) {
+        const url = "/leavemessage/isGood";
+        return postRequest(url, params);
+    },
+
+    async getLeaveMessageDelete(params: { [key: string]: any }) {
+        const url = "/leavemessage/delete";
+        return postRequest(url, params);
+    },
+
 }
