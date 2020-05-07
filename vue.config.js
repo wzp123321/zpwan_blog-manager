@@ -19,6 +19,7 @@ const getRoot = (env) => {
 }
 
 const moduleConfig = {
+  outputDir:"blogManageWeb",
   devServer: {
     proxy: {
       // GitHub认证跨域 代理这个请求地址
