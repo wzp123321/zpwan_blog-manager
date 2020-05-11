@@ -118,7 +118,7 @@ export default class Signin extends Vue {
   private handleGithubLogin() {
     const url =
       env === "production"
-        ? "http://zpwan-yz.com/blogManageWeb"
+        ? "http://server.zpwan-yz.com/blogManageWeb"
         : "http://localhost:8080";
     window.location.href = `/githubAuthorize?client_id=e8066bfd81332a5fd345&redirect_uri=${url}/signin_github`;
   }
