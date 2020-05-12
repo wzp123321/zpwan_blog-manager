@@ -183,11 +183,10 @@ export default class ArticleList extends Vue {
     pagination: PaginationInfo,
     filters: any,
     soter: any
-  ) {}
-  /**
-   * 删除文章
-   */
-  private handleArticleDel(id: string) {}
+  ) {
+    this.pagination.current = pagination.current;
+    this.queryArticleList();
+  }
   /**
    * 推荐change事件
    */
