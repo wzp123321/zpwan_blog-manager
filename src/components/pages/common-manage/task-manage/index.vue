@@ -155,7 +155,7 @@ export default class TaskManage extends Vue {
       title: "序号",
       customRender: (
         text: string,
-        record: WebManagerModule.TaskInfo,
+        record: CommonModule.TaskInfo,
         index: number
       ) => {
         return (this.pagination.current - 1) * 10 + index + 1;
@@ -171,7 +171,7 @@ export default class TaskManage extends Vue {
       title: "优先级",
       customRender: (
         text: string,
-        record: WebManagerModule.TaskInfo,
+        record: CommonModule.TaskInfo,
         index: number
       ) => {
         return record.priority === 1 ? "低" : "高";
@@ -182,7 +182,7 @@ export default class TaskManage extends Vue {
       title: "完成",
       customRender: (
         text: string,
-        record: WebManagerModule.TaskInfo,
+        record: CommonModule.TaskInfo,
         index: number
       ) => {
         return record.is_complete === 0 ? "否" : "是";
@@ -198,7 +198,7 @@ export default class TaskManage extends Vue {
       title: "创建时间",
       customRender: (
         text: string,
-        record: WebManagerModule.TaskInfo,
+        record: CommonModule.TaskInfo,
         index: number
       ) => {
         return formatDate(record.create_time || 0);
@@ -209,7 +209,7 @@ export default class TaskManage extends Vue {
       title: "修改时间",
       customRender: (
         text: string,
-        record: WebManagerModule.TaskInfo,
+        record: CommonModule.TaskInfo,
         index: number
       ) => {
         return formatDate(record.modify_time || 0);
@@ -221,7 +221,7 @@ export default class TaskManage extends Vue {
       scopedSlots: { customRender: "action" }
     }
   ];
-  private dataSource: WebManagerModule.TaskInfo[] = [];
+  private dataSource: CommonModule.TaskInfo[] = [];
   private loading: boolean = false;
   private pagination: PaginationInfo = {
     current: 1,
@@ -234,9 +234,9 @@ export default class TaskManage extends Vue {
   // 任务id
   private task_id: string = "";
   // 今日任务数组
-  private todayTasks: WebManagerModule.TaskInfo[] = [];
+  private todayTasks: CommonModule.TaskInfo[] = [];
   // 选中的数组
-  private selectedRowKeys: WebManagerModule.TaskInfo[] = [];
+  private selectedRowKeys: CommonModule.TaskInfo[] = [];
   // 筛选参数
   private searchParams: { [key: string]: any } = {};
   private priorities: Array<{ [key: string]: any }> = [
@@ -307,7 +307,7 @@ export default class TaskManage extends Vue {
   private async handleViewTask() {
     this.viewVisiable = true;
     const res: ApiResponse<ListResponse<
-      WebManagerModule.TaskInfo[]
+      CommonModule.TaskInfo[]
     >> = await HttpRequest.TaskModule.getTaskList({
       endline: moment(new Date()).format("YYYY-MM-DD")
     });
@@ -321,7 +321,7 @@ export default class TaskManage extends Vue {
   private async handleTaskEdit(task_id: string) {
     this.task_id = task_id;
     this.operateVisiable = true;
-    const res: ApiResponse<WebManagerModule.TaskInfo> = await HttpRequest.TaskModule.getTaskInfoById(
+    const res: ApiResponse<CommonModule.TaskInfo> = await HttpRequest.TaskModule.getTaskInfoById(
       { task_id }
     );
 
@@ -337,17 +337,15 @@ export default class TaskManage extends Vue {
   // 新增编辑对话框回调
   private handleOperateSubmit(e: any) {
     e.preventDefault();
-    this.form.validateFields(
-      (err: Error, values: WebManagerModule.TaskInfo) => {
-        if (!err) {
-          if (this.task_id === "") {
-            this.getTaskCreate(values);
-          } else {
-            this.getTaskEdit(values);
-          }
+    this.form.validateFields((err: Error, values: CommonModule.TaskInfo) => {
+      if (!err) {
+        if (this.task_id === "") {
+          this.getTaskCreate(values);
+        } else {
+          this.getTaskEdit(values);
         }
       }
-    );
+    });
   }
   // 批量完成
   private async handleTaskBathComplete() {
@@ -378,7 +376,7 @@ export default class TaskManage extends Vue {
     }
   }
   // 新增任务
-  private async getTaskCreate(values: WebManagerModule.TaskInfo) {
+  private async getTaskCreate(values: CommonModule.TaskInfo) {
     const { title, priority, endline } = values;
     const res: ApiResponse<boolean> = await HttpRequest.TaskModule.getTaskAdd({
       title,
@@ -392,7 +390,7 @@ export default class TaskManage extends Vue {
     }
   }
   // 编辑任务
-  private async getTaskEdit(values: WebManagerModule.TaskInfo) {
+  private async getTaskEdit(values: CommonModule.TaskInfo) {
     const { title, priority, endline } = values;
     const { task_id } = this;
     const res: ApiResponse<boolean> = await HttpRequest.TaskModule.getTaskUpdate(
@@ -417,7 +415,7 @@ export default class TaskManage extends Vue {
       limit: 10
     });
     const res: ApiResponse<ListResponse<
-      WebManagerModule.TaskInfo[]
+      CommonModule.TaskInfo[]
     >> = await HttpRequest.TaskModule.getTaskList(this.searchParams);
 
     if (res && res.data) {

@@ -83,6 +83,11 @@ export const SiderRouters: Array<MenuInfo> = [
                 name: "任务管理",
                 en_name: "tasklist",
                 url: "/app/manage/task"
+            },
+            {
+                name: "图片管理",
+                en_name: "picturelist",
+                url: "/app/manage/picture"
             }
         ]
     }

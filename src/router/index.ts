@@ -31,6 +31,7 @@ const ArticleEdit = () => import("@/components/pages/article_manager/article_add
 const UtilModule = () => import("@/components/pages/common-manage/index.vue")
 const UtilManage = () => import("@/components/pages/common-manage/util-manage/index.vue")
 const TaskManage = () => import("@/components/pages/common-manage/task-manage/index.vue")
+const PictureModule = () => import("@/components/pages/common-manage/picture-manage/index.vue")
 // 评论模块
 const CommentModule = () => import("@/components/pages/comment_manager/index.vue")
 const CommentList = () => import("@/components/pages/comment_manager/comment_list/index.vue")
@@ -238,6 +239,13 @@ const routes = [
             },
             component: TaskManage
           },
+          {
+            path: "/app/manage/picture",
+            meta: {
+              name: "图片管理"
+            },
+            component: PictureModule
+          },
         ]
       }
     ]
@@ -261,7 +269,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  base:'/blogManageWeb',
+  base: '/blogManageWeb',
   mode: "history",
   routes
 })

@@ -36,7 +36,7 @@ export default class ToDayTaskList extends Vue {
   private viewVisiable!: boolean;
 
   @Prop({ default: [] })
-  private todayTasks!: WebManagerModule.TaskInfo[];
+  private todayTasks!: CommonModule.TaskInfo[];
 
   @Emit("viewCancel")
   private handleOk() {}

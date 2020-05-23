@@ -224,9 +224,13 @@ declare namespace WebManagerModule {
     create_time?: number,
     modify_time?: number,
   }
+
+}
+
+declare namespace CommonModule {
   /**
-   * 任务
-   */
+ * 任务
+ */
   interface TaskInfo {
     task_id?: string,
     title?: string,
@@ -235,5 +239,21 @@ declare namespace WebManagerModule {
     endline?: string,
     create_time?: number,
     modify_time?: number
+  }
+  /**
+   * 照片
+   */
+  interface PictureModule {
+    picture_id?: string;
+
+    picture_url?: string;
+
+    createDate?: number;
+
+    init_date?: string;
+
+    create_time?: number;
+
+    modify_time?: number;
   }
 }

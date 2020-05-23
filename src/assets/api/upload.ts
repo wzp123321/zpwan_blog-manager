@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { AxiosResponse } from 'axios'
 const env = process.env.NODE_ENV;
-const url = env === 'production' ? "http://server.zpwan-yz.com/blogManage/filemodule/upload" : "http://127.0.0.1:9898/blogManage/filemodule/upload";
+const url = env === 'production' ? "http://server.zpwan-yz.com/blogManage/filemodule/web/upload" : "http://127.0.0.1:9898/blogManage/filemodule/web/upload";
 
 export const handleFileUpload = async (file: File, callback: Function) => {
 
