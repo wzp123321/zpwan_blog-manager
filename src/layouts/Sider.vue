@@ -9,27 +9,27 @@
       @openChange="onOpenChange"
     >
       <template v-for="menu in menus">
-        <SubMenu v-if="menu.children" :key="'menu_' + menu.en_name">
+        <SubMenu v-if="JSON.stringify(menu.children) !=='[]'" :key="menu.menuName">
           <span slot="title">
-            <a-icon :type="menu.icon"></a-icon>
-            {{menu.name}}
+            <a-icon :type="menu.meta.icon"></a-icon>
+            {{menu.meta.name}}
           </span>
           <MenuItem
             v-for="menuChild in menu.children"
-            :key="'menuchild_' + menuChild.name"
-            :class="menuChild.url===$route.path ? 'ant-menu-item-selected': ''"
+            :key="'menuchild_' + menuChild.menuName"
+            :class="menuChild.path===$route.path ? 'ant-menu-item-selected': ''"
           >
-            <router-link :to="menuChild.url">{{ menuChild.name }}</router-link>
+            <router-link :to="menuChild.path">{{ menuChild.meta.name }}</router-link>
           </MenuItem>
         </SubMenu>
         <MenuItem
           v-else
-          :key="'menu_' + menu.name"
+          :key="menu.menuName"
           :class="menu.url===$route.path ? 'ant-menu-item-selected': ''"
-          @click="()=>{$router.push(menu.url)}"
+          @click="()=>{$router.push(menu.path)}"
         >
-          <a-icon :type="menu.icon"></a-icon>
-          <span>{{ menu.name }}</span>
+          <a-icon :type="menu.meta.icon"></a-icon>
+          <span>{{ menu.meta.name }}</span>
         </MenuItem>
       </template>
     </Menu>
@@ -38,7 +38,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import { Layout, Menu, Icon } from "ant-design-vue";
-import { SiderRouters } from "@/assets/js/Sider";
+import { routes } from "@/router/index";
 @Component({
   name: "SiderBox",
   components: {
@@ -53,22 +53,51 @@ export default class SiderBox extends Vue {
   @Prop({ default: false })
   private collapsed!: boolean;
   // 一级目录数组
-  private rootSubmenuKeys: Array<string> = [
-    "menu_webManager",
-    "menu_commentManager",
-    "menu_dictionary",
-    "menu_util"
-  ];
-  private openKeys: Array<string> = ["menu_webManager"];
+  private rootSubmenuKeys: Array<string> = [];
+  private openKeys: Array<string> = [];
 
-  private defaultSelectKey: string = "menu_0";
+  private defaultSelectKey: string = "";
   /**
    * menus
    */
   private menus: Array<MenuInfo> = [];
 
   mounted() {
-    this.menus = SiderRouters;
+    this.$nextTick(() => {
+      this.getRoutesCalculate();
+    });
+  }
+
+  // 封装路由数组
+  getRoutesCalculate() {
+    let newRoutes: RouteInfo[] = [];
+    routes.forEach((item: any) => {
+      if (item.meta && item.meta.isAside) {
+        newRoutes = item.children.filter((childItem: any) => {
+          if (childItem.meta && childItem.meta.isAside) {
+            const paths = childItem.path.split("/");
+            if (childItem.children) {
+              this.rootSubmenuKeys.push("menu_" + paths[paths.length - 1]);
+            }
+            childItem.menuName = "menu_" + paths[paths.length - 1];
+            childItem.children = childItem.children.filter((sonItem: any) => {
+              if (sonItem.meta && sonItem.meta.isAside) {
+                const newpaths = sonItem.path.split("/");
+                sonItem.menuName =
+                  "menu_" +
+                  newpaths[newpaths.length - 2] +
+                  newpaths[newpaths.length - 1];
+                return sonItem;
+              }
+            });
+            return childItem;
+          }
+        });
+      }
+    });
+    this.menus = newRoutes;
+    this.defaultSelectKey = this.rootSubmenuKeys[0];
+    this.openKeys = [this.rootSubmenuKeys[0]];
   }
 
   onOpenChange(openKeys: any) {

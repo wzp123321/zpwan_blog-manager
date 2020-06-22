@@ -3,7 +3,7 @@ import 'regenerator-runtime/runtime'
 
 import Vue from 'vue'
 import App from './App.vue'
-import router from './router'
+import { router } from './router/index'
 import store from './store'
 import './registerServiceWorker'
 // 引入ant样式
@@ -31,8 +31,8 @@ router.beforeEach((to, from, next) => {
   next();
 })
 
-router.afterEach( route => {
-  NProgress.done();  
+router.afterEach(route => {
+  NProgress.done();
 })
 
 new Vue({
