@@ -19,9 +19,6 @@ import 'nprogress/nprogress.css'
 import mavonEditor from 'mavon-editor'
 // use
 Vue.use(mavonEditor)
-// 引入绘制爱心的js
-// import "@/utils/canvasword.js"
-// 引入iconfont js
 import "@/assets/js/iconfont.js"
 
 Vue.config.productionTip = false

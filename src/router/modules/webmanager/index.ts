@@ -4,6 +4,7 @@ const BannerModule = () => import("@/components/pages/web_manager/banners/index.
 const NoticeManage = () => import("@/components/pages/web_manager/notice-manage/index.vue")
 const AdminListManage = () => import("@/components/pages/web_manager/admin-manage/index.vue")
 const FriendlyModule = () => import("@/components/pages/web_manager/friendly_link/index.vue")
+const MusicModule = () => import('@/components/pages/web_manager/music-manage/index.vue')
 
 export const webManageRouter = [
     {
@@ -22,7 +23,7 @@ export const webManageRouter = [
         },
         redirect: "/app/webmanager/banner/list",
         component: BannerModule,
-        children:bannerRouter
+        children: bannerRouter
     },
     {
         path: "/app/webManager/adminlist",
@@ -35,5 +36,10 @@ export const webManageRouter = [
         meta: { name: "友情链接管理", isAside: true },
         redirect: "/app/webManager/friendlink/list",
         children: friendLinkRouter
+    },
+    {
+        path: "/app/webManager/music",
+        component: MusicModule,
+        meta: { name: "音乐管理", isAside: true },
     }
 ]

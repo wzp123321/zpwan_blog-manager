@@ -218,6 +218,7 @@ export default class TaskManage extends Vue {
     {
       key: "action",
       title: "操作",
+      width: 110,
       scopedSlots: { customRender: "action" }
     }
   ];

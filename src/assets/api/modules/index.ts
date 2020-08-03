@@ -6,6 +6,7 @@ import CommentModule from "./comment"
 import FriendlyLinkModule  from "./friendly_link"
 import TaskModule from "./task"
 import PictureModule from './picture'
+import MusicModule from './music'
 
 export default {
   AdminModule,
@@ -15,5 +16,6 @@ export default {
   CommentModule,
   FriendlyLinkModule,
   TaskModule,
-  PictureModule
+  PictureModule,
+  MusicModule
 }

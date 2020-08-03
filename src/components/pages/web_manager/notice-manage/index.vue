@@ -133,6 +133,7 @@ export default class AdminModule extends Vue {
     {
       key: "action",
       title: "操作",
+      width:110,
       scopedSlots: { customRender: "action" }
     }
   ];

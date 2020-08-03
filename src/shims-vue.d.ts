@@ -225,6 +225,16 @@ declare namespace WebManagerModule {
     modify_time?: number,
   }
 
+  /**
+   * 音乐模块
+   */
+  interface MusicInfo {
+    id?: string,
+    title?: string,
+    pic?: string,
+    author?: string,
+    src?: string
+  }
 }
 
 declare namespace CommonModule {

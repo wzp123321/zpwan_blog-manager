@@ -19,6 +19,11 @@
   </noscript>
   <div id="app"></div>
   <!-- built files will be auto injected -->
+  <script>
+    window.onerror = (e) => {
+      console.log('window.onerror捕获异常------------------------', e)
+    }
+  </script>
 </body>
 
 </html>
