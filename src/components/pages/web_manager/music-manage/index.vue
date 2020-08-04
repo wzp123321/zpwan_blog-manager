@@ -52,7 +52,7 @@
         </FormItem>
         <FormItem label="播放链接">
           <Input
-            maxlength="20"
+            maxlength="50"
             v-decorator="['src', { rules: [{ required: true, message: '请输入播放链接!' }] }]"
           />
         </FormItem>
