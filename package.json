@@ -20,7 +20,7 @@
     "babel-plugin-lodash": "^3.3.4",
     "core-js": "^3.6.4",
     "html2canvas": "^1.0.0-rc.5",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "mavon-editor": "^2.7.7",
     "moment": "^2.24.0",
     "nprogress": "^0.2.0",
